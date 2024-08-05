@@ -45,7 +45,7 @@ const Timeline = () => {
   const [prevIdx, setPrevIdx] = useState(-1);
 
   const curStatus = EXAMPLE[curIdx].statusB;
-  const prevStatus = prevIdx >= 0 ? EXAMPLE[prevIdx].statusB : "";
+  // const prevStatus = prevIdx >= 0 ? EXAMPLE[prevIdx].statusB : "";
 
   const handleIndexClick = (index) => {
     setPrevIdx(curIdx);
