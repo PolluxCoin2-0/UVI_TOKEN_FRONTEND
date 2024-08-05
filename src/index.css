@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.bgimage{
+    background-image: url("./assets/BGImage.png");
+    background-position: center;
+    background-size: contain;
+}
