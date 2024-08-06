@@ -4,6 +4,8 @@ import ConnectWallet from "./pages/auth/ConnectWallet";
 import Otp from "./pages/auth/Otp";
 import Navbar from "./layout/Navbar";
 import Home from "./pages/Home";
+import BuyCoinPage  from "./pages/BuyCoinPage";
+import PaymentPage from "./pages/PaymentPage";
 function App() {
 
   return (
@@ -17,6 +19,8 @@ function App() {
            <Route path="/otp" element={<Otp />}/>
            <Route path="/navbar" element={<Navbar />} />
            <Route path="/home" element={<Home />} />
+           <Route path="/buycoin" element={<BuyCoinPage/>} />
+           <Route path="/payment" element={<PaymentPage />} />
       </Routes> 
    </Router>
     </div>
