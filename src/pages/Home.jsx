@@ -7,17 +7,19 @@ import UviLogo from "../assets/UvitokenLogo.png";
 import Navbar from "../layout/Navbar";
 import WinnerImg from "../assets/winner.png";
 import { LeaderboardData } from "../data/LeaderboardData";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="bg-black w-full h-full px-16 relative pb-12">
+    <div className="bg-black w-full h-full  relative pb-12">
       {/* Navbar */}
       <div>
         <Navbar />
       </div>
-
-      {/* Timer */}
-      <div className="absolute  left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] w-[15%] h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
+       
+       <div className="px-16">
+  {/* Timer */}
+  <div className="absolute top-[76px] left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] w-[15%] h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
         <CountdownTimer />
         <p className="text-gray-400 text-center">Remaining Time</p>
         <p className="border-[1px] px-14 mt-3"></p>
@@ -37,7 +39,7 @@ const Home = () => {
 
       {/* blocks */}
       <div className="flex flex-row justify-between w-full space-x-20 mt-14">
-        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-lg w-[32%] flex flex-row justify-between items-center  p-8">
+        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
           <div>
             <p className="text-4xl text-white font-bold">0.00</p>
             <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
@@ -49,7 +51,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-lg w-[32%] flex flex-row justify-between items-center  p-8">
+        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
           <div>
             <p className="text-4xl text-white font-bold">0.00</p>
             <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
@@ -60,7 +62,7 @@ const Home = () => {
             <BiDollar size={36} />
           </div>
         </div>
-        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-lg w-[32%] flex flex-row justify-between items-center  p-8">
+        <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
           <div>
             <p className="text-3xl text-white font-bold">dPLxc5</p>
             <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
@@ -75,19 +77,25 @@ const Home = () => {
 
       {/* Start Mining */}
       <div className="flex flex-row justify-center space-x-16 w-full mt-14  ">
-        <div className="bg-black text-white border-[1px] border-yellow-600 rounded-lg shadow-inner shadow-yellow-600  w-[25%] p-2 flex flex-row justify-center space-x-5 items-center">
+        <div className="bg-black text-white border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600  w-[25%] p-2 flex flex-row justify-center space-x-5 items-center">
           <div className="text-4xl font-semibold">Start Mining</div>
           <div>
             <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
           </div>
         </div>
-
-        <div className="bg-black text-white border-[1px] border-white rounded-lg shadow-inner shadow-white  w-[25%] p-2 flex flex-row justify-center space-x-5 items-center">
+         
+         
+         <div className="bg-black text-white border-[1px] border-white rounded-xl shadow-inner shadow-white  w-[25%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <Link to="/buycoin">
           <div className="text-4xl font-semibold">Buy Coin</div>
+          </Link>
+         
           <div>
             <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
           </div>
         </div>
+         
+        
       </div>
 
       {/* border-bottom */}
@@ -102,8 +110,8 @@ const Home = () => {
           <div
             key={index}
             className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15  ${
-              index === 0 ? 'bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-lg rounded-tr-lg' : 'bg-[#1B1B1B] p-10'} ${
-                index === LeaderboardData.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''
+              index === 0 ? 'bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-lg' : 'bg-[#1B1B1B] p-10'} ${
+                index === LeaderboardData.length - 1 ? 'rounded-bl-xl rounded-br-xl' : ''
               }
               `}
           >
@@ -148,6 +156,8 @@ const Home = () => {
         ))}
       </div>
     </div>
+       </div>
+    
     </div>
   );
 };

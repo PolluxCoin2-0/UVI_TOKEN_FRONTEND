@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../../assets/UvitokenLogo.png";
 
 const Signup = () => {
@@ -29,7 +30,11 @@ const Signup = () => {
 
           <div className="flex flex-row space-x-3 mt-6 ml-2">
             <p className="text-white">Already have an account?</p>
+
+            <Link to="/connectwallet">
             <button type="button" className=" text-yellow-500 text-lg font-semibold">Login</button>
+            </Link>
+           
           </div>
         </div>
       </div>

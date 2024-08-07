@@ -42,7 +42,7 @@ const TimelineProgressBar = () => {
      
       <div className="relative mb-4">
         {/* Time Intervals */}
-        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white ">
+        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white border-">
           {intervals.map((interval) => (
             <span
               key={interval.value}
@@ -60,14 +60,18 @@ const TimelineProgressBar = () => {
 
       {/* Progress Bar */}
       <div
-        className="relative h-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-lg overflow-hidden cursor-pointer"
-        onClick={handleClick}
+      className="relative h-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-lg overflow-hidden cursor-pointer z-0"
+      onClick={handleClick}
+    >
+      <div
+        className="h-full bg-[#FFBE2E] relative"
+        style={{width: `${progress}%` }}
       >
-        <div
-          className="h-full bg-[#FFBE2E]"
-          style={{ width: `${progress}%` }}
-        ></div>
+        <div className="absolute right-0 transform translate-x-1/2 bg-white w-5 h-6 -p-5 rounded-full border-2 border-white "></div>
       </div>
+      
+    </div>
+    {/* <div className="absolute top-0 mt-6  transform translate-x-1/2 bg-white w-8 h-12 -p-5 rounded-full border-2 border-white "></div> */}
     </div>
   );
 };

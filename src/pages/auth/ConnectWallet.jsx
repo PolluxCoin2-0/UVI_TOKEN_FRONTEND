@@ -13,7 +13,8 @@ const ConnectWallet = () => {
         <button
         type="button"
         className="bg-white px-20 py-3 rounded-lg text-black text-lg font-bold mt-10"
-        >Connect Wallet</button>
+        >Connect Wallet
+        </button>
       </div>
     </div>
   )

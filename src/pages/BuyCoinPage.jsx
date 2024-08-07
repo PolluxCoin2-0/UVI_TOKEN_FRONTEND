@@ -6,15 +6,25 @@ import BnbImg from "../assets/bnb.png";
 import CryptoImg from "../assets/Crypto.png";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
+import PaymentPage from "../pages/PaymentPage";
 
 const BuyCoin = () => {
+
+  // for showing buy coin page
+  const [isShowModal, setIsShowModal] = useState(false);
   const [inputValue, setInputValue] = useState('');
+
+  
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
+
+  const handleShowModal = () => {
+    setIsShowModal(!isShowModal);
+  }
   return (
-   <div className="bg-black w-full h-full overflow-hidden pb-20">
+   <div className="bg-black  w-full h-full overflow-hidden pb-20">
 
 {/* Navbar */} 
    <div><Navbar/></div>
@@ -96,9 +106,18 @@ const BuyCoin = () => {
    </div>
 
    {/* button */}
+   
    <div className="px-12">
-   <button type="button" className="w-full py-4 bg-[#DC9F01] rounded-xl text-3xl font-bold ">Buy Coin</button>
+   <button type="button" className="w-full py-4 bg-[#DC9F01] rounded-xl text-3xl font-bold hover:bg-yellow-400"
+    onClick={handleShowModal}>Buy Coin</button>
    </div>
+   {isShowModal && (
+    <PaymentPage 
+    isShowModal={isShowModal}
+    handleShowModal={handleShowModal}/>
+   )}
+   
+   
   
    </div>
   )
