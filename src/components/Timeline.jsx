@@ -38,7 +38,7 @@ const TimelineProgressBar = () => {
   const formattedTime = new Date().setHours(getHoursFromPercentage(progress));
 
   return (
-    <div className="bg-black p-0 pt-6 rounded-lg relative">
+    <div className=" p-0 pt-6 rounded-lg relative">
      
       <div className="relative mb-4">
         {/* Time Intervals */}
