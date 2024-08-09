@@ -3,6 +3,8 @@ import { FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import WalletIcon from "../assets/walleticon.png";
+// import { RiWallet2Line } from "react-icons/ri";
+
 
 const Navbar = () => {
   const walletAddress = useSelector((state)=>state.wallet.address);
@@ -19,8 +21,11 @@ const Navbar = () => {
     return `${start}${separator}${end}`;
   }
   return (
+
+    // for md , xl, 2xl screen size : Navbar
+    
     <div className="">
-      <div className="bg-black py-0 flex flex-row justify-between px-16 border-b-[2px] border-gray-700">
+      <div className="bg-black flex flex-row py-0 justify-between px-16 border-b-[2px] border-gray-700">
 
         <Link to="/">
         <div className="flex flex-row items-center">
@@ -58,6 +63,15 @@ const Navbar = () => {
           
         </div>
       </div>
+
+   {/* for mobile view */}
+   {/* <div className="bg-white rounded-lg w-[40%] h-[50%]">
+      <p className="font-semibold">Blogs</p>
+      <p className="font-semibold">SignUp</p>
+     <div className="flex flex-row"> <p className="font-bold">Connect Wallet </p> <p><RiWallet2Line /></p></div> 
+     <div className="flex flex-row"> <p>Profile</p> <p><FaUser /></p></div> 
+   </div> */}
+      
     </div>
   )
 }
