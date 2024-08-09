@@ -1,85 +1,79 @@
-import  { useState } from "react";
-import HorizontalTimeline from "react-horizontal-timeline";
+import { useState, useEffect } from 'react';
 
-const EXAMPLE = [
-  {
-    data: "2019-12-05",
-    status: "status",
-    statusB: "Admission Start",
-    statusE: "Admission Open"
-  },
-  {
-    data: "2020-01-21",
-    status: "status",
-    statusB: "Start 1st round",
-    statusE: "Open for Fillup"
-  },
-  {
-    data: "2020-02-25",
-    status: "status",
-    statusB: "Start 2nd round",
-    statusE: "process"
-  },
-  {
-    data: "2020-03-16",
-    status: "status",
-    statusB: "Start 3rd round",
-    statusE: "Done"
-  },
-  {
-    data: "2020-04-19",
-    status: "status",
-    statusB: "Start 4th round",
-    statusE: "Done"
-  },
-  {
-    data: "2020-05-23",
-    status: "status",
-    statusB: "Complete",
-    statusE: "Done"
-  }
+const intervals = [
+  { label: '0 Hours', value: 0 },
+  { label: '4 Hours', value: 4 },
+  { label: '8 Hours', value: 8 },
+  { label: '12 Hours', value: 12 },
+  { label: '16 Hours', value: 16 },
+  { label: '20 Hours', value: 20 },
+  { label: '24 Hours', value: 24 },
 ];
 
-const Timeline = () => {
-  const [curIdx, setCurIdx] = useState(0);
-  const [prevIdx, setPrevIdx] = useState(-1);
+const calculatePercentage = (hours) => (hours / 24) * 100;
 
-  const curStatus = EXAMPLE[curIdx].statusB;
-  // const prevStatus = prevIdx >= 0 ? EXAMPLE[prevIdx].statusB : "";
+const TimelineProgressBar = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [progress, setProgress] = useState(calculatePercentage(currentTime.getHours()));
 
-  const handleIndexClick = (index) => {
-    setPrevIdx(curIdx);
-    setCurIdx(index);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const hoursPassed = (currentTime.getHours() + currentTime.getMinutes() / 60) % 24;
+  const percentage = calculatePercentage(hoursPassed);
+
+  const handleClick = (e) => {
+    const { left, width } = e.currentTarget.getBoundingClientRect();
+    const clickPosition = e.clientX - left;
+    const clickedPercentage = (clickPosition / width) * 100;
+    setProgress(clickedPercentage);
   };
 
+  const getHoursFromPercentage = (percentage) => (percentage / 100) * 24;
+  const formattedTime = new Date().setHours(getHoursFromPercentage(progress));
+
   return (
-    <div>
+    <div className=" p-0 pt-6 rounded-lg relative">
+     
+      <div className="relative mb-4">
+        {/* Time Intervals */}
+        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white border-">
+          {intervals.map((interval) => (
+            <span
+              key={interval.value}
+              className="w-1/7 text-xl font-semibold pl-20 "
+              style={{
+                left: `${calculatePercentage(interval.value)}%`,
+                transform: 'translateX(-50%)'
+              }}
+            >
+              {interval.label}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Progress Bar */}
       <div
-        style={{
-          width: "80%",
-          height: "100px",
-          margin: "0 auto",
-          marginTop: "20px",
-          fontSize: "15px"
-        }}
+      className="relative h-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-lg overflow-hidden cursor-pointer z-0"
+      onClick={handleClick}
+    >
+      <div
+        className="h-full bg-[#FFBE2E] relative"
+        style={{width: `${progress}%` }}
       >
-        <HorizontalTimeline
-          styles={{
-            background: "#f8f8f8",
-            foreground: "#1A79AD",
-            outline: "#dfdfdf"
-          }}
-          index={curIdx}
-          indexClick={handleIndexClick}
-          values={EXAMPLE.map((x) => x.data)}
-        />
+        <div className="absolute right-0 transform translate-x-1/2 bg-white w-5 h-6 -p-5 rounded-full border-2 border-white "></div>
       </div>
-      <div className="text-center">
-        {/* Prevoius:-{prevStatus} - Current Select:-{curStatus} */}
-        {curStatus}
-      </div>
+      
+    </div>
+    {/* <div className="absolute top-0 mt-6  transform translate-x-1/2 bg-white w-8 h-12 -p-5 rounded-full border-2 border-white "></div> */}
     </div>
   );
 };
 
-export default Timeline;
+export default TimelineProgressBar;
