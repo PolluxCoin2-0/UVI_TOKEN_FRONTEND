@@ -15,13 +15,13 @@ const Home = () => {
       <img
         src={BackgroundImg}
         alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
+        className="absolute inset-0 w-full h-full object-cover object-center opacity-30  "
       />
       <div className="px-16  relative z-10 ">
         {/* Timer */}
-        <div className="absolute   left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] w-[15%] h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] w-[15%] h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
           <CountdownTimer />
-          <p className="text-gray-400 text-center">Remaining Time</p>
+          <p className="text-gray-400 text-center ">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>
         </div>
 
@@ -77,7 +77,7 @@ const Home = () => {
 
         {/* Start Mining */}
         <div className="flex flex-row justify-center space-x-10 w-full mt-14  ">
-          <div className="bg-black text-white border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
             <div className="text-4xl font-semibold">Start Mining</div>
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
@@ -100,7 +100,7 @@ const Home = () => {
 
         {/* Leaderboard */}
         <div className="">
-          <p className="text-3xl font-bold text-white mt-10">Leaderboard</p>
+          <p className="text-3xl font-bold text-white mt-10 position:">Leaderboard</p>
 
           <div className="mt-10 border-[1px]  border-white border-opacity-15">
             {LeaderboardData.map((data, index) => (

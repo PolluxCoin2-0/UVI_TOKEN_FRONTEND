@@ -35,7 +35,7 @@ const CountdownTimer = () => {
     <div className="flex items-start justify-center w-full gap-3 count-down-main ">
       <div className="timer w-5">
         <div>
-          <h3 className="countdown-element hours  font-semibold text-3xl text-white ">
+          <h3 className="countdown-element hours  font-semibold  text-3xl text-white ">
             {String(timeLeft.hours).padStart(2, "0")}
           </h3>
         </div>
