@@ -15,3 +15,9 @@
     background-position: center;
     background-size: contain;
 }
+.fixed-row {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: #1B1B1B;
+}
