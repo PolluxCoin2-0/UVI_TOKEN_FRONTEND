@@ -125,7 +125,7 @@ const Home = () => {
         <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div>
 
         {/* Leaderboard */} 
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-scroll 2xl:overflow-x-clip">
           <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
 
           <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px] rounded-xl">
@@ -137,7 +137,7 @@ const Home = () => {
                   transform: isFixed && index === 5 ? 'translateX(20px) translateX(-20px)' : ''
                 }}
                 className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15 
-                  ${ (isFixed && index===5)&& "sticky top-0 bottom-0 left-0 right-0 shadow-outline"} 
+                  ${ (isFixed && index===5) && "sticky top-0 bottom-0 left-0 right-0 shadow-outline"} 
                   ${ index === 0 ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-xl" : "bg-[#1B1B1B] p-10" } 
                   ${ index === LeaderboardData.length - 1 ? "rounded-bl-xl rounded-br-xl" : "" }
               `}  

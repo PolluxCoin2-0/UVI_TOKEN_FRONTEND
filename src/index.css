@@ -18,7 +18,10 @@
 
 .shadow-outline {
   box-shadow: 0 -15px 30px -15px rgba(228, 194, 42, 0.4), /* Top shadow */
-              0 15px 30px -15px rgba(228, 194, 42, 0.4);  /* Bottom shadow */
+              0 15px 30px -15px rgba(228, 194, 42, 0.4),  /* Bottom shadow */
+              -15px 0 30px -15px rgba(228, 194, 42, 0.4), /* Left shadow */
+              15px 0 30px -15px rgba(228, 194, 42, 0.4);  /* Right shadow */
 }
+
 
 
