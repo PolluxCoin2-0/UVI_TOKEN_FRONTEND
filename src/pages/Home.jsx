@@ -102,15 +102,15 @@ const Home = () => {
         </div>
 
         {/* Start Mining */}
-        <div className="flex flex-col md:flex-col lg:flex-row justify-center space-x-10 w-full mt-14">
-          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 sm:w-[90%] md:w-[90%] w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
+        <div className="flex flex-col md:flex-col lg:flex-row justify-center   w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
+          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <div className="text-4xl font-semibold">Start Mining</div>
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
             </div>
           </div>
 
-          <div className="bg-black text-white border-[1px] border-white rounded-xl shadow-inner shadow-white  sm:w-[90%] md:w-[90%] w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <Link to="/buycoin">
               <div className="text-4xl font-semibold">Buy Coin</div>
             </Link>
@@ -122,13 +122,13 @@ const Home = () => {
         </div>
 
         {/* border-bottom */}
-        <div className="border-b-[1px] border-white border-opacity-15 mt-10"></div>
+        <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div>
 
         {/* Leaderboard */} 
-        <div className="">
+        <div className="overflow-x-scroll">
           <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
 
-          <div className="mt-10 border-[1px]  border-white border-opacity-15 rounded-xl">
+          <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px] rounded-xl">
             {LeaderboardData.map((data, index) => (
               <div
                 key={index}

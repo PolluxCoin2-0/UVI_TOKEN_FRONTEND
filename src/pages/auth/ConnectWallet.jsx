@@ -26,22 +26,22 @@ const ConnectWallet = () => {
   }
 
   return (
-    <div className="bg-black  flex justify-center w-full h-screen ">
+    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0">
       <img
         src={BgRotateImg}
         alt="background"
         className="absolute inset-0 w-full h-full object-fill object-center opacity-30 "
       />
-      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800  w-[40%] h-[50%] mt-56 flex flex-col items-center relative z-10">
+      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] h-[35%] md:h-[50%] mt-56 flex flex-col items-center relative z-10">
         {/* connect wallet image */}
         <div>
-          <img src={WalletImg} className="mt-24" />
+          <img src={WalletImg} className="mt-14 md:mt-24  w-24 md:w-36" />
         </div>
 
-        <p className="text-3xl font-bold text-[#FFBE2E] mt-5 ">Wallet</p>
+        <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5 ">Wallet</p>
         <button
           type="button"
-          className="bg-white px-20 py-3 rounded-lg text-black text-lg font-bold mt-10"
+          className="bg-white px-10 md:px-20 py-2 md:py-3 rounded-lg text-black text-lg font-bold mt-10"
           onClick={getPolinkweb}
         >
           Connect Wallet

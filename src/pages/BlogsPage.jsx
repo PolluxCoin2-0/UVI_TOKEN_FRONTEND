@@ -6,7 +6,7 @@ const BlogsPage = () => {
   return (
     <div>
       {/* Blogs */}
-      <div className="bg-black  w-full h-full relative px-40 pb-20">
+      <div className="bg-black  w-full h-full relative px-6 xl:px-40 pb-20">
         <img
           src={BackgroundImg}
           alt="background"
@@ -22,8 +22,8 @@ const BlogsPage = () => {
             bibendum.
           </p>
 
-          <div className="flex flex-row justify-between w-full mt-20">
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+          <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0 w-full mt-10 xl:mt-12">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog1Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -37,7 +37,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog2Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -51,7 +51,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog1Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -65,7 +65,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog2Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -80,8 +80,8 @@ const BlogsPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-row justify-between w-full mt-20">
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+          <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0  w-full mt-20">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog1Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -95,7 +95,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog2Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -109,7 +109,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog1Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
@@ -123,7 +123,7 @@ const BlogsPage = () => {
               </p>
             </div>
 
-            <div className="w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
+            <div className=" w-full md:w-[22%] bg-[#1B1B1B] text-white h-auto border-[1px] border-white border-opacity-15 rounded-3xl">
               <img src={Blog2Img} alt="blog1-image " className="" />
               <p className="text-center text-lg font-semibold pt-4">
                 Lorem ipsum dolor{" "}
