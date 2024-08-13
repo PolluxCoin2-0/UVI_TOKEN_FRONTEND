@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
@@ -11,6 +12,27 @@ import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
 
 const Home = () => {
+  const [isFixed, setIsFixed] = useState(false);
+  const topPositionRef = useRef(null);
+  const windowHeight = window.innerHeight;
+  const threshold = windowHeight * 0.20; // 20% from the bottom
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (topPositionRef.current) {
+        const rect = topPositionRef.current.getBoundingClientRect();
+        if (rect.bottom >= windowHeight - threshold || rect.top <= threshold) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="bg-black w-full h-full  relative pb-12">
       <img
@@ -111,23 +133,22 @@ const Home = () => {
         <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div>
 
         {/* Leaderboard */} 
-        <div className="overflow-x-scroll ">
+        <div className="overflow-x-scroll 2xl:overflow-x-clip">
           <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
 
-          <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px]">
+          <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px] rounded-xl">
             {LeaderboardData.map((data, index) => (
               <div
                 key={index}
-                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15  ${
-                  index === 0
-                    ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-lg"
-                    : "bg-[#1B1B1B] p-10"
-                } ${
-                  index === LeaderboardData.length - 1
-                    ? "rounded-bl-xl rounded-br-xl"
-                    : ""
-                }
-              `}
+                ref={index === 5 ? topPositionRef : null}
+                style={{
+                  transform: isFixed && index === 5 ? 'translateX(20px) translateX(-20px)' : ''
+                }}
+                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15 
+                  ${ (isFixed && index===5) && "sticky top-0 bottom-0 left-0 right-0 shadow-outline"} 
+                  ${ index === 0 ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-xl" : "bg-[#1B1B1B] p-10" } 
+                  ${ index === LeaderboardData.length - 1 ? "rounded-bl-xl rounded-br-xl" : "" }
+              `}  
               >
                 <div className="flex flex-row space-x-10 items-center">
                   {index === 0 ? (
