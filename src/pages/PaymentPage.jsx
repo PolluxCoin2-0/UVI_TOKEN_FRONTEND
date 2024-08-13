@@ -15,9 +15,9 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
   };
   return (
     isShowModal && (
-      <div className="fixed z-10 backdrop-blur-[1px] bg-black bg-opacity-30 h-screen w-full inset-0 ">
+      <div className="fixed z-10 backdrop-blur-[1px] bg-black bg-opacity-30 min-h-screen w-full inset-0 ">
         <div className="items-center flex justify-center w-full h-full">
-          <div className=" bg-[#1B1B1B] w-[30%] h-[800px]  rounded-xl p-5 mt-6">
+          <div className=" bg-[#1B1B1B] w-full md:w-[70%] lg:w-[50%] xl:w-[40%] 2xl:w-[30%] h-full 2xl:h-auto  md:h-[90%] rounded-xl p-3 md:p-5 md:mt-6 mx-4 py-16 overflow-y-scroll md:overflow-y-hidden">
             <div className="flex justify-end">
               <p className="text-white cursor-pointer" onClick={handleShowModal}>
                 <RxCross2 size={24} />
@@ -39,7 +39,7 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
                 Save This Order No, in case of a problem yu can contact us with
                 this.
               </p>
-              <div className="flex flex-row justify-center space-x-2 mt-2">
+              <div className="flex flex-col items-center md:flex-row justify-center space-x-2 mt-2">
                 <p className="text-white text-center ">Plz Send </p>
                 <p className="text-white font-bold ">200.020002102 USDRTRC20</p>
                 <p>
@@ -55,19 +55,19 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
               </p>
             </div>
 
-            <div className="flex flex-row  w-full mt-4">
-              <div className="w-[30%] h-[150px] text-white bg-white rounded-lg">
+            <div className="flex flex-col justify-center items-center md:flex-row  w-full mt-4">
+              <div className=" w-[60%] md:w-[30%] h-[150px] text-white bg-white rounded-lg  ">
               <p className=" text-black flex justify-center pt-5"> <BsQrCode size={110}/></p> 
               </div>
 
-              <div className="w-[70%] ml-8">
-                <p className="text-white font-semibold text-lg">
+              <div className=" w-full md:w-[70%] ml-0 md:ml-8 ">
+                <p className="text-white font-semibold text-lg mt-4 md:mt-0">
                   Scan The Address
                 </p>
-                <p className="text-[#767676] pt-2 leading-6">
-                  This Wallet address is valid for a single <br /> transaction.
-                  Please do not reuse. Coin <br />
-                  balance will appear in your account only <br />
+                <p className="text-[#767676] md:leading-6 text-justify break-words">
+                  This Wallet address is valid for a single transaction.
+                  Please do not reuse. Coin 
+                  balance will appear in your account only
                   after your transaction gets approved.
                 </p>
               </div>
@@ -110,13 +110,13 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
               </div>
             </div>
 
-            <div className="flex flex-row justify-between space-x-6 w-full mt-8">
-              <div className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg  p-3 w-[50%]">
+            <div className="flex flex-col md:flex-row justify-between space-x-0 md:space-x-6 w-full space-y-4 md:space-y-0 mt-8">
+              <div className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg  p-3 w-full md:w-[50%]">
                 <p className="text-center text-white">Payment Status</p>
                 <p className="text-center text-[#FF8080]">Waiting</p>
               </div>
 
-              <div className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg p-3 w-[50%]">
+              <div className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg p-3 w-full md:w-[50%]">
                 <p className="text-center text-white">Expiring Time</p>
                 <p className="text-center text-lg text-[#F6B63E]">
                   <Timer />
@@ -127,7 +127,7 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
             <div className="mt-8">
               <button
                 type="button"
-                className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg p-3 w-full text-white text-lg font-semibold"
+                className="bg-[#181717] border-[1px] border-white border-opacity-15 rounded-lg p-2 lg:p-3 w-full text-white text-md md:text-lg font-semibold"
               >
                 Change Currency
               </button>
