@@ -3,21 +3,22 @@
 @tailwind utilities;
 
 @layer base {
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
+}
 
-.bgimage{
-    background-image: url("./assets/BGImage.png");
-    background-position: center;
-    background-size: contain;
+.bgimage {
+  background-image: url("./assets/BGImage.png");
+  background-position: center;
+  background-size: contain;
 }
-.fixed-row {
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-  background-color: #1B1B1B;
+
+.shadow-outline {
+  box-shadow: 0 -15px 30px -15px rgba(228, 194, 42, 0.4), /* Top shadow */
+              0 15px 30px -15px rgba(228, 194, 42, 0.4);  /* Bottom shadow */
 }
+
+

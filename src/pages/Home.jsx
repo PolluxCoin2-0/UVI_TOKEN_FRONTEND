@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
@@ -10,6 +11,27 @@ import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
 
 const Home = () => {
+  const [isFixed, setIsFixed] = useState(false);
+  const topPositionRef = useRef(null);
+  const windowHeight = window.innerHeight;
+  const threshold = windowHeight * 0.20; // 20% from the bottom
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (topPositionRef.current) {
+        const rect = topPositionRef.current.getBoundingClientRect();
+        if (rect.bottom >= windowHeight - threshold || rect.top <= threshold) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="bg-black w-full h-full  relative pb-12">
       <img
@@ -80,7 +102,7 @@ const Home = () => {
         </div>
 
         {/* Start Mining */}
-        <div className="flex flex-col md:flex-col lg:flex-row justify-center space-x-10  w-full mt-14  ">
+        <div className="flex flex-col md:flex-col lg:flex-row justify-center space-x-10 w-full mt-14">
           <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 sm:w-[90%] md:w-[90%] w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
             <div className="text-4xl font-semibold">Start Mining</div>
             <div>
@@ -104,22 +126,21 @@ const Home = () => {
 
         {/* Leaderboard */} 
         <div className="">
-          <p className="text-3xl font-bold text-white mt-10 position:">Leaderboard</p>
+          <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
 
-          <div className="mt-10 border-[1px]  border-white border-opacity-15">
+          <div className="mt-10 border-[1px]  border-white border-opacity-15 rounded-xl">
             {LeaderboardData.map((data, index) => (
               <div
                 key={index}
-                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15  ${
-                  index === 0
-                    ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-lg"
-                    : "bg-[#1B1B1B] p-10"
-                } ${
-                  index === LeaderboardData.length - 1
-                    ? "rounded-bl-xl rounded-br-xl"
-                    : ""
-                }
-              `}
+                ref={index === 5 ? topPositionRef : null}
+                style={{
+                  transform: isFixed && index === 5 ? 'translateX(20px) translateX(-20px)' : ''
+                }}
+                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15 
+                  ${ (isFixed && index===5)&& "sticky top-0 bottom-0 left-0 right-0 shadow-outline"} 
+                  ${ index === 0 ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-xl" : "bg-[#1B1B1B] p-10" } 
+                  ${ index === LeaderboardData.length - 1 ? "rounded-bl-xl rounded-br-xl" : "" }
+              `}  
               >
                 <div className="flex flex-row space-x-10 items-center">
                   {index === 0 ? (
