@@ -69,7 +69,7 @@ const Home = () => {
                 Your Referral Earnings
               </p>
             </div>
-            <div className="text-white ">
+            <div className="text-white ">   
               <LuCopy size={36} />
             </div>
           </div>
