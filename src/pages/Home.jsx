@@ -43,7 +43,7 @@ const Home = () => {
       <div className="px-5 md:px-8 lg:px-16  relative z-10 "> 
         {/* Timer */}
         <div className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
-        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[15%] h-[3%] md:h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
+        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[15%] h-[2%] md:h-[2%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
           <CountdownTimer />
           <p className="text-gray-400 text-center ">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>

@@ -35,27 +35,27 @@ const CountdownTimer = () => {
     <div className="flex items-start justify-center w-full gap-3 count-down-main ">
       <div className="timer w-5">
         <div>
-          <h3 className="countdown-element hours  font-semibold  text-3xl text-white ">
+          <h3 className="countdown-element hours  font-semibold  text-2xl md:text-3xl text-white ">
             {String(timeLeft.hours).padStart(2, "0")}
           </h3>
         </div>
         {/* <p className="text-sm font-normal text-gray-900 mt-1 text-center w-full">hours</p> */}
       </div>
-      <h3 className=" font-semibold text-3xl text-white pl-2">:</h3>
+      <h3 className=" font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
 
       <div className="timer w-5 ">
         <div>
-          <h3 className="countdown-element minutes font-semibold text-3xl text-white ">
+          <h3 className="countdown-element minutes font-semibold text-2xl md:text-3xl text-white ">
             {String(timeLeft.minutes).padStart(2, "0")}
           </h3>
         </div>
         {/* <p className="text-sm font-normal text-gray-900 mt-1 text-center w-full">minutes</p> */}
       </div>
-      <h3 className=" font-semibold text-3xl text-white pl-2">:</h3>
+      <h3 className=" font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
 
       <div className="timer w-5">
         <div>
-          <h3 className="countdown-element seconds  font-semibold text-3xl text-white ">
+          <h3 className="countdown-element seconds  font-semibold text-2xl md:text-3xl text-white ">
             {String(timeLeft.seconds).padStart(2, "0")}
           </h3>
         </div>
