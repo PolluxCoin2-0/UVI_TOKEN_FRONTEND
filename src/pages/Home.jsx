@@ -72,39 +72,40 @@ const Home = () => {
         {/* blocks */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-between w-full 
         space-x-0 md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-0 md:mt-14">
+
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 
           w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3">
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
               </p>
             </div>
             <div className="text-white ">
-              <MdOutlineAccountBalanceWallet size={56} />
+              <MdOutlineAccountBalanceWallet size={36} />
             </div>
           </div>
 
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-3">
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap" >
                 Your Coin Worth at Launch
               </p>
             </div>
             <div className="text-white ">
-              <BiDollar size={36} />
+              <BiDollar size={28} />
             </div>
           </div>
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">dPLxc5</p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-3">
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3">
                 Your Referral Earnings
               </p>
             </div>
             <div className="text-white ">   
-              <LuCopy size={36} />
+              <LuCopy size={28} />
             </div>
           </div>
         </div>
