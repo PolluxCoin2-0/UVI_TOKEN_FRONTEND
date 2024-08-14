@@ -75,7 +75,7 @@ const Home = () => {
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 
           w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-xl md:text-4xl text-white font-bold">0.00</p>
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3">
                 Your Total Uvi Balance
               </p>
@@ -87,7 +87,7 @@ const Home = () => {
 
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-xl md:text-4xl text-white font-bold">0.00</p>
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-3">
                 Your Coin Worth at Launch
               </p>
@@ -98,7 +98,7 @@ const Home = () => {
           </div>
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-xl md:text-3xl text-white font-bold">dPLxc5</p>
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">dPLxc5</p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-3">
                 Your Referral Earnings
               </p>
@@ -112,7 +112,7 @@ const Home = () => {
         {/* Start Mining */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-center   w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
           <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
-            <div className="text-xl md:text-4xl font-semibold">Start Mining</div>
+            <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold" >Start Mining</div>
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
             </div>
@@ -120,7 +120,7 @@ const Home = () => {
 
           <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <Link to="/buycoin">
-              <div className="text-xl md:text-4xl font-semibold">Buy Coin</div>
+              <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold">Buy Coin</div>
             </Link>
 
             <div>
