@@ -35,7 +35,7 @@ const ConnectWallet = () => {
       <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] h-[35%] md:h-[50%] mt-56 flex flex-col items-center relative z-10">
         {/* connect wallet image */}
         <div>
-          <img src={WalletImg} className="mt-14 md:mt-24  w-24 md:w-36" />
+          <img src={WalletImg} className="mt-14 md:mt-24  w-20 md:w-36" />
         </div>
 
         <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5 ">Wallet</p>
