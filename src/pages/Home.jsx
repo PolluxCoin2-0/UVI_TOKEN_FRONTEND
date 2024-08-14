@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
@@ -8,8 +9,30 @@ import WinnerImg from "../assets/winner.png";
 import { LeaderboardData } from "../data/LeaderboardData";
 import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
+import VerticalTimeline from "../components/VerticalTimeline";
 
 const Home = () => {
+  const [isFixed, setIsFixed] = useState(false);
+  const topPositionRef = useRef(null);
+  const windowHeight = window.innerHeight;
+  const threshold = windowHeight * 0.20; // 20% from the bottom
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (topPositionRef.current) {
+        const rect = topPositionRef.current.getBoundingClientRect();
+        if (rect.bottom >= windowHeight - threshold || rect.top <= threshold) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="bg-black w-full h-full  relative pb-12">
       <img
@@ -17,16 +40,18 @@ const Home = () => {
         alt="background"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30  "
       />
-      <div className="px-16  relative z-10 ">
+      <div className="px-5 md:px-8 lg:px-16  relative z-10 "> 
         {/* Timer */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] w-[15%] h-[4%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
+        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[15%] h-[2%] md:h-[2%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10">
           <CountdownTimer />
           <p className="text-gray-400 text-center ">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>
         </div>
 
         {/* Video */}
-        <div className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[450px] top-14 flex items-center justify-center relative">
+        <div className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[450px] top-14 flex items-center
+         justify-center relative">
           {/* Your video component goes here */}
         </div>
 
@@ -34,59 +59,69 @@ const Home = () => {
         <div className="mt-20">
           <p className="text-white text-xl font-semibold mb-12">Slot No: 1/6</p>
           {/* Your timeline component goes here */}
+          {/* for devices lg, xl, 2xl  */}
+          <div className="hidden md:block mt-0 md:mt-12 lg:mt-12">
           <Timeline />
+          </div>
+         
+          <div className=" md:hidden mb-12">
+          <VerticalTimeline />
+          </div>
         </div>
 
         {/* blocks */}
-        <div className="flex flex-row justify-between w-full space-x-10 mt-14">
-          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
+        <div className="flex flex-col md:flex-col lg:flex-row justify-between w-full 
+        space-x-0 md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-0 md:mt-14">
+
+          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 
+          w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-4xl text-white font-bold">0.00</p>
-              <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
               </p>
             </div>
             <div className="text-white ">
-              <MdOutlineAccountBalanceWallet size={56} />
+              <MdOutlineAccountBalanceWallet size={36} />
             </div>
           </div>
 
-          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
+          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-4xl text-white font-bold">0.00</p>
-              <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">0.00</p>
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap" >
                 Your Coin Worth at Launch
               </p>
             </div>
             <div className="text-white ">
-              <BiDollar size={36} />
+              <BiDollar size={28} />
             </div>
           </div>
-          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-[32%] flex flex-row justify-between items-center  p-8">
+          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
             <div>
-              <p className="text-3xl text-white font-bold">dPLxc5</p>
-              <p className="text-[#8C8B8B] text-lg font-semibold mt-3">
+              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">dPLxc5</p>
+              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3">
                 Your Referral Earnings
               </p>
             </div>
-            <div className="text-white ">
-              <LuCopy size={36} />
+            <div className="text-white ">   
+              <LuCopy size={28} />
             </div>
           </div>
         </div>
 
         {/* Start Mining */}
-        <div className="flex flex-row justify-center space-x-10 w-full mt-14  ">
-          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
-            <div className="text-4xl font-semibold">Start Mining</div>
+        <div className="flex flex-col md:flex-col lg:flex-row justify-center   w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
+          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
+            <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold" >Start Mining</div>
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
             </div>
           </div>
 
-          <div className="bg-black text-white border-[1px] border-white rounded-xl shadow-inner shadow-white  w-[30%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <Link to="/buycoin">
-              <div className="text-4xl font-semibold">Buy Coin</div>
+              <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold">Buy Coin</div>
             </Link>
 
             <div>
@@ -96,26 +131,25 @@ const Home = () => {
         </div>
 
         {/* border-bottom */}
-        <div className="border-b-[1px] border-white border-opacity-15 mt-10"></div>
+        <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div>
 
-        {/* Leaderboard */}
-        <div className="">
-          <p className="text-3xl font-bold text-white mt-10 position:">Leaderboard</p>
+        {/* Leaderboard */} 
+        <div className="overflow-x-scroll 2xl:overflow-x-clip">
+          <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
 
-          <div className="mt-10 border-[1px]  border-white border-opacity-15">
+          <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px] rounded-xl">
             {LeaderboardData.map((data, index) => (
               <div
                 key={index}
-                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15  ${
-                  index === 0
-                    ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-lg"
-                    : "bg-[#1B1B1B] p-10"
-                } ${
-                  index === LeaderboardData.length - 1
-                    ? "rounded-bl-xl rounded-br-xl"
-                    : ""
-                }
-              `}
+                ref={index === 5 ? topPositionRef : null}
+                style={{
+                  transform: isFixed && index === 5 ? 'translateX(20px) translateX(-20px)' : ''
+                }}
+                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15 
+                  ${ (isFixed && index===5) && "sticky top-0 bottom-0 left-0 right-0 shadow-outline"} 
+                  ${ index === 0 ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-xl" : "bg-[#1B1B1B] p-10" } 
+                  ${ index === LeaderboardData.length - 1 ? "rounded-bl-xl rounded-br-xl" : "" }
+              `}  
               >
                 <div className="flex flex-row space-x-10 items-center">
                   {index === 0 ? (
