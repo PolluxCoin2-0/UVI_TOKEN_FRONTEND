@@ -113,7 +113,11 @@ const Home = () => {
         {/* Start Mining */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-center   w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
           <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
-            <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold" >Start Mining</div>
+           <div>
+           <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold" >Start Mining</div>
+           <p className="text-lg font-medium pt-1 text-[#8C8B8B]">After: 0/10000 users</p>
+           </div>
+           
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
             </div>
