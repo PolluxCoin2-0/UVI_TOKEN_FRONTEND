@@ -4,6 +4,7 @@ import { LuCopy } from "react-icons/lu";
 import Timer from "../components/Timer";
 import { toast } from "react-toastify";
 import { BsQrCode } from "react-icons/bs";
+
 const PaymentPage = ({ isShowModal, handleShowModal }) => {
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -19,7 +20,10 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
         <div className="items-center flex justify-center w-full h-full">
           <div className=" bg-[#1B1B1B] w-full md:w-[70%] lg:w-[50%] xl:w-[40%] 2xl:w-[30%] h-full 2xl:h-auto  md:h-[90%] rounded-xl p-3 md:p-5 md:mt-6 mx-4 py-16 overflow-y-scroll md:overflow-y-hidden">
             <div className="flex justify-end">
-              <p className="text-white cursor-pointer" onClick={handleShowModal}>
+              <p
+                className="text-white cursor-pointer"
+                onClick={handleShowModal}
+              >
                 <RxCross2 size={24} />
               </p>
             </div>
@@ -57,7 +61,10 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
 
             <div className="flex flex-col justify-center items-center md:flex-row  w-full mt-4">
               <div className=" w-[60%] md:w-[30%] h-[150px] text-white bg-white rounded-lg  ">
-              <p className=" text-black flex justify-center pt-5"> <BsQrCode size={110}/></p> 
+                <p className=" text-black flex justify-center pt-5">
+                  {" "}
+                  <BsQrCode size={110} />
+                </p>
               </div>
 
               <div className=" w-full md:w-[70%] ml-0 md:ml-8 ">
@@ -65,9 +72,8 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
                   Scan The Address
                 </p>
                 <p className="text-[#767676] md:leading-6 text-justify break-words">
-                  This Wallet address is valid for a single transaction.
-                  Please do not reuse. Coin 
-                  balance will appear in your account only
+                  This Wallet address is valid for a single transaction. Please
+                  do not reuse. Coin balance will appear in your account only
                   after your transaction gets approved.
                 </p>
               </div>

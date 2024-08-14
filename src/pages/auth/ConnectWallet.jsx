@@ -26,7 +26,7 @@ const ConnectWallet = () => {
   }
 
   return (
-    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0 pb-1" >
+    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0 pb-1">
       <img
         src={BgRotateImg}
         alt="background"
@@ -38,7 +38,9 @@ const ConnectWallet = () => {
           <img src={WalletImg} className="mt-14 md:mt-24  w-20 md:w-36" />
         </div>
 
-        <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5 ">Wallet</p>
+        <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5 ">
+          Wallet
+        </p>
         <button
           type="button"
           className="bg-white px-10 md:px-20 py-2 md:py-3 rounded-lg text-black text-lg font-bold mt-10"

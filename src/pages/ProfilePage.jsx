@@ -59,9 +59,15 @@ const ProfilePage = () => {
 
             <div className="flex flex-row space-x-5 mt-5 ml-1 md:ml-0">
               <p>
-                <img src={LogoutImg} alt="transaction-image" className="pt-1 w-4 md:w-full" />
+                <img
+                  src={LogoutImg}
+                  alt="transaction-image"
+                  className="pt-1 w-4 md:w-full"
+                />
               </p>
-              <p className="text-white text-lg md:text-xl font-semibold ">Logout</p>
+              <p className="text-white text-lg md:text-xl font-semibold ">
+                Logout
+              </p>
             </div>
           </div>
         </div>
