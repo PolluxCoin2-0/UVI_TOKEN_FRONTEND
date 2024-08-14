@@ -36,7 +36,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-black h-screen w-full flex justify-center px-4 md:px-0 pb-5">
+    <div className="bg-black h-screen w-full flex justify-center px-4 md:px-0 pb-1">
       <img
         src={BgRotateImg}
         alt="background"

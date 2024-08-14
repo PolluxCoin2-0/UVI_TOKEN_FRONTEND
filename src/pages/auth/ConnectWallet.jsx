@@ -26,7 +26,7 @@ const ConnectWallet = () => {
   }
 
   return (
-    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0 pb-5" >
+    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0 pb-1" >
       <img
         src={BgRotateImg}
         alt="background"
