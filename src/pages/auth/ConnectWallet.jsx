@@ -26,13 +26,13 @@ const ConnectWallet = () => {
   }
 
   return (
-    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0">
+    <div className="bg-black  flex justify-center w-full h-screen px-6 md:px-0 pb-5" >
       <img
         src={BgRotateImg}
         alt="background"
         className="absolute inset-0 w-full h-full object-fill object-center opacity-30 "
       />
-      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] h-[50%] md:h-[50%] mt-56 flex flex-col items-center relative z-10">
+      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] h-[35%] md:h-[50%] mt-56 flex flex-col items-center relative z-10">
         {/* connect wallet image */}
         <div>
           <img src={WalletImg} className="mt-14 md:mt-24  w-24 md:w-36" />
