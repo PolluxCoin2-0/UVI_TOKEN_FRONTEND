@@ -60,7 +60,7 @@ const Home = () => {
           <p className="text-white text-xl font-semibold mb-12">Slot No: 1/6</p>
           {/* Your timeline component goes here */}
           {/* for devices lg, xl, 2xl  */}
-          <div className="hidden md:block mt-0 md:mt-32 lg:mt-12">
+          <div className="hidden md:block mt-0 md:mt-12 lg:mt-12">
           <Timeline />
           </div>
          
