@@ -43,7 +43,7 @@ const Signup = () => {
         className="absolute inset-0 w-full h-full object-fill object-center opacity-30"
       />
 
-      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 h-[60%] lg:h-[70%] xl:h-[65%] 2xl:h-[70%] w-full md:w-[80%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mt-36 relative z-10 ">
+      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 h-[80%] lg:h-[70%] xl:h-[65%] 2xl:h-[70%] w-full md:w-[80%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mt-36 relative z-10 ">
         {/* logo */}
         <div className="flex justify-center">
           <img src={logo} alt="uvi-token-logo" className="pt-3 w-40 md:w-50 lg:w-60 xl:w-52 2xl:w-[40%] " />
