@@ -12,6 +12,8 @@ import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Sidebar from "./layout/Sidebar";
+import LeaderBoard from "./pages/LeaderBoard";
 
 function App() {
   return (
@@ -31,21 +33,26 @@ function AppContent() {
 
   return (
     <>
-      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/connectwallet" element={<ConnectWallet />} />
-        <Route path="/otp" element={<Otp />} />
-        <Route path="/navbar" element={<Navbar />} />
-        <Route path="/buycoin" element={<BuyCoinPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/blogs" element={<BlogsPage />} />
-        <Route path="/blogdetail" element={<BlogDetailPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/transaction" element={<TransactionPage />} />
-      </Routes>
+      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
+      <div className="main-content">
+          <Navbar/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/connectwallet" element={<ConnectWallet />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/navbar" element={<Navbar />} />
+          <Route path="/buycoin" element={<BuyCoinPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/blogs" element={<BlogsPage />} />
+          <Route path="/blogdetail" element={<BlogDetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/transaction" element={<TransactionPage />} />
+          <Route path="/sidebar" element={<Sidebar />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
+        </Routes>
+      </div>
     </>
   );
 }

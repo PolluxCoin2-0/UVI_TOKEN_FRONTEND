@@ -48,7 +48,7 @@ const TimelineProgressBar = () => {
           {intervals.map((interval) => (
             <span
               key={interval.value}
-              className="w-1/7 text-xl font-semibold pl-20 "
+              className="w-1/7 text-xl font-semibold pl-20 whitespace-nowrap "
               style={{
                 left: `${calculatePercentage(interval.value)}%`,
                 transform: "translateX(-50%)",

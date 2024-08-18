@@ -1,38 +1,14 @@
-import { useState, useEffect, useRef } from "react";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import { LuCopy } from "react-icons/lu";
 import UviLogo from "../assets/UvitokenLogo.png";
-import WinnerImg from "../assets/winner.png";
-import { LeaderboardData } from "../data/LeaderboardData";
 import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
 
 const Home = () => {
-  const [isFixed, setIsFixed] = useState(false);
-  const topPositionRef = useRef(null);
-  const windowHeight = window.innerHeight;
-  const threshold = windowHeight * 0.2; // 20% from the bottom
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (topPositionRef.current) {
-        const rect = topPositionRef.current.getBoundingClientRect();
-        if (rect.bottom >= windowHeight - threshold || rect.top <= threshold) {
-          setIsFixed(true);
-        } else {
-          setIsFixed(false);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="bg-black w-full h-full  relative pb-12">
       <img
@@ -40,11 +16,11 @@ const Home = () => {
         alt="background"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30  "
       />
-      <div className="px-5 md:px-8 lg:px-16  relative z-10 ">
+      <div className="px-5 md:px-8 lg:px-6  relative z-10 ">
         {/* Timer */}
         <div
           className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
-        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[15%] h-[2%] md:h-[2%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
+        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[6%] md:h-[10%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
         >
           <CountdownTimer />
           <p className="text-gray-400 text-center ">Remaining Time</p>
@@ -125,7 +101,7 @@ const Home = () => {
 
         {/* Start Mining */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-center    w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
-          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[42%] p-2 flex flex-row justify-center space-x-5 items-center">
             <div>
               <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold">
                 Start Mining
@@ -140,7 +116,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
+          {/* <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <Link to="/buycoin">
               <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold">
                 Buy Coin
@@ -150,107 +126,14 @@ const Home = () => {
             <div>
               <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* border-bottom */}
-        <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div>
+        {/* <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div> */}
 
         {/* Leaderboard */}
-        <div className="overflow-x-scroll 2xl:overflow-x-clip">
-          <p className="text-3xl font-bold text-white mt-10 ">Leaderboard</p>
-
-          <div className="mt-10 border-[1px]  border-white border-opacity-15 min-w-[1000px] rounded-xl">
-            {LeaderboardData.map((data, index) => (
-              <div
-                key={index}
-                ref={index === 5 ? topPositionRef : null}
-                style={{
-                  transform:
-                    isFixed && index === 5
-                      ? "translateX(20px) translateX(-20px)"
-                      : "",
-                }}
-                className={`flex flex-row justify-between p-10 border-b-[1px] border-white border-opacity-15 
-                  ${
-                    isFixed &&
-                    index === 5 &&
-                    "sticky top-0 bottom-0 left-0 right-0 shadow-outline"
-                  } 
-                  ${
-                    index === 0
-                      ? "bg-gradient-to-r from-[#FBCF41]  to-[#000000] p-3 rounded-tl-xl rounded-tr-xl"
-                      : "bg-[#1B1B1B] p-10"
-                  } 
-                  ${
-                    index === LeaderboardData.length - 1
-                      ? "rounded-bl-xl rounded-br-xl"
-                      : ""
-                  }
-              `}
-              >
-                <div className="flex flex-row space-x-10 items-center">
-                  {index === 0 ? (
-                    <img
-                      src={WinnerImg} // Replace with your image URL
-                      alt="Top player"
-                      className="" // Style the image as needed
-                    />
-                  ) : (
-                    <p className="text-white text-2xl font-semibold">
-                      {index + 1}
-                    </p>
-                  )}
-                  <div>
-                    <p
-                      className={` ${
-                        index === 0
-                          ? "text-black text-4xl font-bold "
-                          : "text-white text-2xl  font-semibold"
-                      }`}
-                    >
-                      {data.userName}
-                    </p>
-
-                    <p
-                      className={` pt-1 ${
-                        index === 0 ? "text-black" : "text-[#8C8B8B]"
-                      }`}
-                    >
-                      {data?.balance}
-                    </p>
-                  </div>
-                </div>
-
-                <div className={`${index === 0 ? "mt-10" : "mt-0"}`}>
-                  <div
-                    className={` ${
-                      index === 0
-                        ? "flex flex-row space-x-8 mr-10"
-                        : "flex flex-col items-end mr-5"
-                    }`}
-                  >
-                    <p className="text-[#FFC121] text-lg">Total Transaction</p>
-                    <p className="text-white text-lg font-semibold">
-                      {data.TotalTransaction}
-                    </p>
-                  </div>
-
-                  {index === 0 && (
-                    <div className="flex flex-row space-x-16">
-                      <p className="text-[#FFC121] text-lg mt-2">
-                        Coin Holding
-                      </p>
-                      <p className="text-white text-lg font-semibold mt-2">
-                        {data.TotalTransaction}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+       
       </div>
     </div>
   );
