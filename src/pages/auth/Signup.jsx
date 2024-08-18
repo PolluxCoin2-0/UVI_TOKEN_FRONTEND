@@ -1,97 +1,108 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [referredBy, setReferredBy] = useState("");
 
   const validateEmail = (email) => {
-    // Simple email validation regex
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    if (validateEmail(e.target.value)) {
-      setEmailError("");
-    } else {
-      setEmailError("Please enter a valid email address.");
-    }
+  const validateWalletAddress = (address) => {
+    // Simple Ethereum address validation regex
+    const re = /^0x[a-fA-F0-9]{40}$/;
+    return re.test(String(address));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateEmail(email)) {
-      toast.success("OTP Sent successfully!");
-      // Proceed with the signup process
-    } else {
+    if (!validateEmail(email)) {
       toast.error("Please enter a valid email address!");
+    } else if (!validateWalletAddress(walletAddress)) {
+      toast.error("Please enter a valid wallet address!");
+    } else if (referredBy === "") {
+      toast.error("Please enter a valid referred by address!");
+    } else {
+      toast.success("Signup Successful! OTP Sent successfully!");
+      // Proceed with the signup process
     }
   };
 
   return (
-    <div className="bg-black h-screen w-full flex justify-center px-6 md:px-0 pb-1">
+    <div className="bg-black min-h-screen w-full flex justify-center items-center relative overflow-hidden py-4">
       <img
         src={BgRotateImg}
         alt="background"
-        className="absolute inset-0 w-full h-full object-fill object-center opacity-30"
+        className="absolute inset-0 w-full h-full object-cover opacity-30"
       />
 
-      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 h-[60%] lg:h-[70%] xl:h-[65%] 2xl:h-[70%] w-full md:w-[80%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mt-36 relative z-10 ">
-        {/* logo */}
-        <div className="flex justify-center">
-          <img
-            src={logo}
-            alt="uvi-token-logo"
-            className="pt-3 w-32 md:w-50 lg:w-60 xl:w-52 2xl:w-[40%] "
-          />
+      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full max-w-md p-8 relative z-10 mt-16 md:mt-0 mx-4 md:mx-0">
+        <div className="flex justify-center mb-6">
+          <img src={logo} alt="uvi-token-logo" className="w-32 md:w-40 lg:w-48 xl:w-52" />
         </div>
 
-        {/* blurr */}
-        <div className="border-b-[2px] border-white mx-12 md:mx-56 blur-md"></div>
+        <div className="border-b-2 border-white mx-8 blur-md"></div>
 
-        <div className="flex flex-col justify-center px-16 md:px-44 lg:px-44 xl:px-56 2xl:px-64 text-center text-lg mt-10">
-          <p className="text-white">
+        <div className="flex flex-col justify-center px-4 text-center text-lg mt-10">
+          <p className="text-white mb-8">
             Your gateway to the most advanced layer 1 Blockchain
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex justify-center">
               <input
                 type="email"
                 placeholder="Enter Email Address"
-                className="border-[1px] rounded-3xl border-white px-4 md:px-24 lg:px-20 xl:px-28 py-2 md:py-3 text-white text-lg font-semibold bg-black mt-10"
+                className="border border-white rounded-xl px-4 py-2 text-white text-lg font-semibold bg-black w-full max-w-lg"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            {emailError && (
-              <p className="text-red-500 text-sm mt-2">{emailError}</p>
-            )}
 
-            <div
-              className="text-white ml-52 md:ml-72 -mt-9 cursor-pointer pt-1"
-              onClick={handleSubmit}
-            >
-              <FaArrowAltCircleRight size={20} />
+            <div className="flex justify-center">
+              <input
+                type="text"
+                placeholder="Enter Wallet Address"
+                className="border border-white rounded-xl px-4 py-2 text-white text-lg font-semibold bg-black w-full max-w-lg"
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <input
+                type="text"
+                placeholder="Referred By"
+                className="border border-white rounded-xl px-4 py-2 text-white text-lg font-semibold bg-black w-full max-w-lg"
+                value={referredBy}
+                onChange={(e) => setReferredBy(e.target.value)}
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className="text-white bg-transparent cursor-pointer"
+              >
+                <FaArrowAltCircleRight size={30} />
+              </button>
             </div>
           </form>
 
-          <div className="flex flex-col xl:flex-row space-x-3 mt-12 md:mt-10 ml-2 ">
-            <p className="text-white xl:whitespace-nowrap">
-              Already have an account?
-            </p>
+          <div className="flex flex-col xl:flex-row items-center justify-center mt-8 space-x-3">
+            <p className="text-white mb-4 xl:mb-0">Already have an account?</p>
 
             <Link to="/connectwallet">
               <button
                 type="button"
-                className="text-yellow-500 text-lg font-semibold pr-4 md:pr-0"
+                className="text-yellow-500 text-lg font-semibold"
               >
                 Login
               </button>
@@ -99,8 +110,6 @@ const Signup = () => {
           </div>
         </div>
       </div>
-
-      <ToastContainer />
     </div>
   );
 };

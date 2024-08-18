@@ -85,7 +85,7 @@ export default function Sidebar() {
               </li>
               <li className="px-3">
                 <Link
-                  to="/buycoin"
+                  // to="/buycoin"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('buycoin')}
                 >
@@ -142,7 +142,7 @@ export default function Sidebar() {
               </li>
               <li className="px-3">
                 <Link
-                  to="/connectwallet"
+                  to="/signup"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('login')}
                 >
@@ -150,7 +150,7 @@ export default function Sidebar() {
                     <SiSpringsecurity />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                    Login
+                    Signup
                   </div>
                 </Link>
               </li>
