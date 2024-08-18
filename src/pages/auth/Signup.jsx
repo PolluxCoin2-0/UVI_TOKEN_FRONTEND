@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,7 +46,11 @@ const Signup = () => {
       <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 h-[60%] lg:h-[70%] xl:h-[65%] 2xl:h-[70%] w-full md:w-[80%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mt-36 relative z-10 ">
         {/* logo */}
         <div className="flex justify-center">
-          <img src={logo} alt="uvi-token-logo" className="pt-3 w-32 md:w-50 lg:w-60 xl:w-52 2xl:w-[40%] " />
+          <img
+            src={logo}
+            alt="uvi-token-logo"
+            className="pt-3 w-32 md:w-50 lg:w-60 xl:w-52 2xl:w-[40%] "
+          />
         </div>
 
         {/* blurr */}
@@ -66,21 +70,29 @@ const Signup = () => {
                 value={email}
                 onChange={handleEmailChange}
               />
-              
             </div>
             {emailError && (
               <p className="text-red-500 text-sm mt-2">{emailError}</p>
             )}
 
-           <div className="text-white ml-52 md:ml-72 -mt-9 cursor-pointer pt-1"
-           onClick={handleSubmit}><FaArrowAltCircleRight size={20}/></div>
+            <div
+              className="text-white ml-52 md:ml-72 -mt-9 cursor-pointer pt-1"
+              onClick={handleSubmit}
+            >
+              <FaArrowAltCircleRight size={20} />
+            </div>
           </form>
 
           <div className="flex flex-col xl:flex-row space-x-3 mt-12 md:mt-10 ml-2 ">
-            <p className="text-white xl:whitespace-nowrap">Already have an account?</p>
+            <p className="text-white xl:whitespace-nowrap">
+              Already have an account?
+            </p>
 
             <Link to="/connectwallet">
-              <button type="button" className="text-yellow-500 text-lg font-semibold pr-4 md:pr-0">
+              <button
+                type="button"
+                className="text-yellow-500 text-lg font-semibold pr-4 md:pr-0"
+              >
                 Login
               </button>
             </Link>

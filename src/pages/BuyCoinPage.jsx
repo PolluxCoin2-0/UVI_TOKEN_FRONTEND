@@ -86,12 +86,11 @@ const BuyCoin = () => {
               <img src={CryptoImg} alt="crypto-image" className="" />
             </p>
             <div className="flex flex-row pt-2 md:pt-0">
-            <p className="text-[#BABABA] text-2xl">Other Cryptos</p>
-            <p className="text-[#BABABA] pt-1 pl-1">
-              <IoArrowForwardSharp size={32} />
-            </p>
+              <p className="text-[#BABABA] text-2xl">Other Cryptos</p>
+              <p className="text-[#BABABA] pt-1 pl-1">
+                <IoArrowForwardSharp size={32} />
+              </p>
             </div>
-          
           </div>
         </div>
 
@@ -120,7 +119,7 @@ const BuyCoin = () => {
               placeholder="Enter Special Key"
               className="mt-1 py-5 w-full p-5 bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-2xl text-lg text-[#BABABA]"
             />
-             {/* <div className="ml-[650px] -mt-11 text-[#5F5F5F] ">Do You Have Special Key</div> */}
+            {/* <div className="ml-[650px] -mt-11 text-[#5F5F5F] ">Do You Have Special Key</div> */}
           </div>
         </div>
 
