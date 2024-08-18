@@ -23,5 +23,36 @@
               15px 0 30px -15px rgba(228, 194, 42, 0.4);  /* Right shadow */
 }
 
+/* Global CSS or a CSS file for your app */
+
+/* Default styles for smaller screens */
+.app-bg {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0rem;
+}
+
+/* Styles for larger screens */
+@media (min-width: 1024px) {
+  .app-bg {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .sidebar {
+    width: 25%;
+  }
+
+  .main-content {
+    width: 75%;
+    padding-left: 0rem;
+  }
+}
+
+
 
 
