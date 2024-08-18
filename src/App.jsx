@@ -14,6 +14,8 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import Sidebar from "./layout/Sidebar";
 import LeaderBoard from "./pages/LeaderBoard";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -36,6 +38,14 @@ function AppContent() {
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="main-content">
           <Navbar/>
+          <ToastContainer 
+          position="top-right"
+          autoClose={3000} 
+          theme="dark" 
+          newestOnTop={true}
+          pauseOnFocusLoss
+           toastClassName="custom-toast"
+          />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -43,7 +53,7 @@ function AppContent() {
           <Route path="/connectwallet" element={<ConnectWallet />} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/navbar" element={<Navbar />} />
-          <Route path="/buycoin" element={<BuyCoinPage />} />
+          {/* <Route path="/buycoin" element={<BuyCoinPage />} /> */}
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogdetail" element={<BlogDetailPage />} />
