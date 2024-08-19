@@ -1,26 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
 import BgRotateImg from "../../assets/rotatebg.png";
 import ExpiryOtpTimer from "../../components/ExpiryOtpTimer";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { postOTPVerify, postSignup } from "../../utils/axios";
 
 const Otp = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const emailBySignup = location.state.email;
+  const walletAddressBySignup = location.state.walletAddress;
+  const referredBySignup = location.state.referredBy;
   const [otp, setOtp] = useState("");
   const [resendEnabled, setResendEnabled] = useState(false);
+  const [targetDate, setTargetDate] = useState(new Date(new Date().getTime() + 5 * 60 * 1000));
 
-  const handleVerifyOtp = () => {
-    if (otp.length === 4) {
-      toast.success("OTP verified successfully!");
-    } else {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setResendEnabled(true);
+    }, 5 * 60 * 1000); // Enable resend after 5 minutes
+
+    return () => clearTimeout(timer);
+  }, [targetDate]);
+
+  const handleVerifyOtp = async () => {
+    if (otp.length !== 4) {
       toast.error("Please enter a valid 4-digit OTP.");
+      return;
+    }
+
+    const apiData = await postOTPVerify(emailBySignup, otp);
+    if (apiData?.data?._id) {
+      toast.success("OTP verified successfully");
+      navigate("/connectwallet");
+    } else {
+      toast.error("Invalid OTP. Please try again.");
     }
   };
 
-  const handleResendOtp = () => {
+  const handleResendOtp = async() => {
     setResendEnabled(false);
-    toast.success("OTP resent successfully!");
-    setTimeout(() => setResendEnabled(true), 30000); // Enable resend after 30 seconds
+    setTargetDate(new Date(new Date().getTime() + 5 * 60 * 1000));
+    const apiData = await postSignup(walletAddressBySignup, emailBySignup, referredBySignup)
+    if(apiData?.data?.email){
+      toast.success("OTP resent successfully!");
+    }
   };
 
   return (
@@ -73,7 +99,7 @@ const Otp = () => {
           <div className="flex flex-row items-center mb-4 md:mb-0">
             <p className="text-white text-lg md:text-xl mr-1">Expires in</p>
             <p className="text-white text-lg md:text-xl ml-2">
-              <ExpiryOtpTimer />
+              <ExpiryOtpTimer targetDate={targetDate} />
             </p>
           </div>
 

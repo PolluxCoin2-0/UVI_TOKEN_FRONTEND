@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
+import { postSignup } from "../../utils/axios";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [referredBy, setReferredBy] = useState("");
@@ -15,23 +17,29 @@ const Signup = () => {
     return re.test(String(email).toLowerCase());
   };
 
-  const validateWalletAddress = (address) => {
-    // Simple Ethereum address validation regex
-    const re = /^0x[a-fA-F0-9]{40}$/;
-    return re.test(String(address));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       toast.error("Please enter a valid email address!");
-    } else if (!validateWalletAddress(walletAddress)) {
-      toast.error("Please enter a valid wallet address!");
-    } else if (referredBy === "") {
-      toast.error("Please enter a valid referred by address!");
-    } else {
-      toast.success("Signup Successful! OTP Sent successfully!");
-      // Proceed with the signup process
+      return;
+    } 
+
+    const apiData = await postSignup(walletAddress, email, referredBy)
+    if(apiData?.data === "Invalid Referral Code"){
+      toast.error("Invalid Referral Code");
+      return;
+    }
+    
+    if(apiData?.data === "WalletAddress Already Exist"){
+      toast.error("WalletAddress Already Exist");
+      return;
+    }
+
+    // toast message >> OTP sent successfully
+    if(apiData?.data?.email){
+      toast.success("OTP sent successfully");
+      // navigate
+      navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});
     }
   };
 
