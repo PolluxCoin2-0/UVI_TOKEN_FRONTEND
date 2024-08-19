@@ -1,11 +1,14 @@
 import WalletImg from "../../assets/wallet.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setWalletAddress } from "../../redux/slice/walletslice";
+import { setDataObject, setWalletAddress } from "../../redux/slice/walletslice";
 import { toast } from "react-toastify";
 import BgRotateImg from "../../assets/rotatebg.png";
+import { postLogin } from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const ConnectWallet = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const walletAddress = useSelector((state) => state.wallet.address);
 
   // connect wallet function
@@ -19,8 +22,13 @@ const ConnectWallet = () => {
         clearInterval(obj);
         const detailsData = JSON.stringify(await window.pox.getDetails());
         const parsedDetailsObject = JSON.parse(detailsData);
-        console.log(parsedDetailsObject);
         dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
+        const apiData = await postLogin(parsedDetailsObject[1].data?.wallet_address);
+        if(apiData?.data?._id){
+          toast.success("User logged in Success");
+          dispatch(setDataObject(apiData?.data))
+          navigate("/");
+        }
       }
     }, 1000);
   }

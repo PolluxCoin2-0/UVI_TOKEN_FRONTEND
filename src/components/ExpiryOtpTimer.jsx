@@ -6,7 +6,10 @@ const ExpiryOtpTimer = () => {
     const now = new Date();
     const difference = targetDate - now;
 
-    let timeLeft = {};
+    let timeLeft = {
+      minutes: 0,
+      seconds: 0,
+    };
 
     if (difference > 0) {
       timeLeft = {
@@ -18,9 +21,9 @@ const ExpiryOtpTimer = () => {
     return timeLeft;
   };
 
-  // Initialize the target date to 10 minutes from now
-  const [timeLeft, setTimeLeft] = useState({});
-  const [targetDate, setTargetDate] = useState(new Date(new Date().getTime() + 10 * 60 * 1000));
+  // Initialize the target date to 5 minutes from now
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(new Date().getTime() + 5 * 60 * 1000)));
+  const [targetDate, setTargetDate] = useState(new Date(new Date().getTime() + 5 * 60 * 1000));
 
   useEffect(() => {
     // Set initial time left
