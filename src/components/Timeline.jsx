@@ -14,9 +14,6 @@ const calculatePercentage = (hours) => (hours / 24) * 100;
 
 const TimelineProgressBar = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [progress, setProgress] = useState(
-    calculatePercentage(currentTime.getHours())
-  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -26,29 +23,28 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const hoursPassed =
-    (currentTime.getHours() + currentTime.getMinutes() / 60) % 24;
-  const percentage = calculatePercentage(hoursPassed);
-
-  const handleClick = (e) => {
-    const { left, width } = e.currentTarget.getBoundingClientRect();
-    const clickPosition = e.clientX - left;
-    const clickedPercentage = (clickPosition / width) * 100;
-    setProgress(clickedPercentage);
+  const getHoursPassedSinceMidnight = () => {
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    return hours + minutes / 60;
   };
 
-  const getHoursFromPercentage = (percentage) => (percentage / 100) * 24;
-  const formattedTime = new Date().setHours(getHoursFromPercentage(progress));
+  const hoursPassed = getHoursPassedSinceMidnight();
+  const currentSlot = Math.floor(hoursPassed / 4); // 4 hours per slot
+  const progressWithinSlot = ((hoursPassed % 4) / 4) * 100; // Progress within the current slot
+
+  const overallProgress =
+    (currentSlot * (100 / 6)) + (progressWithinSlot / 6); // Overall progress as a percentage of the full 24 hours
 
   return (
-    <div className=" p-0 pt-6 rounded-lg relative">
+    <div className="p-0 pt-6 rounded-lg relative">
       <div className="relative mb-4">
         {/* Time Intervals */}
-        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white ">
+        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white">
           {intervals.map((interval) => (
             <span
               key={interval.value}
-              className="w-1/7 text-xl font-semibold pl-20 whitespace-nowrap "
+              className="w-1/7 text-xl font-semibold pl-20 whitespace-nowrap"
               style={{
                 left: `${calculatePercentage(interval.value)}%`,
                 transform: "translateX(-50%)",
@@ -57,21 +53,21 @@ const TimelineProgressBar = () => {
               {interval.label}
             </span>
           ))}
-        </div>  
+        </div>
       </div>
 
       {/* Progress Bar */}
-      <div
-  className="relative h-8 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl cursor-pointer z-0 mt-8"
-  onClick={handleClick}
->
-  <div
-    className="h-10 -mt-1 bg-[#FFBE2E] rounded-l-3xl"
-    style={{ width: `${progress}%` }}
-  ></div>
+      <div className="relative h-8 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl cursor-pointer z-0 mt-8">
+        <div
+          className="h-10 -mt-1 bg-[#FFBE2E] rounded-l-3xl"
+          style={{ width: `${overallProgress}%` }}
+        ></div>
 
-  <div className="absolute top-0 -mt-2 -ml-7 transform translate-x-1/2 bg-white w-7 h-12 rounded-full border-2 border-white" style={{ left: `${progress}%` }}></div>
-</div>
+        <div
+          className="absolute top-0 -mt-2 -ml-7 transform translate-x-1/2 bg-white w-7 h-12 rounded-full border-2 border-white"
+          style={{ left: `${overallProgress}%` }}
+        ></div>
+      </div>
     </div>
   );
 };

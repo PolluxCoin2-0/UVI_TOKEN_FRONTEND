@@ -40,3 +40,31 @@ export const postLogin = async (walletAddress) => {
     console.log(error);
   }
 };
+
+// MINT USER
+export const postMintUser = async(walletAddress, token)=>{
+  try {
+    const res = await axios.post(BASE_URL +"/mint",{
+      walletAddress:walletAddress,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// CHECK IF USER IS MINTTED OR NOT
+export const postCheckMintUser = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/hasMinted",{
+      walletAddress:walletAddress,
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
