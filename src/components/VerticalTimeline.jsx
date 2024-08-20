@@ -14,9 +14,6 @@ const calculatePercentage = (hours) => (hours / 24) * 100;
 
 const TimelineProgressBar = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [progress, setProgress] = useState(
-    calculatePercentage(currentTime.getHours())
-  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -26,18 +23,18 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const hoursPassed =
-    (currentTime.getHours() + currentTime.getMinutes() / 60) % 24;
-  const percentage = calculatePercentage(hoursPassed);
-
-  const handleClick = (e) => {
-    const { top, height } = e.currentTarget.getBoundingClientRect();
-    const clickPosition = e.clientY - top;
-    const clickedPercentage = (clickPosition / height) * 100;
-    setProgress(clickedPercentage); // Update without inverting progress
+  const getHoursPassedSinceMidnight = () => {
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    return hours + minutes / 60;
   };
 
-  const getHoursFromPercentage = (percentage) => (percentage / 100) * 24;
+  const hoursPassed = getHoursPassedSinceMidnight();
+  const currentSlot = Math.floor(hoursPassed / 4); // 4 hours per slot
+  const progressWithinSlot = ((hoursPassed % 4) / 4) * 100; // Progress within the current slot
+
+  const overallProgress =
+    (currentSlot * (100 / 6)) + (progressWithinSlot / 6); // Overall progress as a percentage of the full 24 hours
 
   return (
     <div className="flex justify-center items-center h-auto">
@@ -56,7 +53,6 @@ const TimelineProgressBar = () => {
                 transform: "translateY(-50%)",
               }}
             >
-              
               {interval.label}
             </span>
           ))}
@@ -64,20 +60,19 @@ const TimelineProgressBar = () => {
 
         {/* Vertical Progress Bar */}
         <div
-          className="relative w-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl cursor-pointer"
+          className="relative w-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl"
           style={{ height: "450px" }}
-          onClick={handleClick}
         >
           <div
             className="absolute top-0 bg-[#FFBE2E] rounded-t-3xl"
-            style={{ height: `${progress}%`, width: "100%" }}
+            style={{ height: `${overallProgress}%`, width: "100%" }}
           ></div>
 
           {/* Centered White Handle */}
           <div
             className="absolute left-1/2 transform -translate-x-1/2 bg-white w-10 h-10 rounded-full border-2 border-white"
             style={{
-              top: `${progress}%`,
+              top: `${overallProgress}%`,
               transform: "translate(-50%, -50%)",
             }}
           ></div>

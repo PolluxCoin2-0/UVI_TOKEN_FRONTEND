@@ -7,8 +7,44 @@ import UviLogo from "../assets/UvitokenLogo.png";
 import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { postCheckMintUser, postMintUser } from "../utils/axios";
+import { useState } from "react";
 
 const Home = () => {
+  const walletAddress = useSelector((state) => state.wallet.address);
+  const token = useSelector((state)=>state?.wallet?.dataObject?.token);
+  const [timeStampOfUser, setTimeStampOfUser] = useState(0);
+
+  const handleStartMining = async () => {
+    // first check user's time slot is completed or not
+    const isUserMinted  = await postCheckMintUser(walletAddress);
+
+    // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
+    if (isUserMinted?.data) {
+      toast.info("Your token mining is going on.");
+    } else {
+      const currentTimeStamp = Date.now();
+      setTimeStampOfUser(currentTimeStamp);
+      localStorage.setItem("timeStamp", currentTimeStamp);
+      const apiData = await postMintUser(walletAddress, token);
+      console.log(apiData);
+
+      const signedTransaction = await window.pox.signdata(
+        apiData?.data?.transaction
+      );
+      console.log(signedTransaction);
+  
+      const result = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+      );
+      console.log(result);
+      
+      toast.success("Your mining has started.");
+    }
+  };
+
   return (
     <div className="bg-black w-full h-full  relative pb-12">
       <img
@@ -22,7 +58,7 @@ const Home = () => {
           className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
         w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[6%] md:h-[10%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
         >
-          <CountdownTimer />
+          <CountdownTimer timeStampOfUser={timeStampOfUser} />
           <p className="text-gray-400 text-center ">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>
         </div>
@@ -101,7 +137,11 @@ const Home = () => {
 
         {/* Start Mining */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-center    w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
-          <div className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner shadow-yellow-600 w-full md:w-full lg:w-[42%] p-2 flex flex-row justify-center space-x-5 items-center">
+          <div
+            onClick={handleStartMining}
+            className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner
+            shadow-yellow-600 w-full md:w-full lg:w-[42%] p-2 flex flex-row justify-center space-x-5 items-center cursor-pointer"
+          >
             <div>
               <div className="text-xl md:text-2xl lg:text-xl xl:text-4xl font-semibold">
                 Start Mining
@@ -133,7 +173,6 @@ const Home = () => {
         {/* <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div> */}
 
         {/* Leaderboard */}
-       
       </div>
     </div>
   );
