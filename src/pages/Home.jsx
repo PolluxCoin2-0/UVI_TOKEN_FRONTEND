@@ -19,6 +19,10 @@ const Home = () => {
   const [timeStampOfUser, setTimeStampOfUser] = useState(0);
 
   const handleStartMining = async () => {
+    if(walletAddress){
+      toast.error("Connect your wallet.");
+      return;
+    }
     // first check user's time slot is completed or not
     const isUserMinted = await postCheckMintUser(walletAddress);
 
