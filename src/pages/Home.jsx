@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { postCheckMintUser, postMintUser } from "../utils/axios";
 import { useState } from "react";
+import HeroVideo from "../assets/HeroVideo.mp4";
 
 const Home = () => {
   const walletAddress = useSelector((state) => state.wallet.address);
@@ -65,11 +66,20 @@ const Home = () => {
 
         {/* Video */}
         <div
-          className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[450px] top-14 flex items-center
-         justify-center relative"
-        >
-          {/* Your video component goes here */}
-        </div>
+  className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[330px] top-14 flex items-center justify-center relative"
+>
+  {/* Video Component */}
+  <video
+    className="w-full h-full object-cover rounded-2xl"
+    autoPlay
+    loop
+    muted
+  >
+    <source src={HeroVideo} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
 
         {/* Timeline */}
         <div className="mt-20">
