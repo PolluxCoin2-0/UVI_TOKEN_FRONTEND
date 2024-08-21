@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 
 const intervals = [
   { label: "0 Hours", value: 0 },
-  { label: "4 Hours", value: 4 },
-  { label: "8 Hours", value: 8 },
+  { label: "6 Hours", value: 6 },
   { label: "12 Hours", value: 12 },
-  { label: "16 Hours", value: 16 },
-  { label: "20 Hours", value: 20 },
+  { label: "18 Hours", value: 18 },
   { label: "24 Hours", value: 24 },
 ];
 
@@ -40,11 +38,11 @@ const TimelineProgressBar = () => {
   const hoursPassed = getHoursPassedSinceMidnight();
   const overallProgress = (hoursPassed / 24) * 100;
 
-  const currentSlot = Math.floor(hoursPassed / 4) + 1; // Calculate the current slot
+  const currentSlot = Math.floor(hoursPassed / 6) + 1; // Calculate the current slot
 
   return (
     <>
-      <p className="text-white text-xl font-semibold pb-0">Slot No: {currentSlot}/6</p>
+      <p className="text-white text-xl font-semibold pb-0">Slot No: {currentSlot}/4</p>
       <div className="relative w-full px-4 pt-8 pb-20">
         {/* Time Labels */}
         <div className="relative h-24">

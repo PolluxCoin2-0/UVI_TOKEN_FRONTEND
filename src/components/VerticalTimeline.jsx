@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 
 const intervals = [
   { label: "0 Hours", value: 0 },
-  { label: "4 Hours", value: 4 },
-  { label: "8 Hours", value: 8 },
+  { label: "6 Hours", value: 6 },
   { label: "12 Hours", value: 12 },
-  { label: "16 Hours", value: 16 },
-  { label: "20 Hours", value: 20 },
+  { label: "18 Hours", value: 18 },
   { label: "24 Hours", value: 24 },
 ];
 
@@ -18,27 +16,33 @@ const TimelineProgressBar = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000);
+    }, 60000); // Update every minute
 
     return () => clearInterval(intervalId);
   }, []);
 
   const getHoursPassedSinceMidnight = () => {
-    const hours = currentTime.getHours();
-    const minutes = currentTime.getMinutes();
-    return hours + minutes / 60;
+    const now = currentTime;
+    const midnight = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      0,
+      0,
+      0
+    );
+    const diff = now - midnight;
+    return diff / (1000 * 60 * 60);
   };
 
   const hoursPassed = getHoursPassedSinceMidnight();
-  const currentSlot = Math.floor(hoursPassed / 4); // 4 hours per slot
-  const progressWithinSlot = ((hoursPassed % 4) / 4) * 100; // Progress within the current slot
+  const overallProgress = (hoursPassed / 24) * 100;
 
-  const overallProgress =
-    (currentSlot * (100 / 6)) + (progressWithinSlot / 6); // Overall progress as a percentage of the full 24 hours
+  const currentSlot = Math.floor(hoursPassed / 6) + 1; // Calculate the current slot
 
   return (
     <>
-      <p className="text-white text-xl font-semibold pb-10">Slot No: {currentSlot + 1}/6</p>
+      <p className="text-white text-xl font-semibold pb-10">Slot No: {currentSlot}/4</p>
       <div className="flex justify-center items-center h-auto">
         {/* Container for intervals and progress bar */}
         <div className="flex flex-row items-center space-x-8">
@@ -77,7 +81,7 @@ const TimelineProgressBar = () => {
             style={{ height: "450px" }}
           >
             <div
-              className="absolute top-0 bg-[#FFBE2E] rounded-t-3xl"
+              className="absolute top-0 bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-t-3xl"
               style={{ height: `${overallProgress}%`, width: "100%" }}
             ></div>
 
