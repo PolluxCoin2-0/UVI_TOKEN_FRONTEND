@@ -10,13 +10,11 @@ import VerticalTimeline from "../components/VerticalTimeline";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { postCheckMintUser, postMintUser } from "../utils/axios";
-import { useState } from "react";
 import HeroVideo from "../assets/HeroVideo.mp4";
 
 const Home = () => {
   const walletAddress = useSelector((state) => state.wallet.address);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
-  const [timeStampOfUser, setTimeStampOfUser] = useState(0);
 
   const handleStartMining = async () => {
     if(!walletAddress){
@@ -30,9 +28,6 @@ const Home = () => {
     if (isUserMinted?.data) {
       toast.info("Your token mining is going on.");
     } else {
-      const currentTimeStamp = Date.now();
-      setTimeStampOfUser(currentTimeStamp);
-      localStorage.setItem("timeStamp", currentTimeStamp);
       const apiData = await postMintUser(walletAddress, token);
       console.log(apiData);
 
@@ -63,7 +58,7 @@ const Home = () => {
           className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
         w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[6%] md:h-[10%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
         >
-          <CountdownTimer timeStampOfUser={timeStampOfUser} />
+          <CountdownTimer />
           <p className="text-gray-400 text-center ">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>
         </div>

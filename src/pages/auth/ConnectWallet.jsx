@@ -1,6 +1,6 @@
 import WalletImg from "../../assets/wallet.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataObject, setWalletAddress } from "../../redux/slice/walletslice";
+import { setDataObject, setLogin, setWalletAddress } from "../../redux/slice/walletslice";
 import { toast } from "react-toastify";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { postLogin } from "../../utils/axios";
@@ -25,6 +25,7 @@ const ConnectWallet = () => {
         dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
         const apiData = await postLogin(parsedDetailsObject[1].data?.wallet_address);
         if(apiData?.data?._id){
+          dispatch(setLogin(true));
           toast.success("User logged in Success");
           dispatch(setDataObject(apiData?.data))
           navigate("/");
