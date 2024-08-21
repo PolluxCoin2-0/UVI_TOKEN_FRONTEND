@@ -1,15 +1,26 @@
 import { useState, useEffect } from "react";
 
-const CountdownTimer = ({ timeStampOfUser }) => {
-  // Get the timestamp from localStorage or use the passed prop
-  const timeFromLocalStorage = parseInt(localStorage.getItem("timeStamp")) || timeStampOfUser;
-  
-  // Calculate the target date (6 hours from the saved timestamp)
-  const targetDate = new Date(timeFromLocalStorage + 6 * 60 * 60 * 1000).getTime();
+const CountdownTimer = () => {
+  // Determine the start time of the current 24-hour period
+  const startOfDay = new Date().setHours(0, 0, 0, 0);
+
+  // Calculate the current slot based on the current time
+  const now = new Date().getTime();
+  const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+  const slotNumber = Math.floor((now - startOfDay) / slotDuration) + 1;
+
+  // Ensure the slot number is between 1 and 4
+  const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
+
+  // Calculate the start time of the current slot
+  const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
+
+  // Calculate the end time of the current slot
+  const currentSlotEndTime = currentSlotStartTime + slotDuration;
 
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
-    const difference = targetDate - now;
+    const difference = currentSlotEndTime - now;
 
     if (difference > 0) {
       return {
@@ -37,10 +48,10 @@ const CountdownTimer = ({ timeStampOfUser }) => {
 
     // Clear interval on component unmount
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [currentSlotEndTime]);
 
   return (
-    <div className="flex items-start justify-center w-full gap-3 count-down-main ">
+    <div className="flex items-start justify-center w-full gap-3 count-down-main">
       <div className="timer w-5">
         <div>
           <h3 className="countdown-element hours font-semibold text-2xl md:text-3xl text-white">

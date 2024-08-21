@@ -68,3 +68,15 @@ export const postCheckMintUser = async(walletAddress)=>{
     console.log(error);
   }
 }
+
+// USER AMOUNT
+export const postUserAmount = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getBalanceOf",{
+      walletAddress:walletAddress
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

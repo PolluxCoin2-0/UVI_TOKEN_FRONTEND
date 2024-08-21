@@ -5,7 +5,7 @@ const TransactionPage = () => {
   return (
     <div>
       {/* Transaction content */}
-      <div className="bg-black w-full h-full pt-10 relative px-2 xl:px-12 pb-20">
+      <div className="bg-black w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20">
         <img
           src={BackgroundImg}
           alt="background"
@@ -18,7 +18,7 @@ const TransactionPage = () => {
           </p>
 
           {/* Transaction table */}
-          {TransactionData.map((data, index) => {
+          {/* {TransactionData.map((data, index) => {
             const isFirst = index === 0;
             const isLast = index === TransactionData.length - 1;
 
@@ -44,7 +44,9 @@ const TransactionPage = () => {
                 </div>
               </div>
             );
-          })}
+          })} */}
+
+          <p className="text-center text-white font-bold text-3xl">Coming Soon . . .</p>
         </div>
       </div>
     </div>

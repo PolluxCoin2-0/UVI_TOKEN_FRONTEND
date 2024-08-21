@@ -3,17 +3,34 @@ import Uvilogo from "../assets/uvilogo.png";
 import { TbArticle } from "react-icons/tb";
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { SiSpringsecurity } from "react-icons/si";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GrCurrency } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { setDataObject, setLogin, setWalletAddress } from "../redux/slice/walletslice";
 
 export default function Sidebar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const isLogin = useSelector((state)=>state?.wallet?.login);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setIsSideNavOpen(false); // Close the sidebar on item click (for mobile)
   };
+
+  const handleLogout = ()=>{
+    if(isLogin){
+      dispatch(setLogin(false));
+      dispatch(setWalletAddress(""));
+      dispatch(setDataObject({}));
+      navigate("/connectwallet")
+    } else{
+      navigate("/signup")
+    }
+  }
 
   return (
     <>
@@ -140,9 +157,8 @@ export default function Sidebar() {
                   </div>
                 </Link>
               </li>
-              <li className="px-3">
+              <li className="px-3" onClick={handleLogout}>
                 <Link
-                  to="/signup"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('login')}
                 >
@@ -150,7 +166,7 @@ export default function Sidebar() {
                     <SiSpringsecurity />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                    Signup
+                    {isLogin?"Signout":"Signup"}
                   </div>
                 </Link>
               </li>

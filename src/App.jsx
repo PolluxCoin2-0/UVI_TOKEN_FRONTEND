@@ -10,8 +10,9 @@ import BlogsPage from "./pages/BlogsPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { Provider, useDispatch } from "react-redux";
+import { store, persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 import Sidebar from "./layout/Sidebar";
 import LeaderBoard from "./pages/LeaderBoard";
 import { ToastContainer } from 'react-toastify';
@@ -21,9 +22,11 @@ function App() {
   return (
     <div className="app-bg">
       <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <Router>
           <AppContent />
         </Router>
+      </PersistGate>
       </Provider>
     </div>
   );

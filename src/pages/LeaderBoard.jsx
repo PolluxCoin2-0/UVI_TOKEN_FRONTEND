@@ -32,8 +32,8 @@ const LeaderBoard = () => {
           Leaderboard
         </p>
 
-        <div className="mt-10 border border-white border-opacity-15 min-w-[300px] lg:min-w-[1000px] rounded-xl">
-          {LeaderboardData.map((data, index) => (
+        {/* <div className="mt-10 border border-white border-opacity-15 min-w-[300px] lg:min-w-[1000px] rounded-xl"> */}
+          {/* {LeaderboardData.map((data, index) => (
             <div
               key={index}
               ref={index === 5 ? topPositionRef : null}
@@ -97,8 +97,10 @@ const LeaderBoard = () => {
                 )}
               </div>
             </div>
-          ))}
-        </div>
+          ))} */}
+          <p className="text-center text-white font-bold text-3xl">Coming Soon . . .</p>
+
+        {/* </div> */}
       </div>
     </div>
   );
