@@ -37,48 +37,62 @@ const TimelineProgressBar = () => {
     (currentSlot * (100 / 6)) + (progressWithinSlot / 6); // Overall progress as a percentage of the full 24 hours
 
   return (
-    <div className="flex justify-center items-center h-auto">
-      {/* Container for intervals and progress bar */}
-      <div className="flex flex-row space-x-4">
-        {/* Time Intervals with vertical spacing */}
-        <div className="relative h-96 flex flex-col justify-between text-xs text-white space-y-10">
-          {intervals.map((interval, index) => (
-            <span
-              key={interval.value}
-              className={`absolute text-lg font-semibold ${
-                index % 2 === 0 ? "left-[-75px]" : "right-[-130px]"
-              }`}
+    <>
+      <p className="text-white text-xl font-semibold pb-10">Slot No: {currentSlot + 1}/6</p>
+      <div className="flex justify-center items-center h-auto">
+        {/* Container for intervals and progress bar */}
+        <div className="flex flex-row items-center space-x-8">
+          {/* Time Intervals with alternating position */}
+          <div className="relative h-96 flex flex-col justify-between text-xs text-white">
+            {intervals.map((interval, index) => {
+              const positionPercent = calculatePercentage(interval.value);
+              const isEven = index % 2 === 0;
+              const linePosition = `left-${isEven ? '-80px' : 'auto'}`;
+
+              return (
+                <div key={interval.value} className="relative">
+                  {/* Yellow Line */}
+                  <div
+                    className={`absolute top-${positionPercent}% ${linePosition} w-16 h-1 bg-yellow-400 ${isEven ? 'left-[-40px]' : 'right-[-130px]'} rounded-full`}
+                  ></div>
+                  <span
+                    className={`absolute text-lg font-semibold ${isEven ? 'left-[-120px]' : 'right-[-210px]'}`}
+                    style={{
+                      top: `${positionPercent}%`,
+                      transform: "translateY(-50%)",
+                      whiteSpace: "nowrap",
+                      textAlign: isEven ? "right" : "left",
+                    }}
+                  >
+                    {interval.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Vertical Progress Bar */}
+          <div
+            className="relative w-6 bg-gray-800 border border-gray-600 rounded-3xl"
+            style={{ height: "450px" }}
+          >
+            <div
+              className="absolute top-0 bg-[#FFBE2E] rounded-t-3xl"
+              style={{ height: `${overallProgress}%`, width: "100%" }}
+            ></div>
+
+            {/* Centered White Handle */}
+            <div
+              className="animate-pulse absolute left-1/2 transform -translate-x-1/2 bg-yellow-500 w-7 h-7 rounded-full  shadow-lg"
               style={{
-                top: `${calculatePercentage(interval.value)}%`,
-                transform: "translateY(-50%)",
+                top: `${overallProgress}%`,
+                transform: "translate(-50%, -50%)",
               }}
-            >
-              {interval.label}
-            </span>
-          ))}
-        </div>
-
-        {/* Vertical Progress Bar */}
-        <div
-          className="relative w-6 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl"
-          style={{ height: "450px" }}
-        >
-          <div
-            className="absolute top-0 bg-[#FFBE2E] rounded-t-3xl"
-            style={{ height: `${overallProgress}%`, width: "100%" }}
-          ></div>
-
-          {/* Centered White Handle */}
-          <div
-            className="absolute left-1/2 transform -translate-x-1/2 bg-white w-10 h-10 rounded-full border-2 border-white"
-            style={{
-              top: `${overallProgress}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

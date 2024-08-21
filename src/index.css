@@ -53,6 +53,27 @@
   }
 }
 
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(253, 224, 71, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(253, 224, 71, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(253, 224, 71, 0);
+  }
+}
+
+.shadow-yellow {
+  box-shadow: 0 0 10px rgba(253, 224, 71, 0.8);
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+
 
 
 
