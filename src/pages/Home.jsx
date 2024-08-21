@@ -15,12 +15,12 @@ import HeroVideo from "../assets/HeroVideo.mp4";
 
 const Home = () => {
   const walletAddress = useSelector((state) => state.wallet.address);
-  const token = useSelector((state)=>state?.wallet?.dataObject?.token);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [timeStampOfUser, setTimeStampOfUser] = useState(0);
 
   const handleStartMining = async () => {
     // first check user's time slot is completed or not
-    const isUserMinted  = await postCheckMintUser(walletAddress);
+    const isUserMinted = await postCheckMintUser(walletAddress);
 
     // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
     if (!isUserMinted?.data) {
@@ -36,12 +36,12 @@ const Home = () => {
         apiData?.data?.transaction
       );
       console.log(signedTransaction);
-  
+
       const result = JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction[1]))
       );
       console.log(result);
-      
+
       toast.success("Your mining has started.");
     }
   };
@@ -65,25 +65,21 @@ const Home = () => {
         </div>
 
         {/* Video */}
-        <div
-  className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[330px] top-14 flex items-center justify-center relative"
->
-  {/* Video Component */}
-  <video
-    className="w-full h-full object-cover rounded-2xl"
-    autoPlay
-    loop
-    muted
-  >
-    <source src={HeroVideo} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
-
+        <div className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[330px] top-14 flex items-center justify-center relative">
+          {/* Video Component */}
+          <video
+            className="w-full h-full object-cover rounded-2xl"
+            autoPlay
+            loop
+            muted
+          >
+            <source src={HeroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         {/* Timeline */}
         <div className="mt-20">
-          <p className="text-white text-xl font-semibold mb-12">Slot No: 1/6</p>
           {/* Your timeline component goes here */}
           {/* for devices lg, xl, 2xl  */}
           <div className="hidden md:block mt-0 md:mt-12 lg:mt-12">
@@ -97,12 +93,12 @@ const Home = () => {
 
         {/* blocks */}
         <div
-          className="flex flex-col md:flex-col lg:flex-row justify-between w-full 
-        space-x-0 md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-0 md:mt-14"
+          className="flex flex-col md:flex-col lg:flex-col xl:flex-row justify-between w-full 
+        space-x-0 md:space-x-0 lg:space-x-0 xl:space-x-10 space-y-6 md:space-y-6 lg:space-y-6 xl:space-y-0 mt-0 md:mt-14"
         >
           <div
             className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 
-          w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8"
+          w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center  p-8"
           >
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
@@ -117,7 +113,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
+          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full 
+          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                 0.00
@@ -130,7 +127,8 @@ const Home = () => {
               <BiDollar size={28} />
             </div>
           </div>
-          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-[32%] flex flex-row justify-between items-center  p-8">
+          <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full 
+          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                 dPLxc5

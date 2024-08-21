@@ -18,57 +18,88 @@ const TimelineProgressBar = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000);
+    }, 60000); // Update every minute
 
     return () => clearInterval(intervalId);
   }, []);
 
   const getHoursPassedSinceMidnight = () => {
-    const hours = currentTime.getHours();
-    const minutes = currentTime.getMinutes();
-    return hours + minutes / 60;
+    const now = currentTime;
+    const midnight = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      0,
+      0,
+      0
+    );
+    const diff = now - midnight;
+    return diff / (1000 * 60 * 60);
   };
 
   const hoursPassed = getHoursPassedSinceMidnight();
-  const currentSlot = Math.floor(hoursPassed / 4); // 4 hours per slot
-  const progressWithinSlot = ((hoursPassed % 4) / 4) * 100; // Progress within the current slot
+  const overallProgress = (hoursPassed / 24) * 100;
 
-  const overallProgress =
-    (currentSlot * (100 / 6)) + (progressWithinSlot / 6); // Overall progress as a percentage of the full 24 hours
+  const currentSlot = Math.floor(hoursPassed / 4) + 1; // Calculate the current slot
 
   return (
-    <div className="p-0 pt-6 rounded-lg relative">
-      <div className="relative mb-4">
-        {/* Time Intervals */}
-        <div className="absolute top-[-36px] left-0 right-0 flex flex-row justify-between text-xs text-white">
-          {intervals.map((interval) => (
-            <span
-              key={interval.value}
-              className="w-1/7 text-xl font-semibold pl-20 whitespace-nowrap"
-              style={{
-                left: `${calculatePercentage(interval.value)}%`,
-                transform: "translateX(-50%)",
-              }}
-            >
-              {interval.label}
-            </span>
-          ))}
+    <>
+      <p className="text-white text-xl font-semibold pb-0">Slot No: {currentSlot}/6</p>
+      <div className="relative w-full px-4 pt-8 pb-20">
+        {/* Time Labels */}
+        <div className="relative h-24">
+          {intervals.map((interval, index) => {
+            const positionPercent = calculatePercentage(interval.value);
+
+            return (
+              <div
+                key={interval.value}
+                className="absolute flex flex-col items-center"
+                style={{ left: `${positionPercent}%`, transform: 'translateX(-50%)' }}
+              >
+                {index % 2 === 0 ? (
+                  <>
+                    <span className="text-white text-base font-medium mb-2 whitespace-nowrap">
+                      {interval.label}
+                    </span>
+                    <div className="w-[4px] h-16 bg-yellow-400 mb-2 rounded-3xl"></div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-[4px] h-16 bg-yellow-400 mt-36 rounded-3xl"></div>
+                    <span className="text-white text-base font-medium mt-2 whitespace-nowrap">
+                      {interval.label}
+                    </span>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="relative h-8 bg-gray-700 bg-opacity-50 rounded-full mt-1 backdrop-blur-lg shadow-lg">
+          {/* Background Line */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full"></div>
+
+          {/* Progress Fill */}
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full shadow-lg"
+            style={{ width: `${overallProgress}%` }}
+          ></div>
+
+          {/* Current Progress Indicator */}
+          <div
+            className="absolute top-1/2 transform -translate-y-1/2"
+            style={{ left: `${overallProgress}%` }}
+          >
+            <div className="relative flex justify-center items-center">
+              <div className="w-9 h-9 -ml-6 bg-yellow-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50"></div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Progress Bar */}
-      <div className="relative h-8 border-[1px] border-white border-opacity-15 bg-[#1B1B1B] rounded-3xl cursor-pointer z-0 mt-8">
-        <div
-          className="h-10 -mt-1 bg-[#FFBE2E] rounded-l-3xl"
-          style={{ width: `${overallProgress}%` }}
-        ></div>
-
-        <div
-          className="absolute top-0 -mt-2 -ml-7 transform translate-x-1/2 bg-white w-7 h-12 rounded-full border-2 border-white"
-          style={{ left: `${overallProgress}%` }}
-        ></div>
-      </div>
-    </div>
+    </>
   );
 };
 
