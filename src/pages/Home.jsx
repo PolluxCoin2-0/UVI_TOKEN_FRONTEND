@@ -19,7 +19,7 @@ const Home = () => {
   const [timeStampOfUser, setTimeStampOfUser] = useState(0);
 
   const handleStartMining = async () => {
-    if(walletAddress){
+    if(!walletAddress){
       toast.error("Connect your wallet.");
       return;
     }
@@ -27,7 +27,7 @@ const Home = () => {
     const isUserMinted = await postCheckMintUser(walletAddress);
 
     // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
-    if (!isUserMinted?.data) {
+    if (isUserMinted?.data) {
       toast.info("Your token mining is going on.");
     } else {
       const currentTimeStamp = Date.now();

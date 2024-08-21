@@ -4,8 +4,8 @@ const CountdownTimer = ({ timeStampOfUser }) => {
   // Get the timestamp from localStorage or use the passed prop
   const timeFromLocalStorage = parseInt(localStorage.getItem("timeStamp")) || timeStampOfUser;
   
-  // Calculate the target date (4 hours from the saved timestamp)
-  const targetDate = new Date(timeFromLocalStorage + 4 * 60 * 60 * 1000).getTime();
+  // Calculate the target date (6 hours from the saved timestamp)
+  const targetDate = new Date(timeFromLocalStorage + 6 * 60 * 60 * 1000).getTime();
 
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
