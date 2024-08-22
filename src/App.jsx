@@ -10,13 +10,43 @@ import BlogsPage from "./pages/BlogsPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import Sidebar from "./layout/Sidebar";
 import LeaderBoard from "./pages/LeaderBoard";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AiOutlineClose } from "react-icons/ai";
+import { useEffect, useState } from "react";
+
+const EligibilityModal = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+      <div className="relative bg-black p-8 rounded-lg shadow-2xl max-w-sm w-full ">
+        {/* Close Icon */}
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
+          onClick={onClose}
+        >
+          <AiOutlineClose size={24} />
+        </button>
+
+        <h2 className="text-2xl font-semibold text-white mb-4">Action Required</h2>
+        <p className="text-gray-300 mb-6">
+          To start mining, you need to stake <span className="font-bold text-lg">25 POX </span> tokens.
+        </p>
+        <button
+          className="w-full py-3 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 transition duration-300"
+          onClick={onClose} // Close the modal on click
+        >
+          Okay
+        </button>
+      </div>
+    </div>
+  );
+};
+
 
 function App() {
   return (
@@ -34,7 +64,20 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const hideNavbarRoutes = ["/signup", "/connectwallet", "/otp"];
+
+  useEffect(() => {
+    const isModalShown = sessionStorage.getItem("isModalShown");
+    if (!isModalShown) {
+      setIsModalOpen(true);
+      sessionStorage.setItem("isModalShown", "true");
+    }
+  }, []);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -66,6 +109,7 @@ function AppContent() {
           <Route path="/leaderboard" element={<LeaderBoard />} />
         </Routes>
       </div>
+      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
     </>
   );
 }
