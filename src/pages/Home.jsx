@@ -9,21 +9,43 @@ import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { postCheckMintUser, postMintUser } from "../utils/axios";
+import { getVotePower, postCheckMintUser, postMintUser } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
+import { useEffect, useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 
-const Home = () => {
+const EligibilityModal = ({ onClose }) => {
+
   const walletAddress = useSelector((state) => state.wallet.address);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const [isEligible, setIsEligible] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const votePower = await getVotePower(walletAddress);
+        const totalAmount = votePower.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10**6;
+        if (totalAmount >= 25) {
+          setIsEligible(true);
+        }
+      } catch (error) {
+        console.error("Error fetching vote power:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [walletAddress]);
 
   const handleStartMining = async () => {
     if(!walletAddress){
       toast.error("Connect your wallet.");
       return;
     }
+    
     // first check user's time slot is completed or not
     const isUserMinted = await postCheckMintUser(walletAddress);
-
     // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
     if (isUserMinted?.data) {
       toast.info("Your token mining is going on.");
@@ -42,7 +64,45 @@ const Home = () => {
       console.log(result);
 
       toast.success("Your mining has started.");
+      onClose();
     }
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+      <div className="relative bg-black p-8 rounded-lg shadow-2xl max-w-sm w-full ">
+        {/* Close Icon */}
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
+          onClick={onClose}
+        >
+          <AiOutlineClose size={24} />
+        </button>
+        <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
+        {loading ? (
+          <p className="text-gray-300 mb-6">Checking eligibility...</p>
+        ) : (
+          <p className="text-gray-300 mb-6">
+            {isEligible ? "You are eligible to start mining." : "You are not eligible to start mining because you haven't staked 25 POX."}
+          </p>
+        )}
+        <button
+          className={`w-full py-3 ${isEligible ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-500 cursor-not-allowed'} text-black font-semibold rounded transition duration-300`}
+          onClick={handleStartMining}
+          disabled={!isEligible || loading} // Disable the button if not eligible or still loading
+        >
+          Start Mining
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -145,7 +205,7 @@ const Home = () => {
         {/* Start Mining */}
         <div className="flex flex-col md:flex-col lg:flex-row justify-center    w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
           <div
-            onClick={handleStartMining}
+            onClick={()=>setIsModalOpen(!isModalOpen)}
             className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner
             shadow-yellow-600 w-full md:w-full lg:w-[42%] p-2 flex flex-row justify-center space-x-5 items-center cursor-pointer"
           >
@@ -181,6 +241,7 @@ const Home = () => {
 
         {/* Leaderboard */}
       </div>
+      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
     </div>
   );
 };
