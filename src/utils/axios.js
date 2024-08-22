@@ -42,41 +42,61 @@ export const postLogin = async (walletAddress) => {
 };
 
 // MINT USER
-export const postMintUser = async(walletAddress, token)=>{
+export const postMintUser = async (walletAddress, token) => {
   try {
-    const res = await axios.post(BASE_URL +"/mint",{
-      walletAddress:walletAddress,
-    },{
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await axios.post(
+      BASE_URL + "/mint",
+      {
+        walletAddress: walletAddress,
       },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// CHECK IF USER IS MINTTED OR NOT
+export const postCheckMintUser = async (walletAddress) => {
+  try {
+    const res = await axios.post(BASE_URL + "/hasMinted", {
+      walletAddress: walletAddress,
     });
     return res?.data;
   } catch (error) {
     console.log(error);
   }
-}
-
-// CHECK IF USER IS MINTTED OR NOT
-export const postCheckMintUser = async(walletAddress)=>{
-  try {
-    const res = await axios.post(BASE_URL + "/hasMinted",{
-      walletAddress:walletAddress,
-    })
-    return res?.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
+};
 
 // USER AMOUNT
-export const postUserAmount = async(walletAddress)=>{
+export const postUserAmount = async (walletAddress) => {
   try {
-    const res = await axios.post(BASE_URL + "/getBalanceOf",{
-      walletAddress:walletAddress
-    })
+    const res = await axios.post(BASE_URL + "/getBalanceOf", {
+      walletAddress: walletAddress,
+    });
     return res?.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+// GET VOTE POWER
+export const getVotePower = async (walletAddress) => {
+  try {
+    const res = await axios.post(
+      "https://mobfullnode.poxscan.io/wallet/getaccount",
+      {
+        address: walletAddress,
+        visible: true,
+      }
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
