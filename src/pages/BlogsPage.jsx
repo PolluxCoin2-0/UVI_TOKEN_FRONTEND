@@ -19,7 +19,7 @@ const BlogsPage = () => {
           bibendum.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full mt-10 xl:mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 w-full mt-10 xl:mt-12">
           {[Blog1Img, Blog2Img, Blog1Img, Blog2Img].map((img, index) => (
             <div
               key={index}
@@ -40,7 +40,7 @@ const BlogsPage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 w-full mt-20">
           {[Blog1Img, Blog2Img, Blog1Img, Blog2Img].map((img, index) => (
             <div
               key={index}
