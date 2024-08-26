@@ -88,11 +88,10 @@ export const postUserAmount = async (walletAddress) => {
 // GET VOTE POWER
 export const getVotePower = async (walletAddress) => {
   try {
-    const res = await axios.post(
-      "https://testnet-fullnode.poxscan.io/wallet/getaccount",
+    const res = await axios.post(BASE_URL + "/getStakeBalance",
       {
-        address: walletAddress,
-        visible: true,
+        "address": walletAddress,
+        "visible": true,
       }
     );
     return res?.data;

@@ -9,7 +9,7 @@ import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getVotePower, postCheckMintUser, postMintUser } from "../utils/axios";
+import { getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -25,7 +25,7 @@ const EligibilityModal = ({ onClose }) => {
     const fetchData = async () => {
       try {
         const votePower = await getVotePower(walletAddress);
-        const totalAmount = votePower.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10**6;
+        const totalAmount = votePower.data.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10**6;
         if (totalAmount >= 25) {
           setIsEligible(true);
         }
@@ -100,10 +100,22 @@ const EligibilityModal = ({ onClose }) => {
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [balance, setBalance] = useState(0);
+
+  const walletAddress = useSelector((state) => state.wallet.address);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(()=>{
+    const fetchData = async()=>{
+      const apiData = await postUserAmount(walletAddress);
+      setBalance(apiData?.data);
+    }
+
+    fetchData();
+  },[])
 
   return (
     <div className="bg-black w-full h-full  relative pb-12">
@@ -161,7 +173,7 @@ const Home = () => {
           >
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                0.00
+               {balance && balance}
               </p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
@@ -176,7 +188,7 @@ const Home = () => {
           md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-8">
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                0.00
+               {balance && (balance * 0.01)}
               </p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Coin Worth at Launch
