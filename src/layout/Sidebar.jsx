@@ -8,6 +8,7 @@ import { GrCurrency } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setDataObject, setLogin, setWalletAddress } from "../redux/slice/walletslice";
+import { postLogout } from "../utils/axios";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -15,14 +16,16 @@ export default function Sidebar() {
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const isLogin = useSelector((state)=>state?.wallet?.login);
+  const token = useSelector((state)=>state?.wallet?.dataObject?.token);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setIsSideNavOpen(false); // Close the sidebar on item click (for mobile)
   };
 
-  const handleLogout = ()=>{
+  const handleLogout = async()=>{
     if(isLogin){
+      const logout = await postLogout(token)
       dispatch(setLogin(false));
       dispatch(setWalletAddress(""));
       dispatch(setDataObject({}));

@@ -41,6 +41,20 @@ export const postLogin = async (walletAddress) => {
   }
 };
 
+// Logout
+export const postLogout = async (token) => {
+  try {
+    const res = await axios.get(BASE_URL + `/logout`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // MINT USER
 export const postMintUser = async (walletAddress, token) => {
   try {
@@ -99,3 +113,24 @@ export const getVotePower = async (walletAddress) => {
     console.log(error);
   }
 };
+
+// GET COUNT OF ALL REGISTERED USERS
+export const getCountOfUsers = async () => {
+  try {
+    const res = await axios.get(BASE_URL + "/getAllUserCount");
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// GET LEADERBOARD STATS
+export const getLeaderboardStats = async () => {
+  try {
+    const res = await axios.get(BASE_URL + "/getLeaderBoard");
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

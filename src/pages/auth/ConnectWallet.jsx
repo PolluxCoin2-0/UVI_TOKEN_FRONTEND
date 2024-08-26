@@ -22,9 +22,10 @@ const ConnectWallet = () => {
         clearInterval(obj);
         const detailsData = JSON.stringify(await window.pox.getDetails());
         const parsedDetailsObject = JSON.parse(detailsData);
-        dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
         const apiData = await postLogin(parsedDetailsObject[1].data?.wallet_address);
+        
         if(apiData?.data?._id){
+          dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
           dispatch(setLogin(true));
           toast.success("User logged in Success");
           dispatch(setDataObject(apiData?.data))

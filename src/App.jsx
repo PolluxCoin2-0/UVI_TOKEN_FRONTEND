@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 
 const EligibilityModal = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
       <div className="relative bg-black p-8 rounded-lg shadow-2xl max-w-sm w-full ">
         {/* Close Icon */}
         <button

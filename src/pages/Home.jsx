@@ -9,13 +9,12 @@ import BackgroundImg from "../assets/BGImage.png";
 import VerticalTimeline from "../components/VerticalTimeline";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
+import { getCountOfUsers, getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 const EligibilityModal = ({ onClose }) => {
-
   const walletAddress = useSelector((state) => state.wallet.address);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [isEligible, setIsEligible] = useState(false);
@@ -69,7 +68,7 @@ const EligibilityModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
       <div className="relative bg-black p-8 rounded-lg shadow-2xl max-w-sm w-full ">
         {/* Close Icon */}
         <button
@@ -101,6 +100,7 @@ const EligibilityModal = ({ onClose }) => {
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [numberOfRegisteredUsers, setNumberOfRegisteredUsers] = useState(0);
 
   const walletAddress = useSelector((state) => state.wallet.address);
 
@@ -112,13 +112,15 @@ const Home = () => {
     const fetchData = async()=>{
       const apiData = await postUserAmount(walletAddress);
       setBalance(apiData?.data);
+      const registeredUsers = await getCountOfUsers();
+      setNumberOfRegisteredUsers(registeredUsers?.data)
     }
 
     fetchData();
   },[])
 
   return (
-    <div className="bg-black w-full h-full  relative pb-12">
+    <div className="bg-black w-full h-full relative pb-12">
       <img
         src={BackgroundImg}
         alt="background"
@@ -226,7 +228,7 @@ const Home = () => {
                 Start Mining
               </div>
               <p className="text-lg font-medium pt-1 text-[#8C8B8B] whitespace-nowrap ">
-                After: 0/10000 users
+                After: {numberOfRegisteredUsers && numberOfRegisteredUsers}/10000 users
               </p>
             </div>
 
