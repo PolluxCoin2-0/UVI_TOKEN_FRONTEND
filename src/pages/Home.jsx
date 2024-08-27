@@ -44,11 +44,11 @@ const EligibilityModal = ({ onClose }) => {
     }
     
     // first check user's time slot is completed or not
-    const isUserMinted = await postCheckMintUser(walletAddress);
+    // const isUserMinted = await postCheckMintUser(walletAddress);
     // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
-    if (isUserMinted?.data) {
-      toast.info("Your token mining is going on.");
-    } else {
+    // if (isUserMinted?.data) {
+    //   toast.info("Your token mining is going on.");
+    // } else {
       const apiData = await postMintUser(walletAddress, token);
       console.log(apiData);
 
@@ -64,7 +64,7 @@ const EligibilityModal = ({ onClose }) => {
 
       toast.success("Your mining has started.");
       onClose();
-    }
+    // }
   };
 
   return (
@@ -175,7 +175,7 @@ const Home = () => {
           >
             <div>
               <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-               {balance && balance}
+               {balance && Number(balance).toFixed(6)}
               </p>
               <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
