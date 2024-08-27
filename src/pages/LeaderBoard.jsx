@@ -71,7 +71,7 @@ const LeaderBoard = () => {
                   <img
                     src={WinnerImg}
                     alt="Top player"
-                    className="w-16 h-16 lg:w-20 lg:h-20"
+                    className="w-16 h-16 lg:w-full lg:h-20"
                   />
                 ) : (
                   <p className="text-white text-xl lg:text-2xl font-semibold">
