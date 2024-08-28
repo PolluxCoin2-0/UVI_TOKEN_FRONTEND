@@ -57,7 +57,7 @@ const TimelineProgressBar = () => {
                   style={{
                     width: `${percentage}%`,
                     backgroundColor: completedColor,
-                    borderRadius: 8,
+                    borderRadius: 4,
                   }}
                 ></div>
                 {/* Remaining Portion */}
