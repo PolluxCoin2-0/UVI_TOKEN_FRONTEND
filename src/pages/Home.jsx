@@ -2,7 +2,6 @@ import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
-import { LuCopy } from "react-icons/lu";
 import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,6 +10,7 @@ import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
+import { RiShareFill } from "react-icons/ri";
 
 const EligibilityModal = ({ onClose }) => {
   const walletAddress = useSelector((state) => state.wallet.address);
@@ -165,7 +165,7 @@ const Home = () => {
           >
             <div>
               <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-               {balance && Number(balance).toFixed(6)}
+               {balance ? Number(balance).toFixed(6) :0}
               </p>
               <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
@@ -180,7 +180,7 @@ const Home = () => {
           md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-2 md:p-8">
             <div>
               <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-               {balance && (balance * 0.01)}
+               {balance ? (balance * 0.01) :0}
               </p>
               <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Coin Worth at Launch
@@ -194,14 +194,14 @@ const Home = () => {
           md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center p-2 md:p-8">
             <div>
               <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                dPLxc5
+             0
               </p>
               <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
                 Your Referral Earnings
               </p>
             </div>
             <div className="text-white ">
-              <LuCopy size={24} />
+              <RiShareFill size={24} />
             </div>
           </div>
         </div>
