@@ -6,7 +6,7 @@ import { LuCopy } from "react-icons/lu";
 import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getCountOfUsers, getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
+import { getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -98,8 +98,6 @@ const EligibilityModal = ({ onClose }) => {
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
-  const [numberOfRegisteredUsers, setNumberOfRegisteredUsers] = useState(0);
-
   const walletAddress = useSelector((state) => state.wallet.address);
 
   const handleCloseModal = () => {
@@ -110,10 +108,7 @@ const Home = () => {
     const fetchData = async()=>{
       const apiData = await postUserAmount(walletAddress);
       setBalance(apiData?.data);
-      const registeredUsers = await getCountOfUsers();
-      setNumberOfRegisteredUsers(registeredUsers?.data)
     }
-
     fetchData();
   },[])
 
@@ -153,6 +148,11 @@ const Home = () => {
           <div className="mt-12 md:mt-20">
             <Timeline />
           </div>
+
+          {/* Start Mining */}
+        <div className="flex flex-col md:flex-col lg:flex-row justify-center w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 my-8 md:my-12 lg:my-12 xl:my-16">
+        <SliderButton isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+      </div>
 
         {/* blocks */}
         <div
@@ -206,9 +206,8 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Start Mining */}
-        <div className="flex flex-col md:flex-col lg:flex-row justify-center w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-8">
-        <SliderButton isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+        
+
           {/* <div
             onClick={()=>}
             className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner
@@ -244,8 +243,6 @@ const Home = () => {
         {/* border-bottom */}
         {/* <div className="border-b-[1px] border-white border-opacity-15 mt-10 "></div> */}
 
-        {/* Leaderboard */}
-      </div>
       {isModalOpen && <EligibilityModal onClose={handleCloseModal}/>}
     </div>
   );
