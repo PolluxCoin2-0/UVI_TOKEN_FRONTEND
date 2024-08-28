@@ -25,7 +25,7 @@ export default function Sidebar() {
 
   const handleLogout = async()=>{
     if(isLogin){
-      const logout = await postLogout(token)
+     await postLogout(token)
       dispatch(setLogin(false));
       dispatch(setWalletAddress(""));
       dispatch(setDataObject({}));
@@ -70,7 +70,7 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col border-r border-r-slate-200 bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col border-r border-r-slate-200 bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 sidebar`}
       >
@@ -105,7 +105,7 @@ export default function Sidebar() {
               </li>
               <li className="px-3">
                 <Link
-                  // to="/buycoin"
+                  to="/buycoin"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('buycoin')}
                 >

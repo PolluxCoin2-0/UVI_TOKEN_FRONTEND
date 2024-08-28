@@ -6,7 +6,6 @@ import { LuCopy } from "react-icons/lu";
 import UviLogo from "../assets/UvitokenLogo.png";
 import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
-import VerticalTimeline from "../components/VerticalTimeline";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getCountOfUsers, getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
@@ -152,22 +151,14 @@ const Home = () => {
         </div>
 
         {/* Timeline */}
-        <div className="mt-20">
-          {/* Your timeline component goes here */}
-          {/* for devices lg, xl, 2xl  */}
-          <div className="hidden md:block mt-0 md:mt-12 lg:mt-12">
+          <div className="mt-20">
             <Timeline />
           </div>
-
-          <div className=" md:hidden mb-12">
-            <VerticalTimeline />
-          </div>
-        </div>
 
         {/* blocks */}
         <div
           className="flex flex-col md:flex-col lg:flex-col xl:flex-row justify-between w-full 
-        space-x-0 md:space-x-0 lg:space-x-0 xl:space-x-10 space-y-6 md:space-y-6 lg:space-y-6 xl:space-y-0 mt-0 md:mt-14"
+        space-x-0 md:space-x-0 lg:space-x-0 xl:space-x-10 space-y-6 md:space-y-6 lg:space-y-6 xl:space-y-0 mt-0 md:mt-0"
         >
           <div
             className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 

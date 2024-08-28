@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 
 const intervals = [
-  { label: "0 Hours", value: 0 },
-  { label: "6 Hours", value: 6 },
-  { label: "12 Hours", value: 12 },
-  { label: "18 Hours", value: 18 },
-  { label: "24 Hours", value: 24 },
+  { label: "Slot No: 1/4 (0-6 hours)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
+  { label: "Slot No: 2/4 (6-12 hours)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
+  { label: "Slot No: 3/4 (12-18 hours)", value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
+  { label: "Slot No: 4/4 (18-24 hours)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
 ];
 
-const calculatePercentage = (hours) => (hours / 24) * 100;
+const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
 
 const TimelineProgressBar = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -36,66 +35,54 @@ const TimelineProgressBar = () => {
   };
 
   const hoursPassed = getHoursPassedSinceMidnight();
-  const overallProgress = (hoursPassed / 24) * 100;
-
-  const currentSlot = Math.floor(hoursPassed / 6) + 1; // Calculate the current slot
 
   return (
     <>
-      <p className="text-white text-xl font-semibold pb-0">Slot No: {currentSlot}/4</p>
-      <div className="relative w-full px-4 pt-8 pb-20">
-        {/* Time Labels */}
-        <div className="relative h-24">
-          {intervals.map((interval, index) => {
-            const positionPercent = calculatePercentage(interval.value);
+      <p className="text-white text-xl font-semibold pb-4">Current Time Slot Progress</p>
+      <div className="relative w-full px-0 pt-4 pb-12 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Slots */}
+        {intervals.map((interval, index) => {
+          const start = index === 0 ? 0 : intervals[index - 1].value;
+          const percentage = calculatePercentage(hoursPassed - start, interval.value - start);
+          const completedColor = interval.color;
+          const remainingColor = interval.bgColor;
 
-            return (
-              <div
-                key={interval.value}
-                className="absolute flex flex-col items-center"
-                style={{ left: `${positionPercent}%`, transform: 'translateX(-50%)' }}
-              >
-                {index % 2 === 0 ? (
-                  <>
-                    <span className="text-white text-base font-medium mb-2 whitespace-nowrap">
-                      {interval.label}
-                    </span>
-                    <div className="w-[4px] h-16 bg-yellow-400 mb-2 rounded-3xl"></div>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-[4px] h-16 bg-yellow-400 mt-36 rounded-3xl"></div>
-                    <span className="text-white text-base font-medium mt-2 whitespace-nowrap">
-                      {interval.label}
-                    </span>
-                  </>
-                )}
+          return (
+            <div key={interval.value} className="w-full md:flex-1 flex flex-col items-start">
+              {/* Slot Bar */}
+              <div className="relative w-full h-3 rounded-lg overflow-hidden shadow-lg flex">
+                {/* Completed Portion */}
+                <div
+                  className="h-full"
+                  style={{
+                    width: `${percentage}%`,
+                    backgroundColor: completedColor,
+                    borderRadius: 8,
+                  }}
+                ></div>
+                {/* Remaining Portion */}
+                <div
+                  className="h-full"
+                  style={{
+                    width: `${100 - percentage}%`,
+                    backgroundColor: remainingColor,
+                  }}
+                ></div>
               </div>
-            );
-          })}
-        </div>
 
-        {/* Progress Bar */}
-        <div className="relative h-8 bg-gray-700 bg-opacity-50 rounded-full mt-1 backdrop-blur-lg shadow-lg">
-          {/* Background Line */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full"></div>
-
-          {/* Progress Fill */}
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full shadow-lg"
-            style={{ width: `${overallProgress}%` }}
-          ></div>
-
-          {/* Current Progress Indicator */}
-          <div
-            className="absolute top-1/2 transform -translate-y-1/2"
-            style={{ left: `${overallProgress}%` }}
-          >
-            <div className="relative flex justify-center items-center">
-              <div className="w-9 h-9 -ml-6 bg-yellow-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50"></div>
+              {/* Slot Label */}
+              <div className="flex items-center mt-2 mx-2">
+                <span
+                  className="inline-block w-3 h-3 rounded-full"
+                  style={{ backgroundColor: completedColor }}
+                ></span>
+                <span className="text-white text-sm font-medium ml-2">
+                  {interval.label}
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </>
   );
