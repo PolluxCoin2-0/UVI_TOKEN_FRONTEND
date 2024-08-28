@@ -3,8 +3,6 @@ import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import { LuCopy } from "react-icons/lu";
-import UviLogo from "../assets/UvitokenLogo.png";
-import { Link } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -12,6 +10,7 @@ import { getCountOfUsers, getVotePower, postCheckMintUser, postMintUser, postUse
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import SliderButton from "../components/SliderButton";
 
 const EligibilityModal = ({ onClose }) => {
   const walletAddress = useSelector((state) => state.wallet.address);
@@ -119,7 +118,7 @@ const Home = () => {
   },[])
 
   return (
-    <div className="bg-black w-full h-full relative pb-12">
+    <div className="bg-black w-full min-h-screen relative pb-12">
       <img
         src={BackgroundImg}
         alt="background"
@@ -129,7 +128,7 @@ const Home = () => {
         {/* Timer */}
         <div
           className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
-        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[6%] md:h-[10%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
+        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[14%] md:h-[10%] lg:h-[10%] xl:h-[14%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
         >
           <CountdownTimer />
           <p className="text-gray-400 text-center ">Remaining Time</p>
@@ -137,7 +136,7 @@ const Home = () => {
         </div>
 
         {/* Video */}
-        <div className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[330px] top-14 flex items-center justify-center relative">
+        <div className="border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[200px] md:h-[330px] top-16 md:top-20 flex items-center justify-center relative">
           {/* Video Component */}
           <video
             className="w-full h-full object-cover rounded-2xl"
@@ -151,7 +150,7 @@ const Home = () => {
         </div>
 
         {/* Timeline */}
-          <div className="mt-20">
+          <div className="mt-12 md:mt-20">
             <Timeline />
           </div>
 
@@ -162,55 +161,56 @@ const Home = () => {
         >
           <div
             className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl 
-          w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center  p-8"
+          w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
           >
             <div>
-              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+              <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                {balance && Number(balance).toFixed(6)}
               </p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
+              <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Total Uvi Balance
               </p>
             </div>
             <div className="text-white ">
-              <MdOutlineAccountBalanceWallet size={36} />
+              <MdOutlineAccountBalanceWallet size={24} />
             </div>
           </div>
 
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full 
-          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-8">
+          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-2 md:p-8">
             <div>
-              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+              <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                {balance && (balance * 0.01)}
               </p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
+              <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                 Your Coin Worth at Launch
               </p>
             </div>
             <div className="text-white ">
-              <BiDollar size={28} />
+              <BiDollar size={24} />
             </div>
           </div>
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full 
-          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center  p-8">
+          md:w-full lg:w-full xl:w-[32%]  flex flex-row justify-between items-center p-2 md:p-8">
             <div>
-              <p className="text-xl md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+              <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                 dPLxc5
               </p>
-              <p className="text-[#8C8B8B] text-md md:text-lg font-semibold mt-0 md:mt-3">
+              <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
                 Your Referral Earnings
               </p>
             </div>
             <div className="text-white ">
-              <LuCopy size={28} />
+              <LuCopy size={24} />
             </div>
           </div>
         </div>
 
         {/* Start Mining */}
-        <div className="flex flex-col md:flex-col lg:flex-row justify-center    w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-14  ">
-          <div
-            onClick={()=>setIsModalOpen(!isModalOpen)}
+        <div className="flex flex-col md:flex-col lg:flex-row justify-center w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 mt-8">
+        <SliderButton isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+          {/* <div
+            onClick={()=>}
             className="bg-black text-white  border-[1px] border-yellow-600 rounded-xl shadow-inner
             shadow-yellow-600 w-full md:w-full lg:w-[42%] p-2 flex flex-row justify-center space-x-5 items-center cursor-pointer"
           >
@@ -224,9 +224,9 @@ const Home = () => {
             </div>
 
             <div>
-              <img src={UviLogo} alt="uvi-token" className="h-[120px]" />
+              <img src={UviLogo} alt="uvi-token" className="h-[80px]" />
             </div>
-          </div>
+          </div> */}
 
           {/* <div className="bg-black text-white border-[1px]  border-white rounded-xl shadow-inner shadow-white  w-full md:w-full lg:w-[32%] p-2 flex flex-row justify-center space-x-5 items-center">
             <Link to="/buycoin">
@@ -246,7 +246,7 @@ const Home = () => {
 
         {/* Leaderboard */}
       </div>
-      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
+      {isModalOpen && <EligibilityModal onClose={handleCloseModal}/>}
     </div>
   );
 };
