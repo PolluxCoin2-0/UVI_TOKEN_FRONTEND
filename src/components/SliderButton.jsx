@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { getCountOfUsers } from "../utils/axios";
 import { AiOutlineClose } from "react-icons/ai";
+import { formatNumberWithCommas } from "../utils/formatNumberWithCommas";
 
 const RegisteredCountModal = ({
   numberOfRegisteredUsers,
@@ -21,7 +22,7 @@ const RegisteredCountModal = ({
         <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
      
           <p className="text-gray-300 mb-6">
-          Only {10000 - numberOfRegisteredUsers} users left for start mining!
+          Only <span className="font-bold text-white">{formatNumberWithCommas(10000 - numberOfRegisteredUsers)}</span> users left for start mining!
           </p>
         <button
           className={`w-full py-3 ${

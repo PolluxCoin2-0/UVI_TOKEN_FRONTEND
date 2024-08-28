@@ -126,7 +126,7 @@ const Home = () => {
         w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[14%] md:h-[10%] lg:h-[10%] xl:h-[14%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
         >
           <CountdownTimer />
-          <p className="text-gray-400 text-center ">Remaining Time</p>
+          <p className="text-gray-400 text-center">Remaining Time</p>
           <p className="border-[1px] px-14 mt-2"></p>
         </div>
 
