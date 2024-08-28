@@ -99,7 +99,7 @@ function AppContent() {
           <Route path="/connectwallet" element={<ConnectWallet />} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/navbar" element={<Navbar />} />
-          {/* <Route path="/buycoin" element={<BuyCoinPage />} /> */}
+          <Route path="/buycoin" element={<BuyCoinPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogdetail" element={<BlogDetailPage />} />

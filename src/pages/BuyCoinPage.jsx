@@ -27,7 +27,7 @@ const BuyCoin = () => {
   };
 
   return (
-    <div className="bg-black  w-full h-full relative overflow-hidden px-5 md:px-12 pb-20">
+    <div className="bg-black  w-full h-full relative overflow-hidden px-5 md:px-4 lg:px-4 xl:px-6 pb-20">
       <img
         src={BackgroundImg}
         alt="background"
