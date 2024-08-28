@@ -11,7 +11,7 @@ const RegisteredCountModal = ({
 }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
-      <div className="relative bg-black p-8 rounded-lg shadow-2xl max-w-sm w-full ">
+      <div className="relative bg-black m-8 p-8 rounded-lg shadow-2xl max-w-sm w-full ">
         {/* Close Icon */}
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
