@@ -38,8 +38,10 @@ const TimelineProgressBar = () => {
 
   return (
     <>
-      <p className="text-white text-md md:text-xl font-semibold pb-2  text-center py-8">Current Time Slot Progress</p>
-      <div className="relative w-full px-0 pt-2 md:pt-4 pb-0 md:pb-0 flex flex-row justify-between items-center gap-2 md:gap-4">
+      <p className="text-white text-md md:text-xl font-semibold pb-2 text-center py-8">
+        Current Time Slot Progress
+      </p>
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4 my-2">
         {/* Slots */}
         {intervals.map((interval, index) => {
           const start = index === 0 ? 0 : intervals[index - 1].value;
@@ -48,7 +50,7 @@ const TimelineProgressBar = () => {
           const remainingColor = interval.bgColor;
 
           return (
-            <div key={interval.value} className="w-full md:flex-1 flex flex-col items-start">
+            <div key={interval.value} className="flex flex-col items-start">
               {/* Slot Bar */}
               <div className="relative w-full h-[5px] md:h-3 rounded-lg overflow-hidden shadow-lg flex">
                 {/* Completed Portion */}
