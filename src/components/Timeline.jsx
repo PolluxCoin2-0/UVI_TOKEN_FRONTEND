@@ -41,7 +41,7 @@ const TimelineProgressBar = () => {
       <p className="text-white text-md md:text-xl font-semibold pb-2 text-center py-8">
         Current Time Slot Progress
       </p>
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-4 my-2">
+      <div className="grid grid-cols-2 gap-4 md:gap-4 md:grid-cols-4 my-2">
         {/* Slots */}
         {intervals.map((interval, index) => {
           const start = index === 0 ? 0 : intervals[index - 1].value;
@@ -78,7 +78,7 @@ const TimelineProgressBar = () => {
                   className="inline-block w-2 md:w-3 h-2 md:h-3 rounded-full"
                   style={{ backgroundColor: completedColor }}
                 ></span>
-                <span className="text-white text-[8px] md:text-sm font-medium ml-2">
+                <span className="text-white text-[12px] md:text-sm font-medium ml-2">
                   {interval.label}
                 </span>
               </div>
