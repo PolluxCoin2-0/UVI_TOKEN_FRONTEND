@@ -16,7 +16,7 @@ const VerifyReferral = () => {
     const referralApi = await postVerifyReferral(token, address, value);
     if(referralApi?.data){
         toast.success("Wallet address verified!");
-        navigate("/connectwallet")
+        navigate("/")
     }
     else{
         toast.error("Something went wrong!");
