@@ -9,6 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setDataObject, setLogin, setWalletAddress } from "../redux/slice/walletslice";
 import { postLogout } from "../utils/axios";
+import Dashboard1Img from "../assets/Dashboard.png";
+import Dashboard2Img from "../assets/Dashboard2.png";
+import BuyImg from "../assets/Buy.png";
+import BlogsImg from "../assets/Blogs.png";
+import ROIImg from "../assets/ROI.png";
+import LeaderboardImg from "../assets/Leaderboard.png";
+import TransactionImg from "../assets/Transaction2.png";
+import ProfileImg from "../assets/Profile.png";
+import LogoutImg from "../assets/Logout2.png";
+
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -70,7 +80,7 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col border-r border-r-slate-200 bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col  bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 sidebar`}
       >
@@ -89,20 +99,24 @@ export default function Sidebar() {
         >
           <div>
             <ul className="flex pt-8 sm:pt-0 flex-1 flex-col gap-1 py-3">
+
+              {/* Dashboard */}
               <li className="px-3">
                 <Link
-                  to="/blogs"
+                  to="/"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('blogs')}
                 >
                   <div className="flex items-center self-center">
-                    <TbArticle />
+                    <img src={Dashboard2Img} alt="dashboard-image" className="text-white" />
                   </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                    Blogs
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold">
+                    Dashboard
                   </div>
                 </Link>
               </li>
+
+              {/* Buy Now */}
               <li className="px-3">
                 <Link
                   to="/buycoin"
@@ -110,13 +124,49 @@ export default function Sidebar() {
                   onClick={() => handleItemClick('buycoin')}
                 >
                   <div className="flex items-center self-center ">
-                  <GrCurrency />
-                  </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                  <img src={BuyImg} alt="buy-image" className="" />
+                  </div> 
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold">
                     Buy Coin
                   </div>
                 </Link>
               </li>
+
+              {/* ROI Calculator */}
+              <li className="px-3">
+                <Link
+                  to=""
+                  className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
+                  onClick={() => handleItemClick('buycoin')}
+                >
+                  <div className="flex items-center self-center ">
+                  <img src={ROIImg} alt="ROI-image" className="" />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold">
+                    ROI Calculator
+                  </div>
+                </Link>
+              </li>
+
+              <li className="px-3">
+                <Link
+                  to="/blogs"
+                  className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
+                  onClick={() => handleItemClick('blogs')}
+                >
+                  <div className="flex items-center self-center">
+                    <img src={BlogsImg} alt="buy-image" className="" />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold pl-1">
+                    Blogs
+                  </div>
+                </Link>
+              </li>
+
+
+             
+
+             {/* LeaderBoard */}
               <li className="px-3">
                 <Link
                   to="/leaderboard"
@@ -124,51 +174,58 @@ export default function Sidebar() {
                   onClick={() => handleItemClick('leaderboard')}
                 >
                   <div className="flex items-center self-center ">
-                    <MdOutlineLeaderboard />
+                    <img src={LeaderboardImg} alt="Leaderboard-image" className="" />
                   </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold pl-1">
                     LeaderBoard
                   </div>
                 </Link>
               </li>
+
+
+              {/* Transaction */}
+              <li className="px-3">
+                <Link
+                  to="/transaction"
+                  className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
+                  onClick={() => handleItemClick('leaderboard')}
+                >
+                  <div className="flex items-center self-center ">
+                    <img src={TransactionImg} alt="Leaderboard-image" className="" />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold">
+                    Transaction
+                  </div>
+                </Link>
+              </li>
+              
+
+              {/* Profile */}
               <li className="px-3">
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
                   onClick={() => handleItemClick('profile')}
                 >
-                  <div className="flex items-center self-center ">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="h-6 w-6"
-                      aria-label="Dashboard icon"
-                      role="graphics-symbol"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                      />
-                    </svg>
+                   <div className="flex items-center self-center ">
+                    <img src={ProfileImg} alt="Leaderboard-image" className="" />
                   </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold">
                     Profile
                   </div>
                 </Link>
               </li>
+
+
               <li className="px-3" onClick={handleLogout}>
                 <Link
-                  className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white`}
+                  className={`flex items-center gap-3 rounded p-3 text-slate-100 transition-colors hover:bg-yellow-50 hover:text-yellow-500 focus:bg-yellow-500 focus:text-white mb-0`}
                   onClick={() => handleItemClick('login')}
                 >
                   <div className="flex items-center self-center ">
-                    <SiSpringsecurity />
+                    <img src={LogoutImg} alt="logout-image" className="" />
                   </div>
-                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-lg font-semibold ">
                     {isLogin?"Signout":"Signup"}
                   </div>
                 </Link>
