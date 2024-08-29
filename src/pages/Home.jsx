@@ -3,20 +3,23 @@ import Timeline from "../components/Timeline";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import BackgroundImg from "../assets/BGImage.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getVotePower, postCheckMintUser, postMintUser, postUserAmount } from "../utils/axios";
+import { getVotePower, postMintUser, postUserAmount } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
 import { RiShareFill } from "react-icons/ri";
+import { setUserSlotNumber } from "../redux/slice/SlotsSlice";
 
 const EligibilityModal = ({ onClose }) => {
+  const dispatch = useDispatch();
   const walletAddress = useSelector((state) => state.wallet.address);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [isEligible, setIsEligible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const slotsNumber = useSelector((state)=>state?.slots)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,12 +44,12 @@ const EligibilityModal = ({ onClose }) => {
       return;
     }
     
-    // first check user's time slot is completed or not
-    // const isUserMinted = await postCheckMintUser(walletAddress);
-    // If No then execute the mining function , otherwise show toast message "Your token minig is going on."
-    // if (isUserMinted?.data) {
-    //   toast.info("Your token mining is going on.");
-    // } else {
+    // First check if the current time slots of user is matched with previous time slots or not.
+    if (slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber) {
+      toast.info("Your token mining is going on.");
+    } else {
+      // save the clicked time slots in state management
+      dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber))
       const apiData = await postMintUser(walletAddress, token);
       console.log(apiData);
 
@@ -62,7 +65,7 @@ const EligibilityModal = ({ onClose }) => {
 
       toast.success("Your mining has started.");
       onClose();
-    // }
+    }
   };
 
   return (

@@ -75,18 +75,6 @@ export const postMintUser = async (walletAddress, token) => {
   }
 };
 
-// CHECK IF USER IS MINTTED OR NOT
-export const postCheckMintUser = async (walletAddress) => {
-  try {
-    const res = await axios.post(BASE_URL + "/hasMinted", {
-      walletAddress: walletAddress,
-    });
-    return res?.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // USER AMOUNT
 export const postUserAmount = async (walletAddress) => {
   try {

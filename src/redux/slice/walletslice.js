@@ -6,6 +6,8 @@ const walletSlice = createSlice({
     address: "",
     dataObject:{},
     login:false,
+    currentSlotNumber:"",
+    userSlotNumber:"",
   },
   reducers: {
     setWalletAddress: (state, action) => {
@@ -16,9 +18,15 @@ const walletSlice = createSlice({
     },
     setLogin:(state, action) => {
       state.login = action.payload;
+    },
+    setCurrentSlotNumber:(state, action) => {
+      state.currentSlotNumber = action.payload;
+    },
+    setUserSlotNumber:(state, action) => {
+      state.userSlotNumber = action.payload;
     }
   },
 });
 
-export const { setWalletAddress, setDataObject, setLogin } = walletSlice.actions;
+export const { setWalletAddress, setDataObject, setLogin, setCurrentSlotNumber, setUserSlotNumber } = walletSlice.actions;
 export default walletSlice.reducer;
