@@ -78,10 +78,44 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-[#000000] transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 sidebar `}
+        } lg:translate-x-0 sidebar lg:relative`}
       >
+
+<style>
+    {`
+      #nav-menu-1::after {
+        content: '';
+        position: absolute;
+        right: 0px; /* Adjusts how far the arrow extends */
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent; /* Creates the arrow effect */
+        border-bottom: 20px solid transparent;
+        border-right: 12px solid #151515;
+        top: ${
+          selectedItem === "/"
+            ? "125px"
+            : selectedItem === "/buycoin"
+            ? "182px"
+            : selectedItem === "/roi-calculator"
+            ? "224px"
+            : selectedItem === "/blogs"
+            ? "306px"
+            : selectedItem === "/leaderboard"
+            ? "362px"
+            : selectedItem === "/transaction"
+            ? "422px"
+            : selectedItem === "/profile"
+            ? "485px"
+            : "464px"
+        };
+        transition: top 0.5s ease-in-out; /* Smooth transition for arrow movement */
+      }
+    `}
+  </style>
+
         <a
           aria-label="Uvi Token logo"
           className="hidden lg:flex items-center gap-2 whitespace-nowrap p-6 text-xl text-white font-medium focus:outline-none"
@@ -96,7 +130,7 @@ export default function Sidebar() {
         >
           <div>
             <ul className="flex pt-8 sm:pt-0 flex-1 flex-col gap-1 py-3">
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -113,7 +147,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/buycoin"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -130,7 +164,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to=""
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -147,7 +181,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/blogs"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -164,7 +198,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/leaderboard"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -181,7 +215,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/transaction"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -198,7 +232,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3">
+              <li className="px-6">
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
@@ -215,7 +249,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-3" onClick={handleLogout}>
+              <li className="px-6" onClick={handleLogout}>
                 <Link
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
                     selectedItem === "/logout" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"

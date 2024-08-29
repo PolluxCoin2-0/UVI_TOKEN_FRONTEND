@@ -58,13 +58,21 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       if (sliderPosition >= buttonWidth - 48) {
         // Execute function when slider reaches the end
         executeFunction();
+  
+        // Immediately reset the slider position after executing the function
+        setTimeout(() => {
+          setSliderPosition(0);
+        }, 300); // Add a slight delay to allow the action to be seen
+  
       } else {
         // Reset slider position if not fully dragged
         setSliderPosition(0);
-        setIsDragging(false);
       }
+  
+      setIsDragging(false);
     }
   };
+  
 
   const handleMove = (e) => {
     if (!isDragging) return;
