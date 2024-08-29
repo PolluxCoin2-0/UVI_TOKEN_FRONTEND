@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Uvilogo from "../assets/uvilogo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { setDataObject, setLogin, setWalletAddress } from "../redux/slice/walletslice";
 import { postLogout } from "../utils/axios";
 import DashboardImg from "../assets/Dashboard.png";
@@ -79,9 +78,9 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-black  transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-black transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 sidebar`}
+        } lg:translate-x-0 sidebar `}
       >
         <a
           aria-label="Uvi Token logo"
