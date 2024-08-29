@@ -34,7 +34,7 @@ const Otp = () => {
     const apiData = await postOTPVerify(emailBySignup, otp);
     if (apiData?.data?._id) {
       toast.success("OTP verified successfully");
-      navigate("/connectwallet");
+      navigate("/verifyreferral");
     } else {
       toast.error("Invalid OTP. Please try again.");
     }

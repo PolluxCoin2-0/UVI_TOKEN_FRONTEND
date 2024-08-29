@@ -9,7 +9,7 @@ import BlogsPage from "./pages/BlogsPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
-
+import VerifyReferral from "./pages/auth/VerifyReferral";
 export {
     Signup,
     ConnectWallet,
@@ -22,4 +22,5 @@ export {
     BlogDetailPage,
     ProfilePage,
     TransactionPage,
+    VerifyReferral,
 }
