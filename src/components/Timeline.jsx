@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentSlotNumber } from "../redux/slice/SlotsSlice";
 
 const intervals = [
   { label: "Slot No: 1/4 (0-6 hours)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
@@ -10,6 +12,7 @@ const intervals = [
 const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
 
 const TimelineProgressBar = () => {
+  const dispatch = useDispatch();
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -35,6 +38,24 @@ const TimelineProgressBar = () => {
   };
 
   const hoursPassed = getHoursPassedSinceMidnight();
+
+// Determine the current time slot number based on the hours passed
+const determineCurrentSlotNumber = () => {
+  const currentSlotIndex = intervals.findIndex((interval, index) => {
+    const start = index === 0 ? 0 : intervals[index - 1].value;
+    return hoursPassed >= start && hoursPassed < interval.value;
+  });
+
+  if (currentSlotIndex !== -1) {
+    const slotNumber = currentSlotIndex + 1; // Slot numbers are 1-based (1, 2, 3, 4)
+    dispatch(setCurrentSlotNumber(slotNumber)); // Dispatch the current slot number
+  }
+};
+
+// Calculate the current slot number whenever the time updates
+useEffect(() => {
+  determineCurrentSlotNumber();
+}, [hoursPassed]);
 
   return (
     <>

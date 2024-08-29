@@ -82,11 +82,11 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
     const registeredUsers = await getCountOfUsers();
     setNumberOfRegisteredUsers(registeredUsers?.data);
 
-    if (registeredUsers?.data > 10000) {
+    // if (registeredUsers?.data > 10000) {
       setIsModalOpen(!isModalOpen);
-    } else {
-      setUserCountModal(!userCountModal);
-    }
+    // } else {
+    //   setUserCountModal(!userCountModal);
+    // }
   };
 
   return (
