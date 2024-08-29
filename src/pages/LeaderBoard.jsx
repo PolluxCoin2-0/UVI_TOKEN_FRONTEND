@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import WinnerImg from "../assets/winner.png";
 import { getLeaderboardStats } from "../utils/axios";
+import BackgroundImg from "../assets/BGImage.png";
 
 const LeaderBoard = () => {
   const [isFixed, setIsFixed] = useState(false);
@@ -35,8 +36,14 @@ const LeaderBoard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black bgimage px-4 lg:px-8 py-10">
-      <div className="overflow-x-auto xl:overflow-x-clip 2xl:overflow-x-clip">
+    <div className="min-h-screen relative bg-black px-4 lg:px-8 py-10">
+        <img
+        src={BackgroundImg}
+        alt="background"
+        className="absolute inset-0 w-full object-cover object-center opacity-30"
+        style={{ height: '100%', zIndex: 1 }}
+      />
+      <div className="relative overflow-x-auto xl:overflow-x-clip 2xl:overflow-x-clip">
         <p className="text-3xl font-bold text-white text-center lg:text-left">
           Leaderboard
         </p>

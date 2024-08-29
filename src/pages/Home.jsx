@@ -69,7 +69,7 @@ const EligibilityModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50  ">
       <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full ">
         {/* Close Icon */}
         <button
@@ -116,7 +116,7 @@ const Home = () => {
   },[])
 
   return (
-    <div className="bg-black w-full min-h-screen relative pb-12">
+    <div className="bg-black w-full min-h-screen relative pb-12 ">
       <img
         src={BackgroundImg}
         alt="background"
@@ -125,8 +125,12 @@ const Home = () => {
       <div className="px-5 md:px-8 lg:px-6  relative z-10 ">
         {/* Timer */}
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 border-[1px] border-white border-opacity-15 bg-[#1B1B1B]
-        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[25%] h-[14%] md:h-[10%] lg:h-[10%] xl:h-[14%] rounded-b-2xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
+          className="absolute left-1/2 transform -translate-x-1/2 bg-[#1B1B1B] bg-opacity-30
+        w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[14%] md:h-[10%] lg:h-[10%] xl:h-[14%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10"
+        style={{
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)' // For Safari
+        }}
         >
           <CountdownTimer />
           <p className="text-gray-400 text-center">Remaining Time</p>
@@ -170,7 +174,7 @@ const Home = () => {
               <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                {balance ? Number(balance).toFixed(6) :0}
               </p>
-              <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
+              <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap ">
                 Your Total Uvi Balance
               </p>
             </div>
