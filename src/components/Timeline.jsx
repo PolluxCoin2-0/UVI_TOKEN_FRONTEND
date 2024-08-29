@@ -73,7 +73,7 @@ useEffect(() => {
           return (
             <div key={interval.value} className="flex flex-col items-start">
               {/* Slot Bar */}
-              <div className="relative w-full h-[5px] md:h-3 rounded-lg overflow-hidden shadow-lg flex">
+              <div className="relative w-full h-[5px] md:h-5 rounded-lg overflow-hidden shadow-lg flex">
                 {/* Completed Portion */}
                 <div
                   className="h-full"
