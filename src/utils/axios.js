@@ -122,3 +122,25 @@ export const getLeaderboardStats = async () => {
   }
 }
 
+
+// referral verification
+export const postVerifyReferral = async (token, walletAddress, referralCode) => {
+  console.log(token, walletAddress, referralCode)
+  try {
+    const res = await axios.post(BASE_URL + "/verifyReferralCode",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+      {
+        walletAddress: walletAddress,
+        referralCode: referralCode
+    }
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

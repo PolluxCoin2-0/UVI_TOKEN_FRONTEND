@@ -3,6 +3,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { getCountOfUsers } from "../utils/axios";
 import { AiOutlineClose } from "react-icons/ai";
 import { formatNumberWithCommas } from "../utils/formatNumberWithCommas";
+import Arrow from "../assets/Arrow.png";
 
 const RegisteredCountModal = ({
   numberOfRegisteredUsers,
@@ -60,8 +61,8 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       } else {
         // Reset slider position if not fully dragged
         setSliderPosition(0);
+        setIsDragging(false);
       }
-      setIsDragging(false);
     }
   };
 
@@ -102,23 +103,46 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       >
         <div
           ref={buttonRef}
-          className="relative w-96 h-12 bg-yellow-400 rounded-full overflow-hidden shadow-md select-none"
+          className="relative w-96 h-16 bg-[#1f1e1e] rounded-full overflow-hidden select-none cursor-pointer"
+          style={{ 
+            boxShadow: "0 0 15px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.4)"
+          }}
         >
+          {/* Covered Path */}
+          <div
+            className="absolute h-16 rounded-l-xl transition-all duration-500"
+            style={{
+              backgroundColor: "#F6B63E",
+              width: `${sliderPosition + 35}px`,
+              zIndex: 0,
+              transition: 'width 0.3s ease',
+            }}
+          ></div>
+
           {/* Slider Handle */}
           <div
-            className={`absolute w-12 h-12 bg-gradient-to-br from-yellow-200 to-yellow-600 rounded-full shadow-lg flex items-center justify-center 
-            cursor-pointer transform transition-transform duration-200 ${
+            className={`absolute w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center 
+            cursor-pointer transform transition-transform duration-500 z-10 ${
               isDragging ? "ease-in" : "ease-out"
             }`}
-            style={{ left: `${sliderPosition}px`, top: "0px" }}
+            style={{ left: `${sliderPosition}px`, top: "0px", transition: 'left 0.3s ease' }}
             onMouseDown={handleStart}
             onTouchStart={handleStart}
           >
-            {/* Arrow Icon */}
-            <IoIosArrowForward className="text-white text-2xl" />
+            {/* Arrows Inside Circle */}
+            <img src={Arrow} alt="arrows" className="w-7" />
           </div>
+
           {/* Text Label */}
-          <span className="absolute inset-0 flex items-center justify-center text-black font-bold pointer-events-none">
+          <span className="absolute inset-0 flex items-center justify-center text-white font-bold pointer-events-none text-2xl"
+           style={{
+            background: "linear-gradient(90deg, #FFFFFF 0%, #E9E9E9 24.5%, #FBD287 71.45%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            color: "transparent"
+          }}
+          >
             Slide to Mine
           </span>
         </div>
