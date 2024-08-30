@@ -118,10 +118,51 @@
   }
 }
 
+@keyframes slideInStair {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .animate-bounce-in {
   animation: bounceIn 0.8s ease-out;
 }
 
 .animate-slide-up {
   animation: slideUp 0.8s ease-out;
+}
+
+.animate-slide-in-stair {
+  animation: slideInStair 0.8s ease-out forwards; /* Forward preserves the final state after the animation */
+}
+
+/* Add delays for the stair effect */
+.sidebar-item-1 {
+  animation-delay: 0.1s;
+}
+.sidebar-item-2 {
+  animation-delay: 0.2s;
+}
+.sidebar-item-3 {
+  animation-delay: 0.3s;
+}
+.sidebar-item-4 {
+  animation-delay: 0.4s;
+}
+.sidebar-item-5 {
+  animation-delay: 0.5s;
+}
+.sidebar-item-6 {
+  animation-delay: 0.6s;
+}
+.sidebar-item-7 {
+  animation-delay: 0.7s;
+}
+.sidebar-item-8 {
+  animation-delay: 0.8s;
 }
