@@ -5,6 +5,7 @@ const slotsSlice = createSlice({
   initialState: {
     currentSlotNumber:"",
     userSlotNumber:"",
+    userSlotDate:"",
   },
   reducers: {
     setCurrentSlotNumber:(state, action) => {
@@ -12,9 +13,12 @@ const slotsSlice = createSlice({
     },
     setUserSlotNumber:(state, action) => {
       state.userSlotNumber = action.payload;
-    }
+    },
+    setUserSlotDate: (state, action) => {
+      state.userSlotDate = action.payload;
+    },
   },
 });
 
-export const {setCurrentSlotNumber, setUserSlotNumber } = slotsSlice.actions;
+export const {setCurrentSlotNumber, setUserSlotNumber, setUserSlotDate } = slotsSlice.actions;
 export default slotsSlice.reducer;
