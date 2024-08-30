@@ -1,10 +1,14 @@
 import WalletImg from "../../assets/wallet.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataObject, setLogin, setWalletAddress } from "../../redux/slice/walletslice";
+import {
+  setDataObject,
+  setLogin,
+  setWalletAddress,
+} from "../../redux/slice/walletslice";
 import { toast } from "react-toastify";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { postLogin } from "../../utils/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ConnectWallet = () => {
   const dispatch = useDispatch();
@@ -22,13 +26,17 @@ const ConnectWallet = () => {
         clearInterval(obj);
         const detailsData = JSON.stringify(await window.pox.getDetails());
         const parsedDetailsObject = JSON.parse(detailsData);
-        const apiData = await postLogin(parsedDetailsObject[1].data?.wallet_address);
-        
-        if(apiData?.data?._id){
-          dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
+        const apiData = await postLogin(
+          parsedDetailsObject[1].data?.wallet_address
+        );
+
+        if (apiData?.data?._id) {
+          dispatch(
+            setWalletAddress(parsedDetailsObject[1].data?.wallet_address)
+          );
           dispatch(setLogin(true));
           toast.success("User logged in Success");
-          dispatch(setDataObject(apiData?.data))
+          dispatch(setDataObject(apiData?.data));
           navigate("/");
         }
       }
@@ -58,6 +66,14 @@ const ConnectWallet = () => {
         >
           Connect Wallet
         </button>
+        <p className="text-white mt-4">
+          Don’t have an account yet? {"  "}
+          <Link to="/signup">
+            <span className="font-medium text-yellow-500 underline cursor-pointer">
+              Sign up
+            </span>
+          </Link>
+        </p>
       </div>
     </div>
   );

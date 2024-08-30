@@ -21,6 +21,9 @@ const VerifyReferral = () => {
       value
     );
     console.log("referralApi", referralApi);
+    console.log(" referralApi?.data?.trx1?.transaction",  referralApi?.data?.trx1?.transaction)
+    console.log("referralApi?.data?.trx2?.transaction", referralApi?.data?.trx2?.transaction)
+    
     if (referralApi?.data?.trx1) {
       // Sign tranaction and broadcast transaction for trx1
       const signedTransaction1 = await window.pox.signdata(
