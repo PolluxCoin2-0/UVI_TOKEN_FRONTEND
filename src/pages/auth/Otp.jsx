@@ -13,9 +13,9 @@ const Otp = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const emailBySignup = location.state.email;
-  const walletAddressBySignup = location.state.walletAddress;
-  const referredBySignup = location.state.referredBy;
+  const emailBySignup = location.state?.email;
+  const walletAddressBySignup = location.state?.walletAddress;
+  const referredBySignup = location.state?.referredBy;
   const [otp, setOtp] = useState("");
   const [resendEnabled, setResendEnabled] = useState(false);
   const [targetDate, setTargetDate] = useState(

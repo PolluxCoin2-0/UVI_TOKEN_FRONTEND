@@ -50,10 +50,11 @@ const ConnectWallet = () => {
         alt="background"
         className="absolute inset-0 w-full h-full object-cover opacity-30"
       />
-      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full max-w-md md:max-w-lg lg:max-w-xl p-8 relative z-10 mt-16 md:mt-0 mx-4 md:mx-0 flex flex-col items-center">
+      <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full max-w-md md:max-w-lg lg:max-w-xl p-8 relative z-10 py-20 md:mt-10 mx-4 md:mx-0
+       flex flex-col items-center ">
         {/* connect wallet image */}
         <div>
-          <img src={WalletImg} className="mt-14 md:mt-24 w-20 md:w-36" />
+          <img src={WalletImg} className="" />
         </div>
 
         <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5">

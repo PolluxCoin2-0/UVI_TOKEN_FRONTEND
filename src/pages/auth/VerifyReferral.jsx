@@ -35,8 +35,9 @@ const VerifyReferral = () => {
       const signedTransaction2 = await window.pox.signdata(
         referralApi?.data?.trx2?.transaction
       );
+
       
-      JSON.stringify(
+       JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
       );
 

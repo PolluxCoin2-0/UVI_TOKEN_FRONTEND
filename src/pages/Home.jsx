@@ -13,7 +13,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
 import { RiShareFill } from "react-icons/ri";
 import { setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
-
+import Footer from "../layout/Footer";
 
 const EligibilityModal = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -127,18 +127,20 @@ const Home = () => {
   }, [walletAddress]);
 
   return (
-    <div className="bg-black w-full min-h-screen relative pb-12 ">
+    <div className="bg-black w-full min-h-screen relative pb-0">
       <img
         src={BackgroundImg}
         alt="background"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
       />
-      <div className="px-5 md:px-8 lg:px-6 relative z-10">
+      <div className=" relative z-10">
+        
+        <div className='px-5 md:px-8 lg:px-6'>
         {/* Timer */}
         <div
           ref={timerRef}
           className={`absolute left-1/2 transform -translate-x-1/2 bg-[#1B1B1B] bg-opacity-30
-          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[14%] md:h-[10%] lg:h-[10%] xl:h-[14%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
+          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[6%] md:h-[6%] lg:h-[8%] xl:h-[9%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
           ${timerInView ? 'animate-pop-in' : ''}
           `}
           style={{
@@ -234,10 +236,19 @@ const Home = () => {
             </div>
           </div>
         </div>
+        </div>
 
+
+ {/* Footer Section */}
+ <div className="mx-0">
+   <Footer />
+      </div>
+       
         {/* Modal */}
         {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
       </div>
+   
+      
     </div>
   );
 };
