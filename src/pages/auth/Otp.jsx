@@ -18,7 +18,9 @@ const Otp = () => {
   const referredBySignup = location.state.referredBy;
   const [otp, setOtp] = useState("");
   const [resendEnabled, setResendEnabled] = useState(false);
-  const [targetDate, setTargetDate] = useState(new Date(new Date().getTime() + 5 * 60 * 1000));
+  const [targetDate, setTargetDate] = useState(
+    new Date(new Date().getTime() + 5 * 60 * 1000)
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,19 +38,27 @@ const Otp = () => {
 
     const apiData = await postOTPVerify(emailBySignup, otp);
     if (apiData?.data?._id) {
-      dispatch(setDataObject(apiData?.data))
+      dispatch(setDataObject(apiData?.data));
       toast.success("OTP verified successfully");
-      navigate("/verifyreferral");
+      if (referredBySignup) {
+        navigate("/verifyreferral");
+      } else {
+        navigate("/connectwallet");
+      }
     } else {
       toast.error("Invalid OTP. Please try again.");
     }
   };
 
-  const handleResendOtp = async() => {
+  const handleResendOtp = async () => {
     setResendEnabled(false);
     setTargetDate(new Date(new Date().getTime() + 5 * 60 * 1000));
-    const apiData = await postSignup(walletAddressBySignup, emailBySignup, referredBySignup)
-    if(apiData?.data?.email){
+    const apiData = await postSignup(
+      walletAddressBySignup,
+      emailBySignup,
+      referredBySignup
+    );
+    if (apiData?.data?.email) {
       toast.success("OTP resent successfully!");
     }
   };
@@ -110,7 +120,9 @@ const Otp = () => {
           <button
             type="button"
             onClick={handleResendOtp}
-            className={`text-[#FFB800] text-lg ml-2 md:text-xl ${!resendEnabled && "opacity-50 cursor-not-allowed"}`}
+            className={`text-[#FFB800] text-lg ml-2 md:text-xl ${
+              !resendEnabled && "opacity-50 cursor-not-allowed"
+            }`}
             disabled={!resendEnabled}
           >
             Resend Code
