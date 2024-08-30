@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import WinnerImg from "../assets/winner.png";
 import { getLeaderboardStats } from "../utils/axios";
 import BackgroundImg from "../assets/BGImage.png";
+import { useSelector } from "react-redux";
 
 const LeaderBoard = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const userWalletAddress = useSelector((state)=>state?.wallet?.dataObject?.walletAddress)
 
   const topPositionRef = useRef(null);
   const windowHeight = window.innerHeight;
@@ -51,18 +53,18 @@ const LeaderBoard = () => {
         <div className="mt-10 border border-white border-opacity-15 min-w-[300px] lg:min-w-[1000px] rounded-xl">
           {leaderboardData && leaderboardData.map((data, index) => (
             <div
-              key={index}
-              ref={index === 5 ? topPositionRef : null}
+              key={data?.walletAddress}
+              ref={data?.walletAddress === userWalletAddress ? topPositionRef : null}
               style={{
                 transform:
-                  isFixed && index === 5
+                  isFixed && data?.walletAddress === userWalletAddress
                     ? "translateX(20px) translateX(-20px)"
                     : "",
               }}
               className={`flex flex-col lg:flex-row justify-between p-4 lg:p-10 border-b border-white border-opacity-15 
                 ${
                   isFixed &&
-                  index === 5 &&
+                  data?.walletAddress === userWalletAddress &&
                   "sticky top-0 bottom-0 left-0 right-0 shadow-outline"
                 } 
                 ${

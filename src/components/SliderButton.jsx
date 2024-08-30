@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { getCountOfUsers } from "../utils/axios";
 import { AiOutlineClose } from "react-icons/ai";
 import { formatNumberWithCommas } from "../utils/formatNumberWithCommas";
 import Arrow from "../assets/Arrow.png";
+import { useInView } from 'react-intersection-observer';
 
 const RegisteredCountModal = ({
   numberOfRegisteredUsers,
@@ -12,26 +13,25 @@ const RegisteredCountModal = ({
 }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
-      <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full ">
+      <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full">
         {/* Close Icon */}
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
-          onClick={()=>setUserCountModal(!userCountModal)}
+          onClick={() => setUserCountModal(!userCountModal)}
         >
           <AiOutlineClose size={24} />
         </button>
         <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
-     
-          <p className="text-gray-300 mb-6">
+        <p className="text-gray-300 mb-6">
           Only <span className="font-bold text-white">{formatNumberWithCommas(10000 - numberOfRegisteredUsers)}</span> users left for start mining!
-          </p>
+        </p>
         <button
           className={`w-full py-3 ${
             numberOfRegisteredUsers
               ? "bg-yellow-500 hover:bg-yellow-600"
               : "bg-gray-500 cursor-not-allowed"
           } text-black font-semibold rounded transition duration-300`}
-          onClick={()=>setUserCountModal(!userCountModal)}
+          onClick={() => setUserCountModal(!userCountModal)}
         >
           Okay
         </button>
@@ -46,6 +46,7 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
   const [userCountModal, setUserCountModal] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const buttonRef = useRef(null);
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   const handleStart = (e) => {
     e.preventDefault();
@@ -58,21 +59,19 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       if (sliderPosition >= buttonWidth - 48) {
         // Execute function when slider reaches the end
         executeFunction();
-  
+
         // Immediately reset the slider position after executing the function
         setTimeout(() => {
           setSliderPosition(0);
         }, 300); // Add a slight delay to allow the action to be seen
-  
       } else {
         // Reset slider position if not fully dragged
         setSliderPosition(0);
       }
-  
+
       setIsDragging(false);
     }
   };
-  
 
   const handleMove = (e) => {
     if (!isDragging) return;
@@ -92,7 +91,7 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
     setNumberOfRegisteredUsers(registeredUsers?.data);
 
     // if (registeredUsers?.data > 10000) {
-      setIsModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
     // } else {
     //   setUserCountModal(!userCountModal);
     // }
@@ -101,7 +100,8 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
   return (
     <>
       <div
-        className="flex items-center justify-center"
+        className={`flex items-center justify-center ${inView ? 'animate-bounce-in' : ''}`}
+        ref={ref}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
         onMouseLeave={handleEnd}
@@ -111,7 +111,7 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       >
         <div
           ref={buttonRef}
-          className="relative w-96 h-16 bg-[#1f1e1e] rounded-full overflow-hidden select-none cursor-pointer"
+          className={`relative w-96 h-16 bg-[#1f1e1e] rounded-full overflow-hidden select-none cursor-pointer ${inView ? 'animate-slide-up' : ''}`}
           style={{ 
             boxShadow: "0 0 15px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.4)"
           }}

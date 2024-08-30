@@ -29,7 +29,7 @@ const ConnectWallet = () => {
           dispatch(setLogin(true));
           toast.success("User logged in Success");
           dispatch(setDataObject(apiData?.data))
-          navigate("/verifyreferral");
+          navigate("/");
         }
       }
     }, 1000);

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Signup from "./pages/auth/Signup";
 import ConnectWallet from "./pages/auth/ConnectWallet";
 import Otp from "./pages/auth/Otp";
@@ -66,6 +66,7 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hideNavbarRoutes = ["/signup", "/connectwallet", "/otp", "/verifyreferral"];
 
@@ -80,6 +81,14 @@ function AppContent() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    // Redirect to signup if referral link detected
+    if (location.pathname.startsWith("/referral/")) {
+      const referralAddress = location.pathname.split("/")[2];
+      navigate("/signup", { state: { referralAddress } });
+    }
+  }, [location, navigate]);
 
   return (
     <>

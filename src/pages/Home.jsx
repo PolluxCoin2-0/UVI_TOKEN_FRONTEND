@@ -12,12 +12,97 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
 import { RiShareFill } from "react-icons/ri";
-import { setUserSlotNumber } from "../redux/slice/SlotsSlice";
+import { setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
 
 const EligibilityModal = ({ onClose }) => {
-  // Modal implementation as before
-  // No changes needed here for animation
+  const dispatch = useDispatch();
+  const walletAddress = useSelector((state) => state.wallet.address);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const [isEligible, setIsEligible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const slotsNumber = useSelector((state)=>state?.slots)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const votePower = await getVotePower(walletAddress);
+        const totalAmount = votePower.data.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10**6;
+        if (totalAmount >= 25) {
+          setIsEligible(true);
+        }
+      } catch (error) {
+        console.error("Error fetching vote power:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [walletAddress]);
+
+  const handleStartMining = async () => {
+    if(!walletAddress){
+      toast.error("Connect your wallet.");
+      return;
+    }
+
+    const currentDate = new Date().toISOString().split("T")[0];
+    
+    // First check if the current time slots of user is matched with previous time slots or not.
+    if ( slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+      slotsNumber?.userSlotDate === currentDate) {
+      toast.info("Your token mining is going on.");
+    } else {
+      // save the clicked time slots in state management
+      dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber))
+      dispatch(setUserSlotDate(currentDate));
+      const apiData = await postMintUser(walletAddress, token);
+      console.log(apiData);
+
+      const signedTransaction = await window.pox.signdata(
+        apiData?.data?.transaction
+      );
+      console.log(signedTransaction);
+
+      const result = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+      );
+      console.log(result);
+
+      toast.success("Your mining has started.");
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50  ">
+      <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full ">
+        {/* Close Icon */}
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
+          onClick={onClose}
+        >
+          <AiOutlineClose size={24} />
+        </button>
+        <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
+        {loading ? (
+          <p className="text-gray-300 mb-6">Checking eligibility...</p>
+        ) : (
+          <p className="text-gray-300 mb-6">
+            {isEligible ? "You are eligible to start mining." : "You are not eligible to start mining because you haven't staked 25 POX."}
+          </p>
+        )}
+        <button
+          className={`w-full py-3 ${isEligible ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-500 cursor-not-allowed'} text-black font-semibold rounded transition duration-300`}
+          onClick={handleStartMining}
+          disabled={!isEligible || loading} // Disable the button if not eligible or still loading
+        >
+          Start Mining
+        </button>
+      </div>
+    </div>
+  );
 };
+
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
