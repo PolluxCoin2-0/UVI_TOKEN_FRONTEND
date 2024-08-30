@@ -127,14 +127,15 @@ const Home = () => {
   }, [walletAddress]);
 
   return (
-    <div className="bg-black w-full min-h-screen relative pb-12 ">
+    <div className="bg-black w-full min-h-screen relative pb-0">
       <img
         src={BackgroundImg}
         alt="background"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
       />
-      <div className="px-5 md:px-8 lg:px-6 relative z-10">
+      <div className=" relative z-10">
         
+        <div className='px-5 md:px-8 lg:px-6'>
         {/* Timer */}
         <div
           ref={timerRef}
@@ -235,6 +236,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        </div>
 
 
  {/* Footer Section */}
@@ -242,7 +244,6 @@ const Home = () => {
    <Footer />
       </div>
        
-
         {/* Modal */}
         {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
       </div>
