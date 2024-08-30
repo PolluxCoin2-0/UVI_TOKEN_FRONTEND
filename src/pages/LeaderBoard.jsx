@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+  import { useEffect, useRef, useState } from "react";
 import WinnerImg from "../assets/winner.png";
 import { getLeaderboardStats } from "../utils/axios";
 import BackgroundImg from "../assets/BGImage.png";

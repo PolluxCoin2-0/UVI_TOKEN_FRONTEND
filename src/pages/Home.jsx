@@ -14,6 +14,7 @@ import SliderButton from "../components/SliderButton";
 import { RiShareFill } from "react-icons/ri";
 import { setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
 
+
 const EligibilityModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const walletAddress = useSelector((state) => state.wallet.address);
