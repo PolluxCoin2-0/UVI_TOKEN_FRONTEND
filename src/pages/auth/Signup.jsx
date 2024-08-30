@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
@@ -11,6 +11,15 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [referredBy, setReferredBy] = useState("");
+  const location = useLocation();
+  const referralAddress = location.state?.referralAddress;
+
+  useEffect(()=>{
+    if(referralAddress){
+      setReferredBy(referralAddress);
+      toast.info("Referral Code Applied Successfully");
+    }
+  },[])
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

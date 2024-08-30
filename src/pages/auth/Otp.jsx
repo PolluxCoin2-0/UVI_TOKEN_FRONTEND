@@ -6,10 +6,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postOTPVerify, postSignup } from "../../utils/axios";
+import { useDispatch } from "react-redux";
+import { setDataObject } from "../../redux/slice/walletslice";
 
 const Otp = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const emailBySignup = location.state.email;
   const walletAddressBySignup = location.state.walletAddress;
   const referredBySignup = location.state.referredBy;
@@ -33,8 +36,9 @@ const Otp = () => {
 
     const apiData = await postOTPVerify(emailBySignup, otp);
     if (apiData?.data?._id) {
+      dispatch(setDataObject(apiData?.data))
       toast.success("OTP verified successfully");
-      navigate("/connectwallet");
+      navigate("/verifyreferral");
     } else {
       toast.error("Invalid OTP. Please try again.");
     }

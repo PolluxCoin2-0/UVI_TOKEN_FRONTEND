@@ -7,19 +7,51 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const VerifyReferral = () => {
-  const address = useSelector((state) => state.wallet.address);
-  const token = useSelector((state) => state.wallet.dataObject.token);
+  const walletAddressBySignup = useSelector(
+    (state) => state?.wallet?.dataObject?.walletAddress
+  );
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
   const verifyReferralfunc = async () => {
-    const referralApi = await postVerifyReferral(token, address, value);
-    if(referralApi?.data){
-        toast.success("Wallet address verified!");
-        navigate("/")
-    }
-    else{
-        toast.error("Something went wrong!");
+    const referralApi = await postVerifyReferral(
+      token,
+      walletAddressBySignup,
+      value
+    );
+    console.log("referralApi", referralApi);
+    if (referralApi?.data?.trx1) {
+      // Sign tranaction and broadcast transaction for trx1
+      const signedTransaction1 = await window.pox.signdata(
+        referralApi?.data?.trx1?.transaction
+      );
+
+      console.log("signedTransaction1", signedTransaction1);
+
+      const result1 = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
+      );
+
+      console.log("result1", result1);
+
+      // Sign tranaction and broadcast transaction for trx2
+      const signedTransaction2 = await window.pox.signdata(
+        referralApi?.data?.trx2?.transaction
+      );
+
+      console.log("signedTransaction2", signedTransaction2);
+
+      const result2 = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+      );
+
+      console.log("result2", result2);
+
+      toast.success("Wallet address verified!");
+      navigate("/connectwallet");
+    } else {
+      toast.error("Something went wrong!");
     }
   };
 

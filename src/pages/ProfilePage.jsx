@@ -30,7 +30,7 @@ const ProfilePage = () => {
   };
 
   const handleGenerateReferralLink = () => {
-    const referralLink = `https://pixelelitetechnologies.com/referral/${userData?.address}`;
+    const referralLink = `http://localhost:5173/referral/${userData?.address}`;
     navigator.clipboard.writeText(referralLink);
     toast.success("Referral link copied");
   };
