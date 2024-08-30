@@ -20,9 +20,6 @@ const VerifyReferral = () => {
       walletAddressBySignup,
       value
     );
-    console.log("referralApi", referralApi);
-    console.log(" referralApi?.data?.trx1?.transaction",  referralApi?.data?.trx1?.transaction)
-    console.log("referralApi?.data?.trx2?.transaction", referralApi?.data?.trx2?.transaction)
     
     if (referralApi?.data?.trx1) {
       // Sign tranaction and broadcast transaction for trx1
@@ -30,26 +27,18 @@ const VerifyReferral = () => {
         referralApi?.data?.trx1?.transaction
       );
 
-      console.log("signedTransaction1", signedTransaction1);
-
-      const result1 = JSON.stringify(
+       JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
       );
-
-      console.log("result1", result1);
 
       // Sign tranaction and broadcast transaction for trx2
       const signedTransaction2 = await window.pox.signdata(
         referralApi?.data?.trx2?.transaction
       );
-
-      console.log("signedTransaction2", signedTransaction2);
-
-      const result2 = JSON.stringify(
+      
+      JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
       );
-
-      console.log("result2", result2);
 
       toast.success("Wallet address verified!");
       navigate("/connectwallet");
