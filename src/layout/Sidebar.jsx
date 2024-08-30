@@ -124,16 +124,16 @@ export default function Sidebar() {
           <img src={Uvilogo} alt="uvi-logo" className="" />
           Uvi Token
         </a>
-        <nav
+        <nav 
           aria-label="side navigation"
-          className="flex-1 divide-y divide-slate-100 overflow-auto"
+          className={`flex-1 divide-y divide-slate-100 overflow-auto`}
         >
           <div>
             <ul className="flex pt-8 sm:pt-0 flex-1 flex-col gap-1 py-3">
               <li className="px-6">
                 <Link
                   to="/"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-1 ${
                     selectedItem === "/" ? "bg-[#F3BB1C] text-black font-semibold " : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/")}
@@ -150,7 +150,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to="/buycoin"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-2 ${
                     selectedItem === "/buycoin" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/buycoin")}
@@ -167,7 +167,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to=""
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-3 ${
                     selectedItem === "/roi-calculator" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/roi-calculator")}
@@ -184,7 +184,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to="/blogs"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-4 ${
                     selectedItem === "/blogs" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/blogs")}
@@ -201,7 +201,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to="/leaderboard"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-5 ${
                     selectedItem === "/leaderboard" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/leaderboard")}
@@ -218,7 +218,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to="/transaction"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-6 ${
                     selectedItem === "/transaction" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/transaction")}
@@ -235,7 +235,7 @@ export default function Sidebar() {
               <li className="px-6">
                 <Link
                   to="/profile"
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-7 ${
                     selectedItem === "/profile" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/profile")}
@@ -251,7 +251,7 @@ export default function Sidebar() {
 
               <li className="px-6" onClick={handleLogout}>
                 <Link
-                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-8 ${
                     selectedItem === "/logout" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   } mb-0`}
                   onClick={() => handleItemClick("/logout")}
