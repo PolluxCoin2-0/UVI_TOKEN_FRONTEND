@@ -116,7 +116,7 @@ function AppContent() {
           <Route path="/buycoin" element={<BuyCoinPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
-          <Route path="/blogdetail" element={<BlogDetailPage />} />
+          <Route path="/blogdetail/:id" element={<BlogDetailPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/transaction" element={<TransactionPage />} />
           <Route path="/sidebar" element={<Sidebar />} />

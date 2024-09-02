@@ -11,6 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [referredBy, setReferredBy] = useState("");
+  const [isConnected, setIsConnected] = useState(false);
   const location = useLocation();
   const referralAddress = location.state?.referralAddress;
 
@@ -52,6 +53,25 @@ const Signup = () => {
     }
   };
 
+  const connectWallet = ()=>{
+    var obj = setInterval(async () => {
+      if (window.pox) {
+        clearInterval(obj);
+        const detailsData = JSON.stringify(await window.pox.getDetails());
+        const parsedDetailsObject = JSON.parse(detailsData);
+        if(parsedDetailsObject[1].data?.wallet_address){
+          setWalletAddress(parsedDetailsObject[1].data?.wallet_address)
+          setIsConnected(true);
+        }
+      }})
+  }
+
+  const handleFocus = () => {
+    if (!isConnected) {
+      connectWallet(); // Call function only if it hasn't been called yet
+    }
+  };
+
   return (
     <div className="bg-black min-h-screen w-full flex justify-center items-center relative overflow-hidden py-4">
       <img
@@ -89,7 +109,8 @@ const Signup = () => {
                 placeholder="Enter Wallet Address"
                 className="border border-white rounded-xl px-4 py-2 text-white text-lg font-semibold bg-black w-full max-w-lg"
                 value={walletAddress}
-                onChange={(e) => setWalletAddress(e.target.value)}
+                onClick={handleFocus}
+                // onChange={(e) => setWalletAddress(e.target.value)}
               />
             </div>
 
