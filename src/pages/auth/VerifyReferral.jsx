@@ -11,14 +11,14 @@ const VerifyReferral = () => {
     (state) => state?.wallet?.dataObject?.walletAddress
   );
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
-  const [value, setValue] = useState("");
+  const referredBy = useSelector((state) => state?.wallet?.dataObject?.referredBy);
   const navigate = useNavigate();
 
   const verifyReferralfunc = async () => {
     const referralApi = await postVerifyReferral(
       token,
       walletAddressBySignup,
-      value
+      referredBy
     );
     
     if (referralApi?.data?.trx1) {
@@ -48,10 +48,6 @@ const VerifyReferral = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
-
   return (
     <div className="bg-black h-screen w-full flex justify-center items-center relative overflow-hidden py-4 ">
       <img
@@ -69,8 +65,7 @@ const VerifyReferral = () => {
           <input
             id="text-input"
             type="text"
-            value={value}
-            onChange={handleChange}
+            value={referredBy}
             className="w-80 md:w-96 px-4 py-3 border  border-gray-300 rounded-lg shadow-sm focus:outline-none  transition duration-150 ease-in-out  "
             placeholder="Enter Wallet Address"
           />

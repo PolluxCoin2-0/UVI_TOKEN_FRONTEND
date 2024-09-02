@@ -113,6 +113,7 @@ const Home = () => {
   const { ref: videoRef, inView: videoInView } = useInView({ triggerOnce: true });
   const { ref: timelineRef, inView: timelineInView } = useInView({ triggerOnce: true });
   const { ref: buttonRef, inView: buttonInView } = useInView({ triggerOnce: true });
+  const referralAmount = useSelector((state) => state?.wallet?.dataObject?.referralAmount);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -225,7 +226,7 @@ const Home = () => {
           <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
             <div>
               <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                0
+                {referralAmount && referralAmount > 0 && referralAmount}
               </p>
               <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
                 Your Referral Earnings
