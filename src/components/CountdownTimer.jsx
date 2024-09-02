@@ -6,11 +6,12 @@ const CountdownTimer = () => {
 
   // Calculate the current slot based on the current time
   const now = new Date().getTime();
-  const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+  const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
   const slotNumber = Math.floor((now - startOfDay) / slotDuration) + 1;
 
-  // Ensure the slot number is between 1 and 4
-  const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
+  // Ensure the slot number is valid
+  const totalSlotsInADay = 48; // 24 hours * 2 slots per hour = 48 slots
+  const currentSlotNumber = slotNumber > totalSlotsInADay ? totalSlotsInADay : slotNumber;
 
   // Calculate the start time of the current slot
   const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
