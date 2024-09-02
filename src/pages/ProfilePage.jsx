@@ -30,7 +30,7 @@ const ProfilePage = () => {
   };
 
   const handleGenerateReferralLink = () => {
-    const referralLink = `http://localhost:5173/referral/${userData?.address}`;
+    const referralLink = `https://uvitoken.netlify.app/referral/${userData?.address}`;
     navigator.clipboard.writeText(referralLink);
     toast.success("Referral link copied");
   };
