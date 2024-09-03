@@ -49,7 +49,7 @@ const ProfilePage = () => {
         <div className="px-4 md:px-12 relative z-10">
           <p className="text-white text-xl font-semibold pt-10 ">Profile</p>
 
-          <div className="bg-[#1B1B1B]  border-[1px] border-white border-opacity-15 w-full h-auto rounded-md mt-5 pt-5">
+          <div className="bg-[#1B1B1B]  border-[1px] border-white border-opacity-15 w-full h-auto rounded-3xl mt-5 pt-5">
             <div className="flex flex-col md:flex-row justify-between">
               <div className="pl-5">
                 <p className="text-white text-lg font-bold">
@@ -80,7 +80,7 @@ const ProfilePage = () => {
             </div>
 
             <div className="flex flex-row justify-between  py-2 p-3">
-              <p className="pt-0 text-white text-sm md:text-md font-bold ">Referral Code Status</p>
+              <p className="pt-0 text-white text-sm md:text-md"><span className="font-bold">Referral Code Status: </span>{userData && userData?.dataObject?.referredBy}</p>
 
 
              <Link to={isReferralVerified ? "" : "/verifyreferral"}>  
@@ -90,9 +90,9 @@ const ProfilePage = () => {
               </Link>
             </div>
 
-            <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-md py-2 p-3">
-              <p className="pt-0 text-white text-sm md:text-md font-bold">
-                {userData && userData?.address}
+            <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-5 p-3">
+              <p className="pt-0 text-white text-sm md:text-md ">
+              <span className="font-bold">Wallet Address: </span>{userData && userData?.address}
               </p>
               <p
                 className="text-white pl-2 cursor-pointer"

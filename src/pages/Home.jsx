@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
 import { RiShareFill } from "react-icons/ri";
-import { setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
+import { setUserClickedWalletAddress, setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
 import Footer from "../layout/Footer";
 
 const EligibilityModal = ({ onClose }) => {
@@ -22,6 +22,7 @@ const EligibilityModal = ({ onClose }) => {
   const [isEligible, setIsEligible] = useState(false);
   const [loading, setLoading] = useState(true);
   const slotsNumber = useSelector((state) => state?.slots);
+  console.log("slotNumber", slotsNumber?.userClickedWalletAddress)
   const [showMiningModal, setShowMiningModal] = useState(false);
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -48,7 +49,7 @@ const EligibilityModal = ({ onClose }) => {
     // First check if the current time slots of user is matched with previous time slots or not.
     if (
       slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate
+      slotsNumber?.userSlotDate === currentDate && slotsNumber?.userClickedWalletAddress
     ) {
       setShowMiningModal(!showMiningModal);
       setLoading(false);
@@ -66,6 +67,7 @@ const EligibilityModal = ({ onClose }) => {
     // save the clicked time slots in state management
     dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
     dispatch(setUserSlotDate(currentDate));
+    dispatch(setUserClickedWalletAddress(walletAddress));
     const apiData = await postMintUser(walletAddress, token);
 
     const signedTransaction = await window.pox.signdata(
@@ -96,7 +98,7 @@ const EligibilityModal = ({ onClose }) => {
         ) : (
           <p className="text-gray-300 mb-6">
             {showMiningModal
-              ? "Your token mining is going on."
+              ? "Your token mining is going on. Wait for your next slot."
               : isEligible
               ? "You are eligible to start mining."
               : "You are not eligible to start mining because you haven't staked 25 POX."}
@@ -111,7 +113,9 @@ const EligibilityModal = ({ onClose }) => {
           onClick={handleStartMining}
           disabled={!isEligible || loading} // Disable the button if not eligible or still loading
         >
-          Start Mining
+           {showMiningModal
+              ? "Okay" : " Start Mining"}
+         
         </button>
       </div>
     </div>
