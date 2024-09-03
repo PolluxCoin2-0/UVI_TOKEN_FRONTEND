@@ -126,6 +126,8 @@ function AppContent() {
         </Routes>
       </div>
       {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
+
+    
     </>
   );
 }
