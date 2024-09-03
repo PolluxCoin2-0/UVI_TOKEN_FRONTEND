@@ -1,5 +1,5 @@
 import { LuCopy } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const isLogin = useSelector((state) => state?.wallet?.login);
   const userData = useSelector((state) => state?.wallet);
+  const isReferralVerified = useSelector((state) => state?.wallet?.dataObject?.isReferralVerify);
   const [userAmount, setUserAmount] = useState(0);
 
   useEffect(() => {
@@ -76,6 +77,17 @@ const ProfilePage = () => {
                 {" "}
                 <LuCopy size={24} />
               </p>
+            </div>
+
+            <div className="flex flex-row justify-between  py-2 p-3">
+              <p className="pt-0 text-white text-sm md:text-md font-bold ">Referral Code Status</p>
+
+
+             <Link to={isReferralVerified ? "" : "/verifyreferral"}>  
+             <button type="" className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold ">
+             {isReferralVerified ? "Verified": "Verify"}
+              </button>
+              </Link>
             </div>
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-md py-2 p-3">

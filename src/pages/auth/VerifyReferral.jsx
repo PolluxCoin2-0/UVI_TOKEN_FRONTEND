@@ -50,6 +50,8 @@ const VerifyReferral = () => {
 
   return (
     <div className="bg-black h-screen w-full flex justify-center items-center relative overflow-hidden py-4 ">
+
+     
       <img
         src={BgRotateImg}
         alt="background"
@@ -57,6 +59,8 @@ const VerifyReferral = () => {
       />
       <div className="bg-black rounded-2xl shadow-custom shadow-gray-800 w-full max-w-md md:max-w-lg lg:max-w-xl p-0 relative z-10 mt-16 md:mt-0 mx-4 md:mx-0 flex flex-col items-center  ">
         {/* connect wallet image */}
+        <p className="text-white text-2xl pt-5 font-bold">Verify Referral Code</p>
+        
         <div>
           <img src={LogoImg} className="" />
         </div>
