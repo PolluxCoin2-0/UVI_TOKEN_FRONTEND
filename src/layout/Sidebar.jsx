@@ -101,7 +101,7 @@ export default function Sidebar() {
             ? "182px"
             : selectedItem === "/roi-calculator"
             ? "224px"
-            : selectedItem === "/blogs"
+            : selectedItem === "/blogs" || selectedItem.startsWith("/blogdetail") 
             ? "306px"
             : selectedItem === "/leaderboard"
             ? "362px"
@@ -185,7 +185,7 @@ export default function Sidebar() {
                 <Link
                   to="/blogs"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-4 ${
-                    selectedItem === "/blogs" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/blogs" || selectedItem.startsWith("/blogdetail")  ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/blogs")}
                 >

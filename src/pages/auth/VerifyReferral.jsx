@@ -11,14 +11,14 @@ const VerifyReferral = () => {
     (state) => state?.wallet?.dataObject?.walletAddress
   );
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
-  const [value, setValue] = useState("");
+  const referredBy = useSelector((state) => state?.wallet?.dataObject?.referredBy);
   const navigate = useNavigate();
 
   const verifyReferralfunc = async () => {
     const referralApi = await postVerifyReferral(
       token,
       walletAddressBySignup,
-      value
+      referredBy
     );
     
     if (referralApi?.data?.trx1) {
@@ -26,37 +26,26 @@ const VerifyReferral = () => {
       const signedTransaction1 = await window.pox.signdata(
         referralApi?.data?.trx1?.transaction
       );
-      console.log("signedTransaction1",signedTransaction1)
 
-     const result1 =  JSON.stringify(
+       JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
       );
-
-      console.log("result1",result1)
 
       // Sign tranaction and broadcast transaction for trx2
       const signedTransaction2 = await window.pox.signdata(
         referralApi?.data?.trx2?.transaction
       );
 
-      console.log("signedTransaction2",signedTransaction2)
-
       
-     const result2 = JSON.stringify(
+       JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
       );
-
-      console.log("result1",result2)
 
       toast.success("Wallet address verified!");
       navigate("/connectwallet");
     } else {
       toast.error("Something went wrong!");
     }
-  };
-
-  const handleChange = (e) => {
-    setValue(e.target.value);
   };
 
   return (
@@ -76,8 +65,7 @@ const VerifyReferral = () => {
           <input
             id="text-input"
             type="text"
-            value={value}
-            onChange={handleChange}
+            value={referredBy}
             className="w-80 md:w-96 px-4 py-3 border  border-gray-300 rounded-lg shadow-sm focus:outline-none  transition duration-150 ease-in-out  "
             placeholder="Enter Wallet Address"
           />
