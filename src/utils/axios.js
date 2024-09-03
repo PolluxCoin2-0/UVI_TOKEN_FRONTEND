@@ -144,3 +144,16 @@ export const postVerifyReferral = async (token, walletAddress, referralCode) => 
   }
 };
 
+export const getProfileDetails = async(token)=>{
+  try {
+    const res = await axios.get(BASE_URL + "/getProfileById",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

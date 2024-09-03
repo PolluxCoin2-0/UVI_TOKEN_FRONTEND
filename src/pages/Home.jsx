@@ -6,7 +6,7 @@ import { BiDollar } from "react-icons/bi";
 import BackgroundImg from "../assets/BGImage.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getVotePower, postMintUser, postUserAmount } from "../utils/axios";
+import { getProfileDetails, getVotePower, postMintUser, postUserAmount } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -22,7 +22,6 @@ const EligibilityModal = ({ onClose }) => {
   const [isEligible, setIsEligible] = useState(false);
   const [loading, setLoading] = useState(true);
   const slotsNumber = useSelector((state) => state?.slots);
-  console.log("slotNumber", slotsNumber?.userClickedWalletAddress)
   const [showMiningModal, setShowMiningModal] = useState(false);
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -125,6 +124,9 @@ const EligibilityModal = ({ onClose }) => {
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [referralAmount, setReferralAmount] = useState(0);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
+
   const walletAddress = useSelector((state) => state.wallet.address);
   const { ref: timerRef, inView: timerInView } = useInView({
     triggerOnce: true,
@@ -138,9 +140,6 @@ const Home = () => {
   const { ref: buttonRef, inView: buttonInView } = useInView({
     triggerOnce: true,
   });
-  const referralAmount = useSelector(
-    (state) => state?.wallet?.dataObject?.referralAmount
-  );
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -150,6 +149,8 @@ const Home = () => {
     const fetchData = async () => {
       const apiData = await postUserAmount(walletAddress);
       setBalance(apiData?.data);
+      const amount = await getProfileDetails(token);
+      setReferralAmount(amount?.data?.referralAmount);
     };
     fetchData();
   }, [walletAddress]);
@@ -248,7 +249,7 @@ const Home = () => {
             <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {balance ? balance * 0.01 : 0}
+                  {balance ? Number(balance * 0.01).toFixed(6) : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Your Coin Worth at Launch
