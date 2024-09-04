@@ -1,30 +1,37 @@
 import { useState, useEffect } from "react";
 
 const CountdownTimer = () => {
-  // Set the target date to August 9th of the current year
-  const targetDate = new Date(new Date().getFullYear(), 8, 9, 0, 0, 0).getTime(); // 7 is August (zero-based)
+  // Determine the start time of the current 24-hour period
+  const startOfDay = new Date().setHours(0, 0, 0, 0);
+
+  // Calculate the current slot based on the current time
+  const now = new Date().getTime();
+  const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+  const slotNumber = Math.floor((now - startOfDay) / slotDuration) + 1;
+
+  // Ensure the slot number is between 1 and 4
+  const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
+
+  // Calculate the start time of the current slot
+  const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
+
+  // Calculate the end time of the current slot
+  const currentSlotEndTime = currentSlotStartTime + slotDuration;
 
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
-    const difference = targetDate - now;
+    const difference = currentSlotEndTime - now;
 
     if (difference > 0) {
-      const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hoursLeft = Math.floor((difference / (1000 * 60 * 60)) % 24);
-      const minutesLeft = Math.floor((difference / (1000 * 60)) % 60);
-      const secondsLeft = Math.floor((difference / 1000) % 60);
-
       return {
-        days: String(daysLeft).padStart(2, "0"),
-        hours: String(hoursLeft).padStart(2, "0"),
-        minutes: String(minutesLeft).padStart(2, "0"),
-        seconds: String(secondsLeft).padStart(2, "0"),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
       };
     }
 
-    // If the target date has passed, return zeroes
+    // If the time is up, return zeroes
     return {
-      days: "00",
       hours: "00",
       minutes: "00",
       seconds: "00",
@@ -41,45 +48,32 @@ const CountdownTimer = () => {
 
     // Clear interval on component unmount
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [currentSlotEndTime]);
 
   return (
     <div className="flex items-start justify-center w-full gap-3 count-down-main">
-      {/* Show Days */}
-      <div className="timer w-5">
-        <div>
-          <h3 className="countdown-element days font-semibold text-2xl md:text-3xl text-white">
-            {timeLeft.days}
-          </h3>
-        </div>
-      </div>
-      <h3 className="font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
-
-      {/* Show Hours */}
       <div className="timer w-5">
         <div>
           <h3 className="countdown-element hours font-semibold text-2xl md:text-3xl text-white">
-            {timeLeft.hours}
+            {String(timeLeft.hours).padStart(2, "0")}
           </h3>
         </div>
       </div>
       <h3 className="font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
 
-      {/* Show Minutes */}
       <div className="timer w-5">
         <div>
           <h3 className="countdown-element minutes font-semibold text-2xl md:text-3xl text-white">
-            {timeLeft.minutes}
+            {String(timeLeft.minutes).padStart(2, "0")}
           </h3>
         </div>
       </div>
       <h3 className="font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
 
-      {/* Show Seconds */}
       <div className="timer w-5">
         <div>
           <h3 className="countdown-element seconds font-semibold text-2xl md:text-3xl text-white">
-            {timeLeft.seconds}
+            {String(timeLeft.seconds).padStart(2, "0")}
           </h3>
         </div>
       </div>
