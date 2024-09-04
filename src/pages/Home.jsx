@@ -237,7 +237,7 @@ const Home = () => {
                   {balance ? Number(balance).toFixed(6) : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
-                  Your Total Uvi Balance
+                  Your Mint Balance
                 </p>
               </div>
               <div className="text-white">
@@ -267,7 +267,23 @@ const Home = () => {
                   { referralAmount > 0 ? referralAmount : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
-                  Your Referral Earnings
+                  Mining Referral Earnings
+                </p>
+              </div>
+              <div className="text-white">
+                <RiShareFill size={24} />
+              </div>
+            </div>
+            
+
+            {/* SignUp Bonus */}
+            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+              <div>
+                <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+                  { referralAmount > 0 ? referralAmount : 0}
+                </p>
+                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
+                  SignUp Bonus
                 </p>
               </div>
               <div className="text-white">
