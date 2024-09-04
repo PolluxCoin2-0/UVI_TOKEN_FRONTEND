@@ -149,7 +149,7 @@ export default function Sidebar() {
 
               <li className="px-6">
                 <Link
-                  to="/buycoin"
+                  // to="/buycoin"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-2 ${
                     selectedItem === "/buycoin" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
@@ -166,7 +166,7 @@ export default function Sidebar() {
 
               <li className="px-6">
                 <Link
-                  to=""
+                  // to=""
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-3 ${
                     selectedItem === "/roi-calculator" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}

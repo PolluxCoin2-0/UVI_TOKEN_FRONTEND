@@ -2,18 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentSlotNumber } from "../redux/slice/SlotsSlice";
 
-const intervals = Array.from({ length: 48 }, (_, i) => {
-  const startMinutes = i * 30;
-  const endMinutes = startMinutes + 30;
-  return {
-    label: `Slot No: ${i + 1}/48 (${Math.floor(startMinutes / 60)}:${startMinutes % 60 === 0 ? '00' : startMinutes % 60} - ${Math.floor(endMinutes / 60)}:${endMinutes % 60 === 0 ? '00' : endMinutes % 60})`,
-    value: endMinutes,
-    color: `hsl(${(i * 360) / 48}, 70%, 60%)`, // Generate color for each slot
-    bgColor: `rgba(${(i * 255) / 48}, ${(255 - (i * 255) / 48)}, ${(i * 255) / 48}, 0.3)` // Generate background color for each slot
-  };
-});
+const intervals = [
+  { label: "Slot No: 1/4 (0-6 hours)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
+  { label: "Slot No: 2/4 (6-12 hours)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
+  { label: "Slot No: 3/4 (12-18 hours)", value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
+  { label: "Slot No: 4/4 (18-24 hours)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
+];
 
-const calculatePercentage = (minutes, end) => Math.min((minutes / end) * 100, 100);
+const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
 
 const TimelineProgressBar = () => {
   const dispatch = useDispatch();
@@ -27,7 +23,7 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const getMinutesPassedSinceMidnight = () => {
+  const getHoursPassedSinceMidnight = () => {
     const now = currentTime;
     const midnight = new Date(
       now.getFullYear(),
@@ -38,39 +34,39 @@ const TimelineProgressBar = () => {
       0
     );
     const diff = now - midnight;
-    return diff / (1000 * 60); // Convert to minutes
+    return diff / (1000 * 60 * 60);
   };
 
-  const minutesPassed = getMinutesPassedSinceMidnight();
+  const hoursPassed = getHoursPassedSinceMidnight();
 
-  // Determine the current time slot number based on the minutes passed
-  const determineCurrentSlotNumber = () => {
-    const currentSlotIndex = intervals.findIndex((interval, index) => {
-      const start = index === 0 ? 0 : intervals[index - 1].value;
-      return minutesPassed >= start && minutesPassed < interval.value;
-    });
+// Determine the current time slot number based on the hours passed
+const determineCurrentSlotNumber = () => {
+  const currentSlotIndex = intervals.findIndex((interval, index) => {
+    const start = index === 0 ? 0 : intervals[index - 1].value;
+    return hoursPassed >= start && hoursPassed < interval.value;
+  });
 
-    if (currentSlotIndex !== -1) {
-      const slotNumber = currentSlotIndex + 1; // Slot numbers are 1-based (1, 2, ..., 48)
-      dispatch(setCurrentSlotNumber(slotNumber)); // Dispatch the current slot number
-    }
-  };
+  if (currentSlotIndex !== -1) {
+    const slotNumber = currentSlotIndex + 1; // Slot numbers are 1-based (1, 2, 3, 4)
+    dispatch(setCurrentSlotNumber(slotNumber)); // Dispatch the current slot number
+  }
+};
 
-  // Calculate the current slot number whenever the time updates
-  useEffect(() => {
-    determineCurrentSlotNumber();
-  }, [minutesPassed]);
+// Calculate the current slot number whenever the time updates
+useEffect(() => {
+  determineCurrentSlotNumber();
+}, [hoursPassed]);
 
   return (
     <>
       <p className="text-white text-md md:text-xl font-semibold pb-2 text-center py-8">
         Current Time Slot Progress
       </p>
-      <div className="grid grid-cols-2 gap-4 md:gap-4 md:grid-cols-6 lg:grid-cols-12 my-2">
+      <div className="grid grid-cols-2 gap-4 md:gap-4 md:grid-cols-4 my-2">
         {/* Slots */}
         {intervals.map((interval, index) => {
           const start = index === 0 ? 0 : intervals[index - 1].value;
-          const percentage = calculatePercentage(minutesPassed - start, interval.value - start);
+          const percentage = calculatePercentage(hoursPassed - start, interval.value - start);
           const completedColor = interval.color;
           const remainingColor = interval.bgColor;
 
@@ -103,7 +99,7 @@ const TimelineProgressBar = () => {
                   className="inline-block w-2 md:w-3 h-2 md:h-3 rounded-full"
                   style={{ backgroundColor: completedColor }}
                 ></span>
-                <span className="text-white text-[10px] md:text-xs lg:text-sm font-medium ml-2">
+                <span className="text-white text-[11px] md:text-sm font-medium ml-2">
                   {interval.label}
                 </span>
               </div>

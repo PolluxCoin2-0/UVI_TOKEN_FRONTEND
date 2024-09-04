@@ -168,7 +168,7 @@ const Home = () => {
           <div
             ref={timerRef}
             className={`absolute left-1/2 transform -translate-x-1/2 bg-[#1B1B1B] bg-opacity-30
-          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[6%] md:h-[6%] lg:h-[8%] xl:h-[9%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
+          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[7%] md:h-[7%] lg:h-[7%] xl:h-[9%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
           ${timerInView ? "animate-pop-in" : ""}
           `}
             style={{
@@ -177,7 +177,7 @@ const Home = () => {
             }}
           >
             <CountdownTimer />
-            <p className="text-gray-400 text-center">Remaining Time</p>
+            <p className="text-gray-400 text-center pt-1">Minting Starts In:</p>
             <p className="border-[1px] px-14 mt-2"></p>
           </div>
 
@@ -249,7 +249,7 @@ const Home = () => {
             <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {balance ? Number(balance * 0.01).toFixed(6) : 0}
+                  {balance ? Number(balance * 0.05).toFixed(6) : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Your Coin Worth at Launch
@@ -264,7 +264,7 @@ const Home = () => {
             <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
               <div>
                 <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {referralAmount && referralAmount > 0 && referralAmount}
+                  { referralAmount > 0 ? referralAmount : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
                   Your Referral Earnings
