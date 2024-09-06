@@ -13,7 +13,8 @@ const CountdownTimer = () => {
   const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
 
   // Calculate the start time and end time of the current slot
-  const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
+  const currentSlotStartTime =
+    startOfDay + (currentSlotNumber - 1) * slotDuration;
   const currentSlotEndTime = currentSlotStartTime + slotDuration;
 
   // Function to calculate the remaining time
@@ -38,7 +39,11 @@ const CountdownTimer = () => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [animationTrigger, setAnimationTrigger] = useState({ seconds: false, minutes: false, hours: false });
+  const [animationTrigger, setAnimationTrigger] = useState({
+    seconds: false,
+    minutes: false,
+    hours: false,
+  });
 
   const prevTimeLeft = useRef(timeLeft);
 
@@ -51,7 +56,11 @@ const CountdownTimer = () => {
   }, [currentSlotEndTime]);
 
   useEffect(() => {
-    const newAnimationTrigger = { seconds: false, minutes: false, hours: false };
+    const newAnimationTrigger = {
+      seconds: false,
+      minutes: false,
+      hours: false,
+    };
 
     if (prevTimeLeft.current.seconds !== timeLeft.seconds) {
       newAnimationTrigger.seconds = true;
@@ -81,10 +90,12 @@ const CountdownTimer = () => {
       <div className="flex items-start justify-center w-full gap-4">
         {/* Hours Section */}
         <div className="flex flex-col items-center space-y-1">
-          <div className="timer w-5">
-            <h3 className={`countdown-element hours font-semibold text-2xl md:text-5xl text-white share-tech-regular ${animationTrigger.hours ? 'animated' : ''}`}>
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-5 text-5xl font-medium ${animationTrigger.hours ? 'animated' : ''}`}>
               {String(timeLeft.hours).padStart(2, "0")}
-            </h3>
+            </p>
           </div>
           <span className="text-white text-base font-normal share-tech-regular">
             Hours
@@ -96,10 +107,12 @@ const CountdownTimer = () => {
 
         {/* Minutes Section */}
         <div className="flex flex-col items-center space-y-1">
-          <div className="timer w-5">
-            <h3 className={`countdown-element minutes font-semibold text-2xl md:text-5xl text-white share-tech-regular ${animationTrigger.minutes ? 'animated' : ''}`}>
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-4 text-5xl font-medium ${animationTrigger.minutes ? 'animated' : ''}`}>
               {String(timeLeft.minutes).padStart(2, "0")}
-            </h3>
+            </p>
           </div>
           <span className="text-white text-base font-normal share-tech-regular">
             Minutes
@@ -111,10 +124,12 @@ const CountdownTimer = () => {
 
         {/* Seconds Section */}
         <div className="flex flex-col items-center space-y-1">
-          <div className="timer w-5">
-            <h3 className={`countdown-element seconds font-semibold text-2xl md:text-5xl text-white share-tech-regular ${animationTrigger.seconds ? 'animated' : ''}`}>
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-5 text-5xl font-medium ${animationTrigger.seconds ? 'animated' : ''}`}>
               {String(timeLeft.seconds).padStart(2, "0")}
-            </h3>
+            </p>
           </div>
           <span className="text-white text-base font-normal share-tech-regular">
             Seconds

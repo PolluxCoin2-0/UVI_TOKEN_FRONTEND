@@ -157,11 +157,6 @@ const Home = () => {
 
   return (
     <div className="bg-black w-full min-h-screen relative pb-0">
-      <img
-        src={BackgroundImg}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
-      />
       <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
           {/* Video */}
