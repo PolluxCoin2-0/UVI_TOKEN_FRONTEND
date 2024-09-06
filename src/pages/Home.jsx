@@ -48,7 +48,7 @@ const EligibilityModal = ({ onClose }) => {
     // First check if the current time slots of user is matched with previous time slots or not.
     if (
       slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate && slotsNumber?.userClickedWalletAddress
+      slotsNumber?.userSlotDate === currentDate 
     ) {
       setShowMiningModal(!showMiningModal);
       setLoading(false);
@@ -162,29 +162,12 @@ const Home = () => {
         alt="background"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
       />
-      <div className=" relative z-10">
+      <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
-          {/* Timer */}
-          <div
-            ref={timerRef}
-            className={`absolute left-1/2 transform -translate-x-1/2 bg-[#1B1B1B] bg-opacity-30
-          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[7%] md:h-[7%] lg:h-[7%] xl:h-[9%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
-          ${timerInView ? "animate-pop-in" : ""}
-          `}
-            style={{
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)", // For Safari
-            }}
-          >
-            <CountdownTimer />
-            <p className="text-gray-400 text-center pt-1">Minting Starts In:</p>
-            <p className="border-[1px] px-14 mt-2"></p>
-          </div>
-
           {/* Video */}
           <div
             ref={videoRef}
-            className={`border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[200px] md:h-[330px] top-16 md:top-20 flex items-center justify-center relative
+            className={`border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
           ${videoInView ? "animate-pop-in" : ""}
           `}
           >
@@ -199,10 +182,16 @@ const Home = () => {
             </video>
           </div>
 
-          {/* Timeline */}
+           {/* CountDown Timer */}
+           <div className="flex flex-col items-center text-white font-bold text-2xl mt-4 md:mt-6">
+            <p>Next Slot  will be in:</p>
+            <CountdownTimer />
+          </div>
+
+          {/* Time Slots */}
           <div
             ref={timelineRef}
-            className={`mt-12 md:mt-20
+            className={`
           ${timelineInView ? "animate-pop-in" : ""}
           `}
           >
@@ -267,12 +256,12 @@ const Home = () => {
                   { referralAmount > 0 ? referralAmount : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
-                  Mining Referral Earnings
+                  Referral Token
                 </p>
               </div>
-              <div className="text-white">
+              {/* <div className="text-white">
                 <RiShareFill size={24} />
-              </div>
+              </div> */}
             </div>
             
 
@@ -286,9 +275,9 @@ const Home = () => {
                   SignUp Bonus
                 </p>
               </div>
-              <div className="text-white">
+              {/* <div className="text-white">
                 <RiShareFill size={24} />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

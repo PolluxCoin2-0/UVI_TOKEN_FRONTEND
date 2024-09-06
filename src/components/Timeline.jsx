@@ -62,7 +62,7 @@ useEffect(() => {
       <p className="text-white text-md md:text-xl font-semibold pb-2 text-center py-8">
         Current Time Slot Progress
       </p>
-      <div className="grid grid-cols-2 gap-4 md:gap-4 md:grid-cols-4 my-2">
+      <div className="grid grid-cols-2 gap-4 md:gap-4 md:grid-cols-4 mt-4 mb-2">
         {/* Slots */}
         {intervals.map((interval, index) => {
           const start = index === 0 ? 0 : intervals[index - 1].value;

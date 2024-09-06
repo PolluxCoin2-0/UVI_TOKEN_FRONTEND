@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { IoIosArrowForward } from "react-icons/io";
 import { getCountOfUsers } from "../utils/axios";
 import { AiOutlineClose } from "react-icons/ai";
 import { formatNumberWithCommas } from "../utils/formatNumberWithCommas";
@@ -45,18 +44,16 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
   const [sliderPosition, setSliderPosition] = useState(0);
   const [userCountModal, setUserCountModal] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true); // State to control slider disabled status
   const buttonRef = useRef(null);
   const { ref, inView } = useInView({ triggerOnce: true });
 
   const handleStart = (e) => {
-    if (isDisabled) return; // Prevent start if slider is disabled
     e.preventDefault();
     setIsDragging(true);
   };
 
   const handleEnd = () => {
-    if (isDragging && !isDisabled) {
+    if (isDragging) {
       const buttonWidth = buttonRef.current.clientWidth;
       if (sliderPosition >= buttonWidth - 48) {
         // Execute function when slider reaches the end
@@ -76,7 +73,7 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const handleMove = (e) => {
-    if (!isDragging || isDisabled) return; // Prevent move if slider is disabled
+    if (!isDragging) return;
 
     const buttonRect = buttonRef.current.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -113,7 +110,7 @@ const SliderButton = ({ isModalOpen, setIsModalOpen }) => {
       >
         <div
           ref={buttonRef}
-          className={`relative w-96 h-16 bg-[#1f1e1e] rounded-full overflow-hidden select-none cursor-pointer ${inView ? 'animate-slide-up' : ''} ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`relative w-96 h-16 bg-[#1f1e1e] rounded-full overflow-hidden select-none cursor-pointer ${inView ? 'animate-slide-up' : ''}`}
           style={{ 
             boxShadow: "0 0 15px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.4)"
           }}

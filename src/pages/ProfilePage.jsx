@@ -79,16 +79,20 @@ const ProfilePage = () => {
               </p>
             </div>
 
-            <div className="flex flex-row justify-between  py-2 p-3">
-              <p className="pt-0 text-white text-sm md:text-md"><span className="font-bold">Referral Code Status: </span>{userData && userData?.dataObject?.referredBy}</p>
+            {userData?.dataObject?.referredBy && 
+             <div className="flex flex-row justify-between  py-2 p-3">
+             <p className="pt-0 text-white text-sm md:text-md"><span className="font-bold">Referral Code Status: </span>{userData && userData?.dataObject?.referredBy}</p>
 
 
-             <Link to={isReferralVerified ? "" : "/verifyreferral"}>  
-             <button type="" className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold ">
-             {isReferralVerified ? "Verified": "Verify"}
-              </button>
-              </Link>
-            </div>
+            <Link to={isReferralVerified ? "" : "/verifyreferral"}>  
+            <button type="" className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold ">
+            {isReferralVerified ? "Verified": "Verify"}
+             </button>
+             </Link>
+           </div>
+            }
+
+           
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-5 p-3">
               <p className="pt-0 text-white text-sm md:text-md ">
