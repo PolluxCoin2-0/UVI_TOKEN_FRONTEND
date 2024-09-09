@@ -225,6 +225,48 @@
 }
 
 
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button .water-initial {
+  height: 10%; /* Initial water level */
+  transform: scaleY(0);
+}
+
+button .water-rise {
+  height: 100%; /* Water rises to the top */
+  transform: scaleY(1);
+}
+
+button .wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 150, 255, 0.6); /* Water color */
+  transform-origin: bottom;
+  clip-path: polygon(0 100%, 100% 100%, 100% 0%, 0 0%);
+  animation: wave-motion 4s ease-in-out infinite;
+}
+
+/* Smooth wave motion */
+@keyframes wave-motion {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-10%) scaleY(1.1);
+  }
+  100% {
+    transform: translateY(-20%) scaleY(1);
+  }
+}
+
+
+
 
 
 

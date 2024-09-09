@@ -40,11 +40,6 @@ const ProfilePage = () => {
     <div>
       {/* Profile */}
       <div className="bg-black w-full h-screen  xl:px-20 relative">
-        <img
-          src={BackgroundImg}
-          alt="background"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
-        />
 
         <div className="px-4 md:px-12 relative z-10">
           <p className="text-white text-xl font-semibold pt-10 ">Profile</p>

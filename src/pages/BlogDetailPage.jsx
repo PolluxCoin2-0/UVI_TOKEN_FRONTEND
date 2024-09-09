@@ -6,11 +6,6 @@ const BlogDetailPage = () => {
     <div>
       {/* Blog Detail Page */}
       <div className="bg-black w-full h-full relative px-5 md:px-10 lg:px-14 xl:px-20 pb-20">
-        <img
-          src={BackgroundImg}
-          alt="background"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
-        />
 
         <div className="relative z-10">
           <p className="text-center text-white pt-8 text-2xl xl:text-3xl font-bold ">

@@ -6,11 +6,6 @@ const TransactionPage = () => {
     <div>
       {/* Transaction content */}
       <div className="bg-black w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20">
-        <img
-          src={BackgroundImg}
-          alt="background"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
-        />
 
         <div className="px-2 md:px-12 relative z-10">
           <p className="text-white text-2xl font-semibold mb-6 ">

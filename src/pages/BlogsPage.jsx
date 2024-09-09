@@ -5,11 +5,6 @@ import Blog1Img from "../assets/Blog1Img.jpg";
 const BlogsPage = () => {
   return (
     <div className="bg-black w-full min-h-screen relative px-6 xl:px-8 pb-20">
-      <img
-        src={BackgroundImg}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
-      />
       <div className="relative z-10">
         <p className="text-center text-white pt-8 text-3xl font-bold relative z-10">
           Blogs

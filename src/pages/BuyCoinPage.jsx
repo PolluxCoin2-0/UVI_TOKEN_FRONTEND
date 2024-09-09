@@ -28,11 +28,6 @@ const BuyCoin = () => {
 
   return (
     <div className="bg-black  w-full h-full relative overflow-hidden px-5 md:px-4 lg:px-4 xl:px-6 pb-20">
-      <img
-        src={BackgroundImg}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
-      />
 
       <div className="relative z-10">
         <p className="text-3xl font-bold text-white flex justify-center mt-5">

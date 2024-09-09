@@ -78,7 +78,7 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-[#000000] transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-[#151515] transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 sidebar lg:relative`}
       >
@@ -93,7 +93,7 @@ export default function Sidebar() {
         height: 0;
         border-top: 20px solid transparent; /* Creates the arrow effect */
         border-bottom: 20px solid transparent;
-        border-right: 12px solid #151515;
+        border-right: 12px solid #000000; 
         top: ${
           selectedItem === "/"
             ? "125px"

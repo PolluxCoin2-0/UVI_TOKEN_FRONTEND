@@ -161,21 +161,23 @@ const Home = () => {
         <div className="px-5 md:px-8 lg:px-6">
           {/* Video */}
           <div
-            ref={videoRef}
-            className={`border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
-          ${videoInView ? "animate-pop-in" : ""}
-          `}
-          >
-            <video
-              className="w-full h-full object-cover rounded-2xl"
-              autoPlay
-              loop
-              muted
-            >
-              <source src={HeroVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+  ref={videoRef}
+  className={`relative rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
+    ${videoInView ? "animate-pop-in" : ""}
+  `}
+>
+  <div className="absolute inset-0 rounded-2xl border-[4px] border-black blur-sm"></div>
+  <video
+    className="w-full h-full object-cover rounded-2xl"
+    autoPlay
+    loop
+    muted
+  >
+    <source src={HeroVideo} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
 
            {/* CountDown Timer */}
            <div className="flex flex-col items-center text-white font-bold text-2xl mt-4 md:mt-6">
