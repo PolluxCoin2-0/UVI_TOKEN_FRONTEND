@@ -1,6 +1,5 @@
 import { LuCopy } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
-import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -10,7 +9,9 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const isLogin = useSelector((state) => state?.wallet?.login);
   const userData = useSelector((state) => state?.wallet);
-  const isReferralVerified = useSelector((state) => state?.wallet?.dataObject?.isReferralVerify);
+  const isReferralVerified = useSelector(
+    (state) => state?.wallet?.dataObject?.isReferralVerify
+  );
   const [userAmount, setUserAmount] = useState(0);
 
   useEffect(() => {
@@ -40,10 +41,7 @@ const ProfilePage = () => {
     <div>
       {/* Profile */}
       <div className="bg-[#0E0E0E] w-full h-screen  xl:px-20 relative">
-
-      <div className="px-4 md:px-12 relative z-10">
-
-
+        <div className="px-4 md:px-12 relative z-10">
           <p className="text-white text-xl font-semibold pt-10 ">Profile</p>
 
           <div className="bg-[#141414] bg-opacity-5 shadow-inner shadow-gray-600 w-full h-auto rounded-3xl mt-5 pt-5">
@@ -52,7 +50,6 @@ const ProfilePage = () => {
                 <p className="text-white text-lg font-bold">
                   {userData && userData?.dataObject?.email}
                 </p>
-                <p className=" text-sm text-[#8C8B8B] pt-1 pb-14">Rank: 105</p>
               </div>
 
               <div className="flex flex-col items-start md:items-end pl-5 md:pl-0 pr-5 mt-8 md:mt-0">
@@ -63,26 +60,28 @@ const ProfilePage = () => {
               </div>
             </div>
 
-          
+            {userData?.dataObject?.referredBy && (
+              <div className="flex flex-row justify-between  py-2 p-3">
+                <p className="pt-0 text-white text-sm md:text-md">
+                  <span className="font-bold">Referral Code Status: </span>
+                  {userData && userData?.dataObject?.referredBy}
+                </p>
 
-            {userData?.dataObject?.referredBy && 
-             <div className="flex flex-row justify-between  py-2 p-3">
-             <p className="pt-0 text-white text-sm md:text-md"><span className="font-bold">Referral Code Status: </span>{userData && userData?.dataObject?.referredBy}</p>
-
-
-            <Link to={isReferralVerified ? "" : "/verifyreferral"}>  
-            <button type="" className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold ">
-            {isReferralVerified ? "Verified": "Verify"}
-             </button>
-             </Link>
-           </div>
-            }
-
-           
+                <Link to={isReferralVerified ? "" : "/verifyreferral"}>
+                  <button
+                    type=""
+                    className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold "
+                  >
+                    {isReferralVerified ? "Verified" : "Verify"}
+                  </button>
+                </Link>
+              </div>
+            )}
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-4 p-3 ">
               <p className="pt-0 text-white text-sm md:text-md ">
-              <span className="text-lg  font-bold">Wallet Address: </span>{userData && userData?.address}
+                <span className="text-lg  font-bold">Wallet Address: </span>
+                {userData && userData?.address}
               </p>
               <p
                 className="text-white text-lg  pl-2 cursor-pointer"
@@ -92,16 +91,14 @@ const ProfilePage = () => {
                 <LuCopy size={24} />
               </p>
             </div>
-</div>
+          </div>
 
-           {/* Your Referral Section */}
+          {/* Your Referral Section */}
           <div className="bg-[#141414] bg-opacity-5  shadow-inner shadow-gray-600 w-full h-auto rounded-3xl mt-10  p-5 ">
-
-          <p className="text-white text-xl font-semibold">Your Referral </p>
-           <div className=" flex flex-row justify-between mt-10 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
-     
+            <p className="text-white text-xl font-semibold">Your Referral </p>
+            <div className=" flex flex-row justify-between mt-10 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
               <p className="pt-0  text-[#6A6A6A] text-sm md:text-md font-bold ">
-               ....Your referral link
+                {`https://uvitoken.netlify.app/referral/${userData?.address}`}
               </p>
               <p
                 className="text-white pl-2 cursor-pointer"
@@ -114,31 +111,31 @@ const ProfilePage = () => {
 
             <div className="flex flex-row justify-start space-x-6 w-full pt-8">
               <div className="w-[50%]">
-                <p className="text-white text-xl font-semibold">Referral Address</p>
+                <p className="text-white text-xl font-semibold">
+                  Referral Address
+                </p>
 
                 <div className="pt-2">
-                <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">feavgsderbhfrbg</p>
+                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">
+                    feavgsderbhfrbg
+                  </p>
                 </div>
-
               </div>
 
               <div className="w-[50%]">
-                <p className="text-white text-xl font-semibold ">Referral Amount</p>
+                <p className="text-white text-xl font-semibold ">
+                  Referral Amount
+                </p>
                 <div className="pt-2">
-                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">10 UVI</p>
-                  
+                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
+                    10 UVI
+                  </p>
                 </div>
               </div>
             </div>
-      </div>
+          </div>
         </div>
-
-    
       </div>
-      
-    
-      
-      
     </div>
   );
 };

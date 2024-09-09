@@ -83,7 +83,7 @@ const LeaderBoard = () => {
                 
                 )}
                 <div>
-                  <p
+                  {/* <p
                     className={`${
                       index === 0
                         ? "text-black text-2xl lg:text-xl xl:text-4xl font-bold"
@@ -91,8 +91,8 @@ const LeaderBoard = () => {
                     }`}
                   >
                     {data?.email}
-                  </p>
-                  <p className={`pt-1 ${index === 0 ? "text-black" : "text-[#8C8B8B]"}`}>
+                  </p> */}
+                  <p className={`pt-1 ${index === 0 ? "text-black text-2xl lg:text-xl xl:text-3xl font-bold" : "text-white text-lg lg:text-lg xl:text-xl font-semibold"}`}>
                     {data?.walletAddress}
                   </p>
                 </div>

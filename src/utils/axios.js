@@ -115,7 +115,7 @@ export const postMintUser = async (walletAddress, token) => {
 // USER AMOUNT
 export const postUserAmount = async (walletAddress) => {
   try {
-    const res = await axios.post(BASE_URL + "/getBalanceOf", {
+    const res = await axios.post(BASE_URL + "/getTotalMintedUser", {
       walletAddress: walletAddress,
     });
     return res?.data;
@@ -177,6 +177,87 @@ export const getReferralBalance = async(walletAddress)=>{
   try {
     const res = await axios.post(BASE_URL + "/getReferralRewards",{
       "walletAddress":walletAddress
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getTransactionResult = async (transactionId) => {
+  try {
+    const res = await axios.post(BASE_URL + `/chaintransactionById`, {
+      value: transactionId,
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Save create mining data to database
+export const saveUserMinigData = async(token, trxId, walletAddress, status)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/createMint",{
+      "trxId": trxId,
+      "walletAddress": walletAddress,
+      "to": "PAxZmTCTKAbSvc4Y2H4WdZrtWWwsHsbUzg",
+      "amount": 25,
+      "status": status
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Distribute referral rewards
+export const postDistributeReferralRewards = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/distributeReferralRewards", {
+      "walletAddress": walletAddress
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get all transaction
+export const getAllTransactions = async()=>{
+  try {
+    const res = await axios.get(BASE_URL + "/getAllMintTransactions");
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get users transactions 
+export const getUserTransactions = async(token)=>{
+  try {
+    const res = await axios.get(BASE_URL + `/getAllUserTransactions?search=`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Update token Balance
+export const updateBalance = async(token)=>{
+  try {
+    const res = await axios.put(BASE_URL + "/updateTokenBalance",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
     return res?.data;
   } catch (error) {

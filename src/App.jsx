@@ -26,6 +26,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import Footer from "../src/layout/Footer";
+import VerifyReferral from "./pages/auth/VerifyReferral";
 
 const EligibilityModal = ({ onClose }) => {
   return (
@@ -129,8 +130,11 @@ function AppContent() {
           <Route path="/blogdetail/:id" element={<BlogDetailPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/transaction" element={<TransactionPage />} />
+          <Route path="/transaction/alllivetransaction" element={<TransactionPage />} />
+          <Route path="/transaction/usertransaction" element={<TransactionPage />} />
           <Route path="/sidebar" element={<Sidebar />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
+          <Route path="/verifyreferral" element={<VerifyReferral />} />
           <Route path="/footer" element={<Footer/>} />
         </Routes>
       </div>

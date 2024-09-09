@@ -113,7 +113,7 @@ export default function Sidebar() {
             ? "306px"
             : selectedItem === "/leaderboard"
             ? "362px"
-            : selectedItem === "/transaction"
+            : selectedItem === "/transaction" || selectedItem.startsWith("/transaction/usertransaction")  || selectedItem.startsWith("/transaction/alllivetransaction")
             ? "422px"
             : selectedItem === "/profile"
             ? "485px"
@@ -246,7 +246,7 @@ export default function Sidebar() {
                 <Link
                   to="/transaction"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-6 ${
-                    selectedItem === "/transaction"
+                    selectedItem === "/transaction" || selectedItem.startsWith("/transaction/usertransaction")  || selectedItem.startsWith("/transaction/alllivetransaction")
                       ? "bg-[#F3BB1C] text-black font-semibold"
                       : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
@@ -268,7 +268,7 @@ export default function Sidebar() {
               {/* Modal */}
 
               <div className="ml-14 border-l-[1px] border-gray-500 mt-4">
-                <Link to="/transaction">
+                <Link to="/transaction/alllivetransaction">
                   <p
                     className={`text-md pl-4 pt-0 cursor-pointer ${
                       activeTab === "live" ? "text-white" : "text-gray-400"
@@ -279,7 +279,7 @@ export default function Sidebar() {
                   </p>
                 </Link>
 
-                <Link to="/transaction">
+                <Link to="/transaction/usertransaction">
                   <p
                     className={`text-md pl-4 pt-8 cursor-pointer ${
                       activeTab === "my" ? "text-white" : "text-gray-400"

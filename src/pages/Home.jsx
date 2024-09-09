@@ -2,22 +2,23 @@ import { useInView } from "react-intersection-observer";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdArrowForward, MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { BiDollar } from "react-icons/bi";
-import BackgroundImg from "../assets/BGImage.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  getProfileDetails,
+  getLeaderboardStats,
   getReferralBalance,
+  getTransactionResult,
   getVotePower,
+  postDistributeReferralRewards,
   postMintUser,
   postUserAmount,
+  saveUserMinigData,
+  updateBalance,
 } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
-import { RiExchangeDollarLine, RiShareFill } from "react-icons/ri";
+import { RiExchangeDollarLine } from "react-icons/ri";
 import {
   setUserClickedWalletAddress,
   setUserSlotDate,
@@ -27,114 +28,14 @@ import Footer from "../layout/Footer";
 import { TbPigMoney } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
-const EligibilityModal = ({ onClose }) => {
-  const dispatch = useDispatch();
-  const walletAddress = useSelector((state) => state.wallet.address);
-  const token = useSelector((state) => state?.wallet?.dataObject?.token);
-  const [isEligible, setIsEligible] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const slotsNumber = useSelector((state) => state?.slots);
-  const [showMiningModal, setShowMiningModal] = useState(false);
-  const currentDate = new Date().toISOString().split("T")[0];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const votePower = await getVotePower(walletAddress);
-        const totalAmount =
-          votePower.data.frozenV2.reduce(
-            (sum, item) => sum + (item.amount || 0),
-            0
-          ) /
-          10 ** 6;
-        if (totalAmount >= 25) {
-          setIsEligible(true);
-        }
-      } catch (error) {
-        console.error("Error fetching vote power:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // First check if the current time slots of user is matched with previous time slots or not.
-    if (
-      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate
-    ) {
-      setShowMiningModal(!showMiningModal);
-      setLoading(false);
-    } else {
-      fetchData();
-    }
-  }, [walletAddress]);
-
-  const handleStartMining = async () => {
-    if (!walletAddress) {
-      toast.error("Connect your wallet.");
-      return;
-    }
-
-    // save the clicked time slots in state management
-    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
-    dispatch(setUserSlotDate(currentDate));
-    dispatch(setUserClickedWalletAddress(walletAddress));
-    const apiData = await postMintUser(walletAddress, token);
-
-    const signedTransaction = await window.pox.signdata(
-      apiData?.data?.transaction
-    );
-
-    JSON.stringify(
-      await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-    );
-
-    toast.success("Your mining has started.");
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50  ">
-      <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full ">
-        {/* Close Icon */}
-        <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
-          onClick={onClose}
-        >
-          <AiOutlineClose size={24} />
-        </button>
-        <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
-        {loading ? (
-          <p className="text-gray-300 mb-6">Checking eligibility...</p>
-        ) : (
-          <p className="text-gray-300 mb-6">
-            {showMiningModal
-              ? "Your token mining is going on. Wait for your next slot."
-              : isEligible
-              ? "You are eligible to start mining."
-              : "You are not eligible to start mining because you haven't staked 25 POX."}
-          </p>
-        )}
-        <button
-          className={`w-full py-3 ${
-            isEligible
-              ? "bg-yellow-500 hover:bg-yellow-600"
-              : "bg-gray-500 cursor-not-allowed"
-          } text-black font-semibold rounded transition duration-300`}
-          onClick={handleStartMining}
-          disabled={!isEligible || loading} // Disable the button if not eligible or still loading
-        >
-          {showMiningModal ? "Okay" : " Start Mining"}
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
+  const [leaderBoardData, setLeaderBoardData] = useState([]);
+  const [userleaderBoardData, setUserLeaderBoardData] = useState([]);
+  const slotsNumber = useSelector((state) => state?.slots);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
 
   const walletAddress = useSelector((state) => state.wallet.address);
   const { ref: timerRef, inView: timerInView } = useInView({
@@ -150,24 +51,107 @@ const Home = () => {
     triggerOnce: true,
   });
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const apiData = await postUserAmount(walletAddress);
       setBalance(apiData?.data);
       const amount = await getReferralBalance(walletAddress);
       setReferralAmount(amount?.data);
+      const leaderboard = await getLeaderboardStats(walletAddress);
+      setLeaderBoardData(leaderboard?.data);
+      const filteredResult = leaderboard?.data.filter((item) => item.walletAddress === walletAddress);
+      setUserLeaderBoardData(filteredResult)
     };
     fetchData();
   }, [walletAddress]);
 
+  const handleTapMining = async () => {
+    const currentDate = new Date().toISOString().split("T")[0];
+    if (!walletAddress) {
+      toast.error("Connect your wallet.");
+      return;
+    }
+
+    const votePower = await getVotePower(walletAddress);
+    const totalAmount =
+      votePower.data.frozenV2.reduce(
+        (sum, item) => sum + (item.amount || 0),
+        0
+      ) /
+      10 ** 6;
+    if (totalAmount < 25) {
+      toast.error("Insufficient stake amount !");
+      return;
+    }
+
+    if (
+      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+      slotsNumber?.userSlotDate === currentDate &&
+      walletAddress === slotsNumber?.userClickedWalletAddress
+    ) {
+      toast.error("You have already minted in this slot.");
+      return;
+    }
+
+    // save the clicked time slots in state management
+    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
+    dispatch(setUserSlotDate(currentDate));
+    dispatch(setUserClickedWalletAddress(walletAddress));
+    const apiData = await postMintUser(walletAddress, token);
+    console.log(apiData);
+
+    const signedTransaction = await window.pox.signdata(
+      apiData?.data?.transaction
+    );
+
+    console.log("signedTransaction: ", signedTransaction);
+
+    const broadcast = JSON.stringify(
+      await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+    );
+
+    console.log("broadcast", broadcast);
+
+    // check transaction result >> SUCCESS : REVERT
+    const transactionResult = await getTransactionResult(
+      apiData?.data?.transaction?.txID
+    );
+    console.log(transactionResult?.data?.receipt?.result);
+    // Call the api of update Token balance
+    const savedData = await saveUserMinigData(
+      token,
+      apiData?.data?.transaction?.txID,
+      walletAddress,
+      transactionResult?.data?.receipt?.result
+    );
+    console.log("savedData", savedData);
+
+    // Distribute referral rewards
+    const referralData = await postDistributeReferralRewards(walletAddress);
+    console.log("referralData", referralData);
+
+    const signedTransaction2 = await window.pox.signdata(
+      referralData?.data?.transaction
+    );
+
+    console.log("signedTranaction3", signedTransaction2);
+    const broadcast2 = JSON.stringify(
+      await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+    );
+
+    console.log("boradcast2", broadcast2);
+
+    // update token balance
+    const updateTokenBalance = await updateBalance(token);
+    console.log("updateTokenBalance", updateTokenBalance);
+
+    toast.success("Your mining has started.");
+  };
+
   return (
     <div className="bg-[#0E0E0E] w-full min-h-screen relative pb-0">
       <div className=" relative z-10 pt-6 md:pt-8">
-        <div className="px-5 md:px-8 lg:px-6">
+        <div className="px-5 md:px-8 lg:px-6 ">
           {/* Video */}
           <div
             ref={videoRef}
@@ -211,14 +195,16 @@ const Home = () => {
           {/* Start Mining */}
           <div
             ref={buttonRef}
-            className={`flex flex-col md:flex-col lg:flex-row justify-center w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 my-8 md:my-12 lg:my-12 xl:my-16
+            className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
           ${buttonInView ? "animate-pop-in" : ""}
           `}
           >
-            <SliderButton
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-            />
+            <button
+              onClick={handleTapMining}
+              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-white text-white text-2xl font-bold bg-gradient-to-tl from-[#FF5858] to-[#FFFF45]"
+            >
+              Tap to Mine
+            </button>
           </div>
 
           {/* Blocks */}
@@ -231,7 +217,7 @@ const Home = () => {
           >
             {/* Balance Block */}
             <div
-              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
               style={{
                 boxShadow: `
                 0 2px 20px rgba(0, 0, 0, 0.4), 
@@ -240,7 +226,7 @@ const Home = () => {
               }}
             >
               <div>
-                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
                   {balance ? Number(balance).toFixed(6) : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
@@ -254,7 +240,7 @@ const Home = () => {
 
             {/* Referral Earning */}
             <div
-              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
               style={{
                 boxShadow: `
                 0 2px 20px rgba(0, 0, 0, 0.4), 
@@ -263,7 +249,7 @@ const Home = () => {
               }}
             >
               <div>
-                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
                   {referralAmount
                     ? referralAmount.leve1Reward + referralAmount.leve2Reward
                     : 0}
@@ -279,7 +265,7 @@ const Home = () => {
 
             {/* Coin Worth at launch */}
             <div
-              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
               style={{
                 boxShadow: `
                 0 2px 20px rgba(0, 0, 0, 0.4), 
@@ -288,7 +274,7 @@ const Home = () => {
               }}
             >
               <div>
-                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
                   {balance && referralAmount
                     ? Number(
                         (referralAmount.leve1Reward +
@@ -330,16 +316,20 @@ const Home = () => {
             >
               LeaderBoard
             </p>
-            <div className="px-4 py-6 bg-[#0E0E0E] rounded-b-3xl">
-              <div className="flex flex-row justify-between">
+            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden">
+              {
+                leaderBoardData.splice(0,5).map((data,index)=>{
+                  return (
+                    <>
+                    <div className={`flex flex-row justify-between py-4 ${index===4 ? "":"border-b-[1px] border-[#171717]"} min-w-[600px]`}>
                 {/* wallet address */}
                 <div className="flex flex-row space-x-8 text-white">
                   {/* Index */}
                   <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
-                    1
+                    {index+1}
                   </div>
                   <div>
-                    <p className="font-semibold">Wallet Address</p>
+                    <p className="font-semibold">{data?.walletAddress}</p>
                     <p className="text-[#8C8B8B] font-medium">
                       Total $UVI Balance{" "}
                     </p>
@@ -350,31 +340,45 @@ const Home = () => {
                   <p className="font-semibold text-[#FFC121]">
                     Total Transactions
                   </p>
-                  <p className="text-white font-medium">$ 1,222,222.45 </p>
+                  <p className="text-white font-medium">$ {data?.tokenBalance} </p>
                 </div>
               </div>
+                    </>
+                  )
+                })
+              }
 
-              <div className="flex flex-row justify-center items-center space-x-4">
-                <Link></Link>
-                <p className="cursor-pointer text-lg text-[#FCC121] font-semibold">
+              <div className="flex items-center justify-center w-full space-x-2 ">
+                {/* Link for the text */}
+                <Link
+                  to="/leaderboard"
+                  className="text-lg text-[#FCC121] font-semibold cursor-pointer"
+                >
                   More
-                </p>
-                <MdArrowForward color="#FCC121" size={24} />
+                </Link>
+
+                {/* Link for the icon */}
+                <Link to="/leaderboard">
+                  <MdArrowForward
+                    className="text-[#FCC121] cursor-pointer"
+                    size={24}
+                  />
+                </Link>
               </div>
 
               <div className="h-[2px] bg-[#171717] my-8"></div>
 
               <p className=" text-lg text-[#FCC121] font-semibold">My Place</p>
               {/* My Place */}
-              <div className="flex flex-row justify-between py-4">
+              <div className="flex flex-row justify-between py-4 min-w-[600px]">
                 {/* wallet address */}
                 <div className="flex flex-row space-x-8 text-white">
                   {/* Index */}
                   <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
-                    1
+                    {userleaderBoardData?.[0]?.position}
                   </div>
                   <div>
-                    <p className="font-semibold">Wallet Address</p>
+                    <p className="font-semibold">  {userleaderBoardData?.[0]?.walletAddress}</p>
                     <p className="text-[#8C8B8B] font-medium">
                       Total $UVI Balance{" "}
                     </p>
@@ -385,7 +389,7 @@ const Home = () => {
                   <p className="font-semibold text-[#FFC121]">
                     Total Transactions
                   </p>
-                  <p className="text-white font-medium">$ 1,222,222.45 </p>
+                  <p className="text-white font-medium">$   {userleaderBoardData?.[0]?.tokenBalance} </p>
                 </div>
               </div>
             </div>
@@ -396,9 +400,6 @@ const Home = () => {
         <div className="mx-0">
           <Footer />
         </div>
-
-        {/* Modal */}
-        {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ const slotsSlice = createSlice({
       state.userSlotDate = action.payload;
     },
     setUserClickedWalletAddress: (state, action) => {
-      state.userSlotDate = action.payload;
+      state.userClickedWalletAddress = action.payload;
     },
   },
 });

@@ -183,7 +183,7 @@
   position: absolute;
   width: 15px;
   height: 15px;
-  background-color: #000000; /* Background color to match the surrounding area */
+  background-color: #0E0E0E; /* Background color to match the surrounding area */
   border-radius: 50%;
   top: 50%;
   transform: translateY(-50%);

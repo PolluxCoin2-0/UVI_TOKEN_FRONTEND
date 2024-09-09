@@ -1,13 +1,7 @@
-import { useState } from "react";
-
 const WaterWaveButton = () => {
-  const [isMinting, setIsMinting] = useState(false);
 
   const handleButtonClick = () => {
-    setIsMinting(true);
-    setTimeout(() => {
-      setIsMinting(false); // Reset after animation completes (optional)
-    }, 4000); // Duration of the animation
+
   };
 
   return (
@@ -17,11 +11,9 @@ const WaterWaveButton = () => {
     >
       Tap to Mine
       <div
-        className={`absolute bottom-0 left-0 w-full h-full transition-transform duration-[4s] ${
-          isMinting ? 'water-rise' : 'water-initial'
-        }`}
+        className={`absolute bottom-0 left-0 w-full h-full transition-transform duration-[4s]`}
       >
-        <div className="wave"></div>
+        {/* <div className="wave"></div> */}
       </div>
     </button>
   );
