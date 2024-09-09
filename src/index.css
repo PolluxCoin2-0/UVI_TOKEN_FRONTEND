@@ -266,6 +266,49 @@ button .wave {
 }
 
 
+/* react-slick */
+/* General arrow styling */
+.slider-arrow {
+  position: absolute;
+  top: 35%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specific positioning for next arrow */
+.slider-arrow--next {
+  right: 10px; /* Adjust this value as needed */
+}
+
+/* Specific positioning for previous arrow */
+.slider-arrow--prev {
+  left: 10px; /* Adjust this value as needed */
+}
+
+/* Icon styling */
+.slider-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+/* Hover effect */
+.slider-arrow:hover svg {
+  fill: #f6b63e; /* Custom hover color */
+}
+
+
+
+
+
 
 
 

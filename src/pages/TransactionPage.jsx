@@ -55,11 +55,17 @@ const TransactionPage = () => {
             const isLast = index === transactionArray.length - 1;
 
             return (
+
               <div
                 key={index}
                 className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
         ${isFirst ? "rounded-t-3xl " : ""} 
-        ${isLast ? "rounded-b-3xl" : ""}`}
+        ${isLast ? "rounded-b-3xl" : ""}
+
+        
+        `}
+        
+        
               >
 
                 <div>

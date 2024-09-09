@@ -28,6 +28,8 @@ import { useEffect, useState } from "react";
 import Footer from "../src/layout/Footer";
 import VerifyReferral from "./pages/auth/VerifyReferral";
 
+
+
 const EligibilityModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
@@ -136,6 +138,7 @@ function AppContent() {
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/verifyreferral" element={<VerifyReferral />} />
           <Route path="/footer" element={<Footer/>} />
+          
         </Routes>
       </div>
       {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
