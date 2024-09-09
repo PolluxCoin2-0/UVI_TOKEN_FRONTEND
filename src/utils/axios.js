@@ -277,3 +277,17 @@ export const getAllReferrals = async(walletAddress)=>{
   }
 }
 
+// Singup Bonus
+export const getSignupBonus = async(token)=>{
+  try {
+    const res = await axios.get(BASE_URL + "/getReferralBonus",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { getAllReferrals, postUserAmount } from "../utils/axios";
+import { getAllReferrals, getSignupBonus, postUserAmount } from "../utils/axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -12,10 +12,11 @@ const ProfilePage = () => {
   const isReferralVerified = useSelector(
     (state) => state?.wallet?.dataObject?.isReferralVerify
   );
-  const referralAmount = useSelector((state)=>state?.wallet?.dataObject?.referralAmount)
   const referralAddress = useSelector((state)=>state?.wallet?.dataObject?.referredBy)
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [userAmount, setUserAmount] = useState(0);
   const [referralData, setReferralData] = useState({});
+  const [signupBonus, setSignupBonus] = useState(0);
 
   useEffect(() => {
     if (!isLogin) {
@@ -27,11 +28,12 @@ const ProfilePage = () => {
       setUserAmount(apiData?.data);
       const referralData = await getAllReferrals(userData?.address)
       setReferralData(referralData?.data);
+      const signupBonusData = await getSignupBonus(token);
+      setSignupBonus(signupBonusData?.data?.referralAmount);
     };
     fetchData();
   }, []);
 
-  console.log(referralData);
 
   const handleCopy = (copiedText) => {
     navigator.clipboard.writeText(copiedText);
@@ -72,7 +74,7 @@ const ProfilePage = () => {
             
             <div className="flex flex-row justify-between items-center px-4 py-4">
               <p className="text-white font-bold text-lg">Signup Bonus:</p>
-              <p className="text-white text-lg font-bold">${referralAmount}</p>
+              <p className="text-white text-lg font-bold">${signupBonus}</p>
             </div>
 
             {userData?.dataObject?.referredBy && (
