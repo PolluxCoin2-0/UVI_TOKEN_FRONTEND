@@ -77,7 +77,7 @@ const ProfilePage = () => {
               <p className="text-white text-lg font-bold">${signupBonus}</p>
             </div>
 
-            {userData?.dataObject?.referredBy && (
+            {/* {userData?.dataObject?.referredBy && (
               <div className="flex flex-row justify-between  py-2 p-3">
                 <p className="pt-0 text-white text-sm md:text-md">
                   <span className="font-bold">Referral Code Status: </span>
@@ -92,7 +92,7 @@ const ProfilePage = () => {
                   </button>
                 </Link>
               </div>
-            )}
+            )} */}
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-4 p-3 ">
               <p className="pt-0 text-white text-sm md:text-md ">
@@ -150,7 +150,7 @@ const ProfilePage = () => {
                   </p>
                 <div className=" w-[50%]">
                   <p className=" bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
-                    {referralData?.leve2Reward && (referralData?.leve1Reward + referralData?.leve2Reward)}
+                    {referralData && (referralData?.leve1Reward + referralData?.leve2Reward)}
                   </p>
                 </div>
               </div>

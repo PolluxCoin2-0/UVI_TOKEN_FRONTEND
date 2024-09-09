@@ -50,7 +50,7 @@ const TransactionPage = () => {
           </p>
 
           {/* Transaction table */}
-          {transactionArray.map((data, index) => {
+          {transactionArray && transactionArray.map((data, index) => {
             const isFirst = index === 0;
             const isLast = index === transactionArray.length - 1;
 
