@@ -106,7 +106,7 @@ const ProfilePage = () => {
            <div className=" flex flex-row justify-between mt-10 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
      
               <p className="pt-0  text-[#6A6A6A] text-sm md:text-md font-bold ">
-                {`https://uvitoken.netlify.app/referral/${userData?.address}`}
+                {`https://uvitokendev.netlify.app/referral/${userData?.address}`}
               </p>
               <p
                 className="text-white pl-2 cursor-pointer"
