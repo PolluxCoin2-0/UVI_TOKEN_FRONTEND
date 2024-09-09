@@ -1,11 +1,13 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { postVerifyReferral } from "../../utils/axios";
 import LogoImg from "../../assets/UvitokenLogo.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { setLogin } from "../../redux/slice/walletslice";
 
 const VerifyReferral = () => {
+  const dispatch = useDispatch();
   const walletAddressBySignup = useSelector(
     (state) => state?.wallet?.dataObject?.walletAddress
   );
@@ -48,7 +50,8 @@ const VerifyReferral = () => {
       console.log("broadacst2", broadcast2);
 
       toast.success("Wallet address verified!");
-      navigate("/connectwallet");
+      dispatch(setLogin(true));
+      navigate("/");
     } else {
       toast.error("Something went wrong!");
     }

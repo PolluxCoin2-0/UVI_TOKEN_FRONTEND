@@ -31,6 +31,8 @@ const ProfilePage = () => {
     fetchData();
   }, []);
 
+  console.log(referralData);
+
   const handleCopy = (copiedText) => {
     navigator.clipboard.writeText(copiedText);
     toast.success("Address copied");
@@ -77,7 +79,6 @@ const ProfilePage = () => {
               <div className="flex flex-row justify-between  py-2 p-3">
                 <p className="pt-0 text-white text-sm md:text-md">
                   <span className="font-bold">Referral Code Status: </span>
-                  {userData && userData?.dataObject?.referredBy}
                 </p>
 
                 <Link to={isReferralVerified ? "" : "/verifyreferral"}>
