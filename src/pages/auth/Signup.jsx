@@ -55,19 +55,22 @@ const Signup = () => {
     // toast message >> OTP sent successfully
     if(apiData?.data?.email){
 
-      const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
-      console.log(setReferrerdata)
-
-      const signedTransaction = await window.pox.signdata(
-        setReferrerdata?.data?.transaction
-      );
+      if(referredBy){
+        const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
+        console.log(setReferrerdata)
   
-      console.log("signedTranaction3",signedTransaction);
-      const broadcast = JSON.stringify(
-        await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-      );
-  
-      console.log("boradcast3",broadcast)
+        const signedTransaction = await window.pox.signdata(
+          setReferrerdata?.data?.transaction
+        );
+    
+        console.log("signedTranaction3",signedTransaction);
+        const broadcast = JSON.stringify(
+          await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+        );
+    
+        console.log("boradcast3",broadcast)
+      }
+     
       toast.success("OTP sent successfully");
       // navigate
       navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});

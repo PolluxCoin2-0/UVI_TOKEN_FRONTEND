@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { postUserAmount } from "../utils/axios";
+import { getAllReferrals, postUserAmount } from "../utils/axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -12,7 +12,10 @@ const ProfilePage = () => {
   const isReferralVerified = useSelector(
     (state) => state?.wallet?.dataObject?.isReferralVerify
   );
+  const referralAmount = useSelector((state)=>state?.wallet?.dataObject?.referralAmount)
+  const referralAddress = useSelector((state)=>state?.wallet?.dataObject?.referredBy)
   const [userAmount, setUserAmount] = useState(0);
+  const [referralData, setReferralData] = useState({});
 
   useEffect(() => {
     if (!isLogin) {
@@ -22,6 +25,8 @@ const ProfilePage = () => {
     const fetchData = async () => {
       const apiData = await postUserAmount(userData?.address);
       setUserAmount(apiData?.data);
+      const referralData = await getAllReferrals(userData?.address)
+      setReferralData(referralData?.data);
     };
     fetchData();
   }, []);
@@ -61,6 +66,11 @@ const ProfilePage = () => {
                   $ {userAmount && userAmount}
                 </p>
               </div>
+            </div>
+            
+            <div className="flex flex-row justify-between items-center px-4 py-4">
+              <p className="text-white font-bold text-lg">Signup Bonus:</p>
+              <p className="text-white text-lg font-bold">${referralAmount}</p>
             </div>
 
             {userData?.dataObject?.referredBy && (
@@ -117,46 +127,28 @@ const ProfilePage = () => {
               </p>
             </div>
 
-            <div className="flex flex-row justify-start space-x-6 w-full pt-10">
-              <div className="w-[50%]">
+            <div className=" w-full pt-10">
+              <div className="w-full flex flex-row justify-between items-center pb-2">
                 <p className="text-white text-xl font-semibold">
                   Referral Address
                 </p>
 
                 <div className="pt-2">
-                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">
-                    feavgsderbhfrbg
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-[50%]">
                 <p className="text-white text-xl font-semibold ">
                   Referral Amount
                 </p>
-                <div className="pt-2">
-                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
-                    10 UVI
+                 
+                </div>
+              </div>
+
+              <div className="w-full flex flex-row justify-between items-center space-x-8">
+              <p className="w-[50%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">
+                    {referralAddress ? referralAddress : "No Referral Address"}
                   </p>
-                </div>
-              </div>
-            </div>
-              
-              {/* referrals */}
-            <div className="flex flex-row justify-start space-x-6 w-full pt-2">
-              <div className="w-[50%]">
-               
-                <div className="pt-2">
-                <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">feavgsderbhfrbg</p>
-                </div>
-
-              </div>
-
-              <div className="w-[50%]">
-               
-                <div className="pt-2">
-                  <p className="w-[100%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">10 UVI</p>
-                  
+                <div className=" w-[50%]">
+                  <p className=" bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
+                    {referralData?.leve2Reward && (referralData?.leve1Reward + referralData?.leve2Reward)}
+                  </p>
                 </div>
               </div>
             </div>

@@ -265,3 +265,15 @@ export const updateBalance = async(token)=>{
   }
 }
 
+// Get Referrals
+export const getAllReferrals = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getReferrals",{
+      "walletAddress": walletAddress,
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

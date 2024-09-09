@@ -55,10 +55,6 @@ const Home = () => {
     </div> 
   )
 
-  
-
- 
-
   var settings = {
     infinite: true,
     dots: false,
@@ -68,7 +64,7 @@ const Home = () => {
     prevArrow: <CustomPrevArrow />,
   };
 
-
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
@@ -76,6 +72,7 @@ const Home = () => {
   const [userleaderBoardData, setUserLeaderBoardData] = useState([]);
   const slotsNumber = useSelector((state) => state?.slots);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const referralAddress = useSelector((state)=>state?.wallet?.dataObject?.referredBy)
 
   const walletAddress = useSelector((state) => state.wallet.address);
   const { ref: timerRef, inView: timerInView } = useInView({
@@ -98,7 +95,7 @@ const Home = () => {
       const amount = await getReferralBalance(walletAddress);
       setReferralAmount(amount?.data);
       const leaderboard = await getLeaderboardStats(walletAddress);
-      setLeaderBoardData(leaderboard?.data);
+      setLeaderBoardData(leaderboard?.data.slice(0,5));
       const filteredResult = leaderboard?.data.filter((item) => item.walletAddress === walletAddress);
       setUserLeaderBoardData(filteredResult)
     };
@@ -167,20 +164,22 @@ const Home = () => {
     console.log("savedData", savedData);
 
     // Distribute referral rewards
-    const referralData = await postDistributeReferralRewards(walletAddress);
-    console.log("referralData", referralData);
-
-    const signedTransaction2 = await window.pox.signdata(
-      referralData?.data?.transaction
-    );
-
-    console.log("signedTranaction3", signedTransaction2);
-    const broadcast2 = JSON.stringify(
-      await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
-    );
-
-    console.log("boradcast2", broadcast2);
-
+    if(referralAddress){
+      const referralData = await postDistributeReferralRewards(walletAddress);
+      console.log("referralData", referralData);
+  
+      const signedTransaction2 = await window.pox.signdata(
+        referralData?.data?.transaction
+      );
+  
+      console.log("signedTranaction3", signedTransaction2);
+      const broadcast2 = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+      );
+  
+      console.log("boradcast2", broadcast2);
+    }
+  
     // update token balance
     const updateTokenBalance = await updateBalance(token);
     console.log("updateTokenBalance", updateTokenBalance);
@@ -452,10 +451,10 @@ const Home = () => {
             </p>
             <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden">
               {
-                leaderBoardData.splice(0,5).map((data,index)=>{
+                leaderBoardData.map((data,index)=>{
                   return (
                     <>
-                    <div className={`flex flex-row justify-between py-4 ${index===4 ? "":"border-b-[1px] border-[#171717]"} min-w-[600px]`}>
+                    <div className={`flex flex-row justify-between py-4 ${index===leaderBoardData.length-1 ? "":"border-b-[1px] border-[#171717]"} min-w-[600px]`}>
                 {/* wallet address */}
                 <div className="flex flex-row space-x-8 text-white">
                   {/* Index */}
