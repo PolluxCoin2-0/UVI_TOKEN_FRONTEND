@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { postSignup } from "../../utils/axios";
+import { postSetReferrer, postSignup, postVerifyReferral } from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Signup = () => {
   const [isConnected, setIsConnected] = useState(false);
   const location = useLocation();
   const referralAddress = location.state?.referralAddress;
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
 
   useEffect(()=>{
     if(referralAddress){
@@ -53,6 +55,39 @@ const Signup = () => {
 
     // toast message >> OTP sent successfully
     if(apiData?.data?.email){
+      const referralApi = await postVerifyReferral(
+        token,
+        walletAddress,
+        referredBy
+      );
+      
+      if (referralApi?.data?.trx1) {
+        // Sign tranaction and broadcast transaction for trx1
+        const signedTransaction1 = await window.pox.signdata(
+          referralApi?.data?.trx1?.transaction
+        );
+  
+         JSON.stringify(
+          await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
+        );
+  
+        // Sign tranaction and broadcast transaction for trx2
+        const signedTransaction2 = await window.pox.signdata(
+          referralApi?.data?.trx2?.transaction
+        );
+  
+        
+         JSON.stringify(
+          await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+        );
+  
+        toast.success("Wallet address verified!");
+      } else {
+        toast.error("Something went wrong!");
+      }
+
+      const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
+      console.log(setReferrerdata)
       toast.success("OTP sent successfully");
       // navigate
       navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});

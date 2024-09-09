@@ -29,6 +29,43 @@ export const postOTPVerify = async (email, otp) => {
   }
 };
 
+// referral verification
+export const postVerifyReferral = async (token, walletAddress, referralCode) => {
+  try {
+    const res = await axios.post(
+      BASE_URL + "/verifyReferralCode",
+      {
+        walletAddress: walletAddress,
+        referralCode: referralCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Set Referrer
+ export const postSetReferrer = async (walletAddress, referrer) => {
+  try {
+    const res = await axios.post(
+      BASE_URL + "/setReferrer",
+      {
+         "referrer": referrer,
+         "walletAddress": walletAddress
+      },
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Login
 export const postLogin = async (walletAddress) => {
   try {
@@ -122,34 +159,24 @@ export const getLeaderboardStats = async () => {
   }
 }
 
-
-// referral verification
-export const postVerifyReferral = async (token, walletAddress, referralCode) => {
-  try {
-    const res = await axios.post(
-      BASE_URL + "/verifyReferralCode",
-      {
-        walletAddress: walletAddress,
-        referralCode: referralCode,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return res?.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const getProfileDetails = async(token)=>{
   try {
     const res = await axios.get(BASE_URL + "/getProfileById",{
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// GET REFERRAL REWARD DATA
+export const getReferralBalance = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getReferralRewards",{
+      "walletAddress":walletAddress
     })
     return res?.data;
   } catch (error) {

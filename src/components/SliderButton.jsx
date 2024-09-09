@@ -15,7 +15,7 @@ const WaterWaveButton = () => {
       onClick={handleButtonClick}
       className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-white text-white text-2xl font-bold bg-blue-400"
     >
-      Tap to Mint
+      Tap to Mine
       <div
         className={`absolute bottom-0 left-0 w-full h-full transition-transform duration-[4s] ${
           isMinting ? 'water-rise' : 'water-initial'

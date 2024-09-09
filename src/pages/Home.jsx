@@ -1,19 +1,31 @@
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { MdArrowForward, MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import BackgroundImg from "../assets/BGImage.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getProfileDetails, getVotePower, postMintUser, postUserAmount } from "../utils/axios";
+import {
+  getProfileDetails,
+  getReferralBalance,
+  getVotePower,
+  postMintUser,
+  postUserAmount,
+} from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
-import { RiShareFill } from "react-icons/ri";
-import { setUserClickedWalletAddress, setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
+import { RiExchangeDollarLine, RiShareFill } from "react-icons/ri";
+import {
+  setUserClickedWalletAddress,
+  setUserSlotDate,
+  setUserSlotNumber,
+} from "../redux/slice/SlotsSlice";
 import Footer from "../layout/Footer";
+import { TbPigMoney } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 const EligibilityModal = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -48,7 +60,7 @@ const EligibilityModal = ({ onClose }) => {
     // First check if the current time slots of user is matched with previous time slots or not.
     if (
       slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate 
+      slotsNumber?.userSlotDate === currentDate
     ) {
       setShowMiningModal(!showMiningModal);
       setLoading(false);
@@ -112,9 +124,7 @@ const EligibilityModal = ({ onClose }) => {
           onClick={handleStartMining}
           disabled={!isEligible || loading} // Disable the button if not eligible or still loading
         >
-           {showMiningModal
-              ? "Okay" : " Start Mining"}
-         
+          {showMiningModal ? "Okay" : " Start Mining"}
         </button>
       </div>
     </div>
@@ -124,8 +134,7 @@ const EligibilityModal = ({ onClose }) => {
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
-  const [referralAmount, setReferralAmount] = useState(0);
-  const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const [referralAmount, setReferralAmount] = useState({});
 
   const walletAddress = useSelector((state) => state.wallet.address);
   const { ref: timerRef, inView: timerInView } = useInView({
@@ -149,39 +158,43 @@ const Home = () => {
     const fetchData = async () => {
       const apiData = await postUserAmount(walletAddress);
       setBalance(apiData?.data);
-      const amount = await getProfileDetails(token);
-      setReferralAmount(amount?.data?.referralAmount);
+      const amount = await getReferralBalance(walletAddress);
+      setReferralAmount(amount?.data);
     };
     fetchData();
   }, [walletAddress]);
 
   return (
-    <div className="bg-black w-full min-h-screen relative pb-0">
+    <div className="bg-[#0E0E0E] w-full min-h-screen relative pb-0">
       <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
           {/* Video */}
           <div
-  ref={videoRef}
-  className={`relative rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
+            ref={videoRef}
+            className={`relative rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
     ${videoInView ? "animate-pop-in" : ""}
   `}
->
-  <div className="absolute inset-0 rounded-2xl border-[4px] border-black blur-sm"></div>
-  <video
-    className="w-full h-full object-cover rounded-2xl"
-    autoPlay
-    loop
-    muted
-  >
-    <source src={HeroVideo} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+          >
+            <div className="absolute inset-0 rounded-2xl border-[4px] border-black blur-sm"></div>
+            <video
+              className="w-full h-full object-cover rounded-2xl"
+              autoPlay
+              loop
+              muted
+            >
+              <source src={HeroVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
 
-
-           {/* CountDown Timer */}
-           <div className="flex flex-col items-center text-white font-bold text-2xl mt-4 md:mt-6">
-            <p>Next Slot  will be in:</p>
+          {/* CountDown Timer */}
+          <div
+            ref={timerRef}
+            className={`flex flex-col items-center text-white font-bold text-2xl mt-4 md:mt-6 ${
+              timerInView ? "animate-pop-in" : ""
+            }`}
+          >
+            <p>Next Slot will be in:</p>
             <CountdownTimer />
           </div>
 
@@ -217,64 +230,164 @@ const Home = () => {
           }`}
           >
             {/* Balance Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+              `, // White shadow with moderate opacity
+              }}
+            >
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
                   {balance ? Number(balance).toFixed(6) : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
-                  Your Mint Balance
+                  Total Minted Balance
                 </p>
               </div>
-              <div className="text-white">
-                <MdOutlineAccountBalanceWallet size={24} />
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <MdOutlineAccountBalanceWallet size={32} color="white" />
               </div>
             </div>
 
-            {/* Coin Worth Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            {/* Referral Earning */}
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+              `, // White shadow with moderate opacity
+              }}
+            >
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {balance ? Number(balance * 0.05).toFixed(6) : 0}
+                  {referralAmount
+                    ? referralAmount.leve1Reward + referralAmount.leve2Reward
+                    : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
-                  Your Coin Worth at Launch
+                  UVI Referral Earnings
                 </p>
               </div>
-              <div className="text-white">
-                <BiDollar size={24} />
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <TbPigMoney size={32} color="white" />
               </div>
             </div>
 
-            {/* Referral Earnings Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            {/* Coin Worth at launch */}
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+              `, // White shadow with moderate opacity
+              }}
+            >
               <div>
-                <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  { referralAmount > 0 ? referralAmount : 0}
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
+                  {balance && referralAmount
+                    ? Number(
+                        (referralAmount.leve1Reward +
+                          referralAmount.leve2Reward +
+                          balance) *
+                          0.05
+                      ).toFixed(6)
+                    : 0}
                 </p>
-                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
-                  Referral Token
+                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
+                  Coin Worth at Launch
                 </p>
               </div>
-              {/* <div className="text-white">
-                <RiShareFill size={24} />
-              </div> */}
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <RiExchangeDollarLine size={32} color="white" />
+              </div>
             </div>
-            
+          </div>
 
-            {/* SignUp Bonus */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
-              <div>
-                <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  { referralAmount > 0 ? referralAmount : 0}
-                </p>
-                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
-                  SignUp Bonus
-                </p>
+          {/* LeaderBoard */}
+          <div
+            className=" mt-16 bg-[#141414] rounded-3xl"
+            style={{
+              boxShadow: `
+              0 2px 10px rgba(255, 255, 255, 0.05), 
+              inset 0 0 10px rgba(255, 255, 255, 0.5)
+            `, // White shadow with moderate opacity
+            }}
+          >
+            <p
+              className="text-white font-bold text-xl text-center bg-[#141414] rounded-t-3xl py-4"
+              style={{
+                boxShadow: `
+                  0 2px 20px rgba(0, 0, 0, 0.4), 
+                  inset 0 2px 5px rgba(255, 255, 255, 0.1),
+                  inset 0 0px 2px rgba(255, 255, 255, 0.1)
+                `, // Outer shadow and inner shadow without affecting the bottom
+              }}
+            >
+              LeaderBoard
+            </p>
+            <div className="px-4 py-6 bg-[#0E0E0E] rounded-b-3xl">
+              <div className="flex flex-row justify-between">
+                {/* wallet address */}
+                <div className="flex flex-row space-x-8 text-white">
+                  {/* Index */}
+                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-semibold">Wallet Address</p>
+                    <p className="text-[#8C8B8B] font-medium">
+                      Total $UVI Balance{" "}
+                    </p>
+                  </div>
+                </div>
+                {/* total transactions */}
+                <div>
+                  <p className="font-semibold text-[#FFC121]">
+                    Total Transactions
+                  </p>
+                  <p className="text-white font-medium">$ 1,222,222.45 </p>
+                </div>
               </div>
-              {/* <div className="text-white">
-                <RiShareFill size={24} />
-              </div> */}
+
+              <div className="flex flex-row justify-center items-center space-x-4">
+                <Link></Link>
+                <p className="cursor-pointer text-lg text-[#FCC121] font-semibold">
+                  More
+                </p>
+                <MdArrowForward color="#FCC121" size={24} />
+              </div>
+
+              <div className="h-[2px] bg-[#171717] my-8"></div>
+
+              <p className=" text-lg text-[#FCC121] font-semibold">My Place</p>
+              {/* My Place */}
+              <div className="flex flex-row justify-between py-4">
+                {/* wallet address */}
+                <div className="flex flex-row space-x-8 text-white">
+                  {/* Index */}
+                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-semibold">Wallet Address</p>
+                    <p className="text-[#8C8B8B] font-medium">
+                      Total $UVI Balance{" "}
+                    </p>
+                  </div>
+                </div>
+                {/* total transactions */}
+                <div>
+                  <p className="font-semibold text-[#FFC121]">
+                    Total Transactions
+                  </p>
+                  <p className="text-white font-medium">$ 1,222,222.45 </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

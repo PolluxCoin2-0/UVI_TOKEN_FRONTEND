@@ -40,11 +40,7 @@ const Otp = () => {
     if (apiData?.data?._id) {
       dispatch(setDataObject(apiData?.data));
       toast.success("OTP verified successfully");
-      if (referredBySignup) {
-        navigate("/verifyreferral");
-      } else {
         navigate("/connectwallet");
-      }
     } else {
       toast.error("Invalid OTP. Please try again.");
     }

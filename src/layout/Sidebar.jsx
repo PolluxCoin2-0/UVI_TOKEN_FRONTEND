@@ -93,7 +93,7 @@ export default function Sidebar() {
         height: 0;
         border-top: 20px solid transparent; /* Creates the arrow effect */
         border-bottom: 20px solid transparent;
-        border-right: 12px solid #000000; 
+        border-right: 12px solid #0E0E0E; 
         top: ${
           selectedItem === "/"
             ? "125px"

@@ -224,14 +224,13 @@
   font-style: normal;
 }
 
-
 button {
   position: relative;
   overflow: hidden;
 }
 
 button .water-initial {
-  height: 10%; /* Initial water level */
+  height: 0%; /* Initial water level */
   transform: scaleY(0);
 }
 
@@ -243,27 +242,30 @@ button .water-rise {
 button .wave {
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  left: 50%; /* Start from the center */
+  width: 200%; /* Extend beyond the button for a wave effect */
   height: 100%;
-  background: rgba(0, 150, 255, 0.6); /* Water color */
-  transform-origin: bottom;
-  clip-path: polygon(0 100%, 100% 100%, 100% 0%, 0 0%);
-  animation: wave-motion 4s ease-in-out infinite;
+  background: linear-gradient(180deg, #FF7E00, #FFB800); /* Orange gradient */
+  transform-origin: center bottom; /* Origin from center bottom */
+  clip-path: polygon(50% 100%, 100% 100%, 75% 50%, 100% 0%, 0% 0%, 25% 50%, 0% 100%); /* Wave shape */
+  animation: wave-rise-motion 4s ease-in-out infinite;
+  transition: transform 4s ease-in-out;
 }
 
-/* Smooth wave motion */
-@keyframes wave-motion {
+/* Smooth wave rise motion */
+@keyframes wave-rise-motion {
   0% {
-    transform: translateY(0) scaleY(1);
+    transform: translate(-50%, 100%) scaleY(0); /* Starts from the bottom */
   }
   50% {
-    transform: translateY(-10%) scaleY(1.1);
+    transform: translate(-50%, 0) scaleY(1.1); /* Midway expansion */
   }
   100% {
-    transform: translateY(-20%) scaleY(1);
+    transform: translate(-50%, -5%) scaleY(1); /* Settles at the top */
   }
 }
+
+
 
 
 

@@ -29,7 +29,7 @@ const ConnectWallet = () => {
         const apiData = await postLogin(
           parsedDetailsObject[1].data?.wallet_address
         );
-
+      
         if (apiData?.data?._id) {
           dispatch(
             setWalletAddress(parsedDetailsObject[1].data?.wallet_address)
