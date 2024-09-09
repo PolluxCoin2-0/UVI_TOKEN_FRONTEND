@@ -164,6 +164,8 @@ const Home = () => {
   var settings = {
     infinite: true,
     dots: false,
+    autoplay: true,
+    autoplaySpeed: 1500,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
   };
