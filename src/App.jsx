@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Signup from "./pages/auth/Signup";
 import ConnectWallet from "./pages/auth/ConnectWallet";
 import Otp from "./pages/auth/Otp";
@@ -15,8 +21,8 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import Sidebar from "./layout/Sidebar";
 import LeaderBoard from "./pages/LeaderBoard";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import VerifyReferral from "./pages/auth/VerifyReferral";
@@ -34,9 +40,12 @@ const EligibilityModal = ({ onClose }) => {
           <AiOutlineClose size={24} />
         </button>
 
-        <h2 className="text-2xl font-semibold text-white mb-4">Action Required</h2>
+        <h2 className="text-2xl font-semibold text-white mb-4">
+          Action Required
+        </h2>
         <p className="text-gray-300 mb-6">
-          To start mining, you need to stake <span className="font-bold text-lg">25 POX </span> tokens.
+          To start mining, you need to stake{" "}
+          <span className="font-bold text-lg">25 POX </span> tokens.
         </p>
         <button
           className="w-full py-3 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 transition duration-300"
@@ -49,16 +58,15 @@ const EligibilityModal = ({ onClose }) => {
   );
 };
 
-
 function App() {
   return (
     <div className="app-bg">
       <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <AppContent />
-        </Router>
-      </PersistGate>
+        <PersistGate loading={null} persistor={persistor}>
+          <Router>
+            <AppContent />
+          </Router>
+        </PersistGate>
       </Provider>
     </div>
   );
@@ -68,7 +76,12 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const hideNavbarRoutes = ["/signup", "/connectwallet", "/otp", "/verifyreferral"];
+  const hideNavbarRoutes = [
+    "/signup",
+    "/connectwallet",
+    "/otp",
+    "/verifyreferral",
+  ];
 
   useEffect(() => {
     const isModalShown = sessionStorage.getItem("isModalShown");
@@ -94,18 +107,16 @@ function AppContent() {
     <>
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="main-content">
-          <Navbar/>
-          <ToastContainer 
+        <Navbar />
+        <ToastContainer
           position="top-right"
-          autoClose={3000} 
-          theme="dark" 
+          autoClose={3000}
+          theme="dark"
           newestOnTop={true}
           pauseOnFocusLoss
-           toastClassName="custom-toast"
-          />
+          toastClassName="custom-toast"
+        />
 
-
-          
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -122,12 +133,10 @@ function AppContent() {
           <Route path="/sidebar" element={<Sidebar />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/verifyreferral" element={<VerifyReferral />} />
-          <Route path="/footer" element={<Footer/>} />
+          <Route path="/footer" element={<Footer />} />
         </Routes>
       </div>
       {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
-
-    
     </>
   );
 }

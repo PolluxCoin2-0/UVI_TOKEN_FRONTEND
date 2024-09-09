@@ -11,6 +11,9 @@ import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
 import VerifyReferral from "./pages/auth/VerifyReferral";
 import Footer from "../src/layout/Footer";
+
+
+
 export {
     Signup,
     ConnectWallet,
@@ -25,4 +28,5 @@ export {
     TransactionPage,
     VerifyReferral,
     Footer,
+    
 }
