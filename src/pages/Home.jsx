@@ -14,7 +14,7 @@ import {
   postUserAmount,
 } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
 import { RiExchangeDollarLine, RiShareFill } from "react-icons/ri";
@@ -26,6 +26,17 @@ import {
 import Footer from "../layout/Footer";
 import { TbPigMoney } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import PlayStoreImg from "../assets/playstore.png";
+import PolinkImg from "../assets/polink.png";
+import ChromeImg from "../assets/chrome.png";
+import PolinkExtensionImg from "../assets/PolinkEx.png";
+import { SlArrowLeft } from "react-icons/sl";
+import { SlArrowRight } from "react-icons/sl";
+import CurveImg from "../assets/Curve.png";
+
 
 const EligibilityModal = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -132,6 +143,32 @@ const EligibilityModal = ({ onClose }) => {
 };
 
 const Home = () => {
+
+  const CustomNextArrow = ({ onClick }) => (
+    <div className="slider-arrow slider-arrow--next font-bold" onClick={onClick}>
+      <SlArrowRight />
+       
+    </div>
+  );
+  
+  const CustomPrevArrow = ({ onClick }) => (
+    <div className="slider-arrow slider-arrow--prev" onClick={onClick}>
+      <SlArrowLeft />
+    </div> 
+  )
+
+  
+
+ 
+
+  var settings = {
+    infinite: true,
+    dots: false,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+  };
+
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
@@ -168,8 +205,12 @@ const Home = () => {
     <div className="bg-[#0E0E0E] w-full min-h-screen relative pb-0">
       <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
+
+        <Slider {...settings}>
           {/* Video */}
-          <div
+      <div>
+         {/* Video */}
+         <div
             ref={videoRef}
             className={`relative rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
     ${videoInView ? "animate-pop-in" : ""}
@@ -186,6 +227,96 @@ const Home = () => {
               Your browser does not support the video tag.
             </video>
           </div>
+
+      </div>
+
+     {/* Banner1 */}
+      <div className="bg-gradient-to-r to-[#161616] via-[#1f1400] from-[#141414] rounded-3xl  h-[250px] md:h-[330px] flex items-center justify-center "
+       style={{
+        boxShadow: '0 2px 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
+      }}>
+        <div className="flex flex-row  justify-around">
+        <img src={PlayStoreImg} alt="playstore-image" className=""/>
+        <p className="text-4xl text-[#F6B63E] font-bold pt-14">Polink Mobile App</p>
+        <img src={PolinkImg} alt="polink-image" className="" />
+        </div>
+        
+        <div className="text-center ">
+        <p className="text-xl font-semibold text-white pt-2">UVI Token Management on the Go! Access, trade, and manage your UVI Tokens from <br/>
+        anywhere, anytime with the Polink mobile app. Available on Android.</p>
+        </div>
+       
+        <div className="flex items-center justify-center">
+
+     
+        <div className="relative">
+  <img src={CurveImg} alt="" className="w-full h-auto mt-4" />
+
+  <div className="absolute z-10 inset-0 flex flex-row justify-evenly px-32 items-center -mt-32 ">
+    <img src={PolinkImg} alt="polink-image" className="" />
+    <div className="text-center">
+      <p className="text-xl font-semibold pt-8">Click Here</p>
+      <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
+      <button 
+        type="button"
+        className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 px-14 py-2 rounded-full text-xl font-semibold mt-4 border-[1px] border-black">
+        Download the App today
+      </button>
+      </a>
+    </div>
+    <img src={PlayStoreImg} alt="playstore-image" className="" />
+  </div>
+</div>
+
+
+       </div>
+       </div>
+        
+       
+       
+    
+
+
+
+    {/* Banner2 */}
+      <div className="bg-gradient-to-r to-[#181717] via-[#3b3724] from-[#131212] bg-opacity-5 rounded-3xl  h-[250px] md:h-[330px] flex items-center justify-center "
+       style={{
+        boxShadow: '0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
+      }}>
+        <div className="flex flex-row  justify-around">
+        <img src={ChromeImg} alt="playstore-image" className="object-contain"/>
+        <p className="text-4xl text-[#F6B63E] font-bold pt-14">Polink Wallet Extension</p>
+        <img src={PolinkExtensionImg} alt="polink-image" className="object-contain" />
+        </div>
+        
+        <div className="text-center ">
+        <p className="text-xl font-semibold text-white pt-2">UVI Token Management on the Go! Access, trade, and manage your UVI Tokens from <br/>
+        anywhere, anytime with the Polink mobile app. Available on Android.</p>
+        </div>
+
+        <div  className="flex flex-row  justify-evenly ml-12 mr-12 ">
+          <img src={PolinkExtensionImg} alt="polink-image" className="object-contain"/>
+          <div className="text-center ">
+          <p className="text-xl font-semibold text-white pt-8">Click Here</p>
+          <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+         
+          <button 
+          type="button"
+          className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55] bg-opacity-5 px-14 py-2 rounded-full text-xl font-semibold mt-4 border-[1px] border-gray-500 text-white">
+            Add Polink Extension Now
+          </button>
+          </a>
+          </div>
+         
+          <img src={ChromeImg} alt="playstore-image" className="object-contain" />
+        </div>
+
+       
+       
+      </div>
+      
+    </Slider>
+        
 
           {/* CountDown Timer */}
           <div

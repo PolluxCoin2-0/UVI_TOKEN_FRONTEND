@@ -6,10 +6,8 @@ const TransactionPage = () => {
     <div>
       {/* Transaction content */}
       <div
-  className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20"
-  style={{
-    boxShadow: '0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
-  }}
+  className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20 "
+ 
 >
         <div className="px-2 md:px-12 relative z-10">
           <p className="text-white text-2xl font-semibold mb-6 ">
@@ -22,12 +20,19 @@ const TransactionPage = () => {
             const isLast = index === TransactionData.length - 1;
 
             return (
+
               <div
                 key={index}
                 className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
         ${isFirst ? "rounded-t-3xl " : ""} 
-        ${isLast ? "rounded-b-3xl" : ""}`}
+        ${isLast ? "rounded-b-3xl" : ""}
+
+        
+        `}
+        
+        
               >
+                
                 <div className="">
                   <p className="text-white text-lg font-semibold ">
                     {data?.transactionId}{" "}

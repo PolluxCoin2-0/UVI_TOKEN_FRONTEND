@@ -27,6 +27,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import Footer from "../src/layout/Footer";
 
+
+
 const EligibilityModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50">
@@ -132,6 +134,7 @@ function AppContent() {
           <Route path="/sidebar" element={<Sidebar />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/footer" element={<Footer/>} />
+          
         </Routes>
       </div>
       {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
