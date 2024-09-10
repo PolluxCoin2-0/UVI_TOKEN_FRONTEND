@@ -126,7 +126,7 @@ const Home = () => {
         0
       ) /
       10 ** 6;
-    if (totalAmount <= 25) {
+    if (totalAmount < 25) {
       toast.error("Insufficient stake amount !");
       return;
     }
