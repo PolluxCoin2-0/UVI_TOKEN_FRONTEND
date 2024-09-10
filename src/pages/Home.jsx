@@ -1,126 +1,82 @@
 import { useInView } from "react-intersection-observer";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { BiDollar } from "react-icons/bi";
-import BackgroundImg from "../assets/BGImage.png";
+import { MdArrowForward, MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getVotePower, postMintUser, postUserAmount } from "../utils/axios";
+import {
+  getLeaderboardStats,
+  getReferralBalance,
+  getTransactionResult,
+  getVotePower,
+  postDistributeReferralRewards,
+  postMintUser,
+  postUserAmount,
+  saveUserMinigData,
+  updateBalance,
+} from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import SliderButton from "../components/SliderButton";
-import { RiShareFill } from "react-icons/ri";
-import { setUserSlotDate, setUserSlotNumber } from "../redux/slice/SlotsSlice";
+import { RiExchangeDollarLine } from "react-icons/ri";
+import {
+  setUserClickedWalletAddress,
+  setUserSlotDate,
+  setUserSlotNumber,
+} from "../redux/slice/SlotsSlice";
 import Footer from "../layout/Footer";
-
-const EligibilityModal = ({ onClose }) => {
-  const dispatch = useDispatch();
-  const walletAddress = useSelector((state) => state.wallet.address);
-  const token = useSelector((state) => state?.wallet?.dataObject?.token);
-  const [isEligible, setIsEligible] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const slotsNumber = useSelector((state) => state?.slots);
-  const [showMiningModal, setShowMiningModal] = useState(false);
-  const currentDate = new Date().toISOString().split("T")[0];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const votePower = await getVotePower(walletAddress);
-        const totalAmount =
-          votePower.data.frozenV2.reduce(
-            (sum, item) => sum + (item.amount || 0),
-            0
-          ) /
-          10 ** 6;
-        if (totalAmount >= 25) {
-          setIsEligible(true);
-        }
-      } catch (error) {
-        console.error("Error fetching vote power:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // First check if the current time slots of user is matched with previous time slots or not.
-    if (
-      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate
-    ) {
-      setShowMiningModal(!showMiningModal);
-      setLoading(false);
-    } else {
-      fetchData();
-    }
-  }, [walletAddress]);
-
-  const handleStartMining = async () => {
-    if (!walletAddress) {
-      toast.error("Connect your wallet.");
-      return;
-    }
-
-    // save the clicked time slots in state management
-    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
-    dispatch(setUserSlotDate(currentDate));
-    const apiData = await postMintUser(walletAddress, token);
-
-    const signedTransaction = await window.pox.signdata(
-      apiData?.data?.transaction
-    );
-
-    JSON.stringify(
-      await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-    );
-
-    toast.success("Your mining has started.");
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 bg-opacity-20 z-50  ">
-      <div className="relative bg-black m-8 p-8 rounded-2xl shadow-2xl max-w-sm w-full ">
-        {/* Close Icon */}
-        <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-300"
-          onClick={onClose}
-        >
-          <AiOutlineClose size={24} />
-        </button>
-        <h2 className="text-2xl font-semibold text-white mb-4">Info</h2>
-        {loading ? (
-          <p className="text-gray-300 mb-6">Checking eligibility...</p>
-        ) : (
-          <p className="text-gray-300 mb-6">
-            {showMiningModal
-              ? "Your token mining is going on."
-              : isEligible
-              ? "You are eligible to start mining."
-              : "You are not eligible to start mining because you haven't staked 25 POX."}
-          </p>
-        )}
-        <button
-          className={`w-full py-3 ${
-            isEligible
-              ? "bg-yellow-500 hover:bg-yellow-600"
-              : "bg-gray-500 cursor-not-allowed"
-          } text-black font-semibold rounded transition duration-300`}
-          onClick={handleStartMining}
-          disabled={!isEligible || loading} // Disable the button if not eligible or still loading
-        >
-          Start Mining
-        </button>
-      </div>
-    </div>
-  );
-};
+import { TbPigMoney } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import PlayStoreImg from "../assets/playstore.png";
+import PolinkImg from "../assets/polink.png";
+import ChromeImg from "../assets/chrome.png";
+import PolinkExtensionImg from "../assets/PolinkEx.png";
+import { SlArrowLeft } from "react-icons/sl";
+import { SlArrowRight } from "react-icons/sl";
+import CurveImg from "../assets/Curve.png";
+import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
+  const CustomNextArrow = ({ onClick }) => (
+    <div
+      className="slider-arrow slider-arrow--next font-bold"
+      onClick={onClick}
+    >
+      <SlArrowRight />
+    </div>
+  );
+
+  const CustomPrevArrow = ({ onClick }) => (
+    <div className="slider-arrow slider-arrow--prev" onClick={onClick}>
+      <SlArrowLeft />
+    </div>
+  );
+
+  var settings = {
+    infinite: true,
+    dots: false,
+    autoplay: true,
+    autoplaySpeed: 1500,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+  };
+
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [referralAmount, setReferralAmount] = useState({});
+  const [leaderBoardData, setLeaderBoardData] = useState([]);
+  const [userleaderBoardData, setUserLeaderBoardData] = useState([]);
+  const slotsNumber = useSelector((state) => state?.slots);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const referralAddress = useSelector(
+    (state) => state?.wallet?.dataObject?.referredBy
+  );
+
   const walletAddress = useSelector((state) => state.wallet.address);
   const { ref: timerRef, inView: timerInView } = useInView({
     triggerOnce: true,
@@ -134,70 +90,287 @@ const Home = () => {
   const { ref: buttonRef, inView: buttonInView } = useInView({
     triggerOnce: true,
   });
-  const referralAmount = useSelector(
-    (state) => state?.wallet?.dataObject?.referralAmount
-  );
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       const apiData = await postUserAmount(walletAddress);
+      console.log(apiData);
       setBalance(apiData?.data);
+      const amount = await getReferralBalance(walletAddress);
+      console.log(amount);
+      setReferralAmount(amount?.data);
+      const leaderboard = await getLeaderboardStats(walletAddress);
+      setLeaderBoardData(leaderboard?.data.slice(0, 5));
+      const filteredResult = leaderboard?.data.filter(
+        (item) => item.walletAddress === walletAddress
+      );
+      setUserLeaderBoardData(filteredResult);
     };
     fetchData();
   }, [walletAddress]);
 
+  const handleTapMining = async () => {
+    const currentDate = new Date().toISOString().split("T")[0];
+    if (!walletAddress) {
+      toast.error("Connect your wallet.");
+      return;
+    }
+
+    const votePower = await getVotePower(walletAddress);
+    const totalAmount =
+      votePower.data.frozenV2.reduce(
+        (sum, item) => sum + (item.amount || 0),
+        0
+      ) /
+      10 ** 6;
+    if (totalAmount < 25) {
+      toast.error("Insufficient stake amount !");
+      return;
+    }
+
+    if (
+      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+      slotsNumber?.userSlotDate === currentDate &&
+      walletAddress === slotsNumber?.userClickedWalletAddress
+    ) {
+      toast.error("You have already minted in this slot.");
+      return;
+    }
+
+    const apiData = await postMintUser(walletAddress, token);
+    console.log(apiData);
+
+    const signedTransaction = await window.pox.signdata(
+      apiData?.data?.transaction
+    );
+
+    console.log("signedTransaction: ", signedTransaction);
+
+    const broadcast = JSON.stringify(
+      await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+    );
+
+    console.log("broadcast", broadcast);
+
+    // check transaction result >> SUCCESS : REVERT
+    const transactionResult = await getTransactionResult(
+      apiData?.data?.transaction?.txID
+    );
+    console.log(transactionResult?.data?.receipt?.result);
+    // Call the api of update Token balance
+    const savedData = await saveUserMinigData(
+      token,
+      apiData?.data?.transaction?.txID,
+      walletAddress,
+      transactionResult?.data?.receipt?.result
+    );
+    console.log("savedData", savedData);
+
+    // Distribute referral rewards
+    if (referralAddress) {
+      const referralData = await postDistributeReferralRewards(walletAddress);
+      console.log("referralData", referralData);
+
+      const signedTransaction2 = await window.pox.signdata(
+        referralData?.data?.transaction
+      );
+
+      console.log("signedTranaction3", signedTransaction2);
+      const broadcast2 = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+      );
+
+      console.log("boradcast2", broadcast2);
+    }
+
+    // update token balance
+    const updateTokenBalance = await updateBalance(token);
+    console.log("updateTokenBalance", updateTokenBalance);
+
+    toast.success("Your mining has started.");
+
+    // save the clicked time slots in state management
+    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
+    dispatch(setUserSlotDate(currentDate));
+    dispatch(setUserClickedWalletAddress(walletAddress));
+  };
+
   return (
-    <div className="bg-black w-full min-h-screen relative pb-0">
-      <img
-        src={BackgroundImg}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
-      />
-      <div className=" relative z-10">
+    <div className="bg-[#0E0E0E] w-full min-h-screen relative pb-0">
+      <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
-          {/* Timer */}
+          <Slider {...settings}>
+            {/* Video */}
+            <div>
+              {/* Video */}
+              <div
+                ref={videoRef}
+                className={`relative rounded-2xl bg-[#040510] h-[200px] md:h-[330px] flex items-center justify-center
+    ${videoInView ? "animate-pop-in" : ""}
+  `}
+              >
+                <div className="absolute inset-0 rounded-2xl border-[4px] border-black blur-sm"></div>
+                <video
+                  className="w-full h-full object-cover rounded-2xl"
+                  autoPlay
+                  loop
+                  muted
+                >
+                  <source src={HeroVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+
+            {/* Banner1 */}
+            <div
+              className="bg-gradient-to-r to-[#161616] via-[#1f1400] from-[#141414] rounded-3xl  h-[200px] md:h-[330px] flex items-center justify-center "
+              style={{
+                boxShadow:
+                  "0 2px 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              <div className="flex flex-row  justify-around">
+                <img
+                  src={PlayStoreImg}
+                  alt="playstore-image"
+                  className=" w-14 md:w-24 lg:w-24 xl:w-32 2xl:w-32 object-contain"
+                />
+                <p className="text-md md:text-2xl lg:text-3xl 2xl:text-4xl text-[#F6B63E] font-bold pt-6 md:pt-14 2xl:pt-12">
+                  Polink Mobile App
+                </p>
+                <img
+                  src={PolinkImg}
+                  alt="polink-image"
+                  className=" w-14  md:w-20 lg:w-20 xl:w-32 2xl:w-28 object-contain"
+                />
+              </div>
+
+              <div className="text-center ">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-medium lg:font-semibold text-white pt-2 ">
+                  UVI Token Management on the Go! Access, trade, and manage your
+                  UVI Tokens from <br />
+                  anywhere, anytime with the Polink mobile app. Available on
+                  Android.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center ">
+                <div className="relative">
+                  <img
+                    src={CurveImg}
+                    alt=""
+                    className="w-full h-auto mt-11 md:mt-[90px] lg:mt-20 xl:mt-2  object-contain"
+                  />
+
+                  <div className="text-center absolute z-10 inset-0 flex flex-row justify-evenly items-center px-4 md:px-32 ml-4 mr-4">
+                    <img
+                      src={PolinkImg}
+                      alt="polink-image"
+                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain  mb-14 xl:mb-32 "
+                    />
+
+                    <div className="text-center flex flex-col justify-center items-center">
+                      <p className="text-sm md:text-xl font-semibold pt-10 xl:pt-0 xl:mb-5 2xl:pt-0 text-white lg:text-black ">
+                        Click Here
+                      </p>
+                      <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
+                        <button
+                          type="button"
+                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32 px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
+                        >
+                          Download the App today
+                        </button>
+                      </a>
+                    </div>
+
+                    <img
+                      src={PlayStoreImg}
+                      alt=" playstore-image"
+                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32 "
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Banner2 */}
+            <div
+              className="bg-gradient-to-r to-[#181717] via-[#3b3724] from-[#131212] bg-opacity-5 rounded-3xl  h-[200px] md:h-[330px] flex items-center justify-center "
+              style={{
+                boxShadow:
+                  "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              <div className="flex flex-row  justify-around">
+                <img
+                  src={ChromeImg}
+                  alt="playstore-image"
+                  className="w-8 md:w-20 lg:w-24 xl:w-32 2xl:w-28 object-contain"
+                />
+                <p className="text-md md:text-2xl lg:text-3xl xl:text-4xl  text-[#F6B63E] font-bold pt-6 md:pt-14">
+                  Polink Wallet Extension
+                </p>
+                <img
+                  src={PolinkExtensionImg}
+                  alt="polink-image"
+                  className="w-8 md:w-16 lg:w-20 xl:w-28 2xl:w-24 object-contain"
+                />
+              </div>
+
+              <div className="text-center ">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
+                  UVI Token Management on the Go! Access, trade, and manage your
+                  UVI Tokens from <br />
+                  anywhere, anytime with the Polink mobile app. Available on
+                  Android.
+                </p>
+              </div>
+
+              <div className="flex flex-row  justify-evenly ml-12 mr-12 ">
+                <img
+                  src={PolinkExtensionImg}
+                  alt="polink-image"
+                  className="w-6 md:w-16 lg:w-16 xl:w-20 2xl:w-20 object-contain"
+                />
+                <div className="text-center ">
+                  <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
+                    Click Here
+                  </p>
+          e       <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+                    <button
+                      type="button"
+                      className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
+                    >
+                      Add Polink Extension Now
+                    </button>
+                  </a>
+                </div>
+
+                <img
+                  src={ChromeImg}
+                  alt="playstore-image"
+                  className="w-7  md:w-20 lg:w-16 xl:w-24 2xl:w-20 object-contain"
+                />
+              </div>
+            </div>
+          </Slider>
+
+          {/* CountDown Timer */}
           <div
             ref={timerRef}
-            className={`absolute left-1/2 transform -translate-x-1/2 bg-[#1B1B1B] bg-opacity-30
-          w-[60%] md:w-[35%] lg:w-[30%] xl:w-[20%] h-[6%] md:h-[6%] lg:h-[8%] xl:h-[9%] rounded-b-3xl flex flex-col shadow-inner shadow-gray-600 items-center justify-center z-10
-          ${timerInView ? "animate-pop-in" : ""}
-          `}
-            style={{
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)", // For Safari
-            }}
+            className={`flex flex-col items-center text-white font-bold text-2xl mt-4 md:mt-6 ${
+              timerInView ? "animate-pop-in" : ""
+            }`}
           >
+            <p>Next Slot will be in:</p>
             <CountdownTimer />
-            <p className="text-gray-400 text-center">Remaining Time</p>
-            <p className="border-[1px] px-14 mt-2"></p>
           </div>
 
-          {/* Video */}
-          <div
-            ref={videoRef}
-            className={`border-[1px] border-[#F6B63E] border-opacity-15 rounded-2xl bg-[#040510] h-[200px] md:h-[330px] top-16 md:top-20 flex items-center justify-center relative
-          ${videoInView ? "animate-pop-in" : ""}
-          `}
-          >
-            <video
-              className="w-full h-full object-cover rounded-2xl"
-              autoPlay
-              loop
-              muted
-            >
-              <source src={HeroVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-
-          {/* Timeline */}
+          {/* Time Slots */}
           <div
             ref={timelineRef}
-            className={`mt-12 md:mt-20
+            className={`
           ${timelineInView ? "animate-pop-in" : ""}
           `}
           >
@@ -207,14 +380,16 @@ const Home = () => {
           {/* Start Mining */}
           <div
             ref={buttonRef}
-            className={`flex flex-col md:flex-col lg:flex-row justify-center w-full md:space-x-0 lg:space-x-10 space-y-6 md:space-y-6 lg:space-y-0 my-8 md:my-12 lg:my-12 xl:my-16
+            className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
           ${buttonInView ? "animate-pop-in" : ""}
           `}
           >
-            <SliderButton
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-            />
+            <button
+              onClick={handleTapMining}
+              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-white text-white text-2xl font-bold bg-gradient-to-tl from-[#FF5858] to-[#FFFF45]"
+            >
+              Tap to Mine
+            </button>
           </div>
 
           {/* Blocks */}
@@ -226,47 +401,193 @@ const Home = () => {
           }`}
           >
             {/* Balance Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+                 `, // White shadow with moderate opacity
+                 }}
+                >
               <div>
-                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {balance ? Number(balance).toFixed(6) : 0}
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
+                  {balance ? parseFloat((balance).toFixed(6))+'' : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
-                  Your Total Uvi Balance
+                  Total Minted Balance
                 </p>
               </div>
-              <div className="text-white">
-                <MdOutlineAccountBalanceWallet size={24} />
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <MdOutlineAccountBalanceWallet size={32} color="white" />
               </div>
             </div>
 
-            {/* Coin Worth Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            {/* Referral Earning */}
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+              `, // White shadow with moderate opacity
+              }}
+            >
               <div>
-                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {balance ? balance * 0.01 : 0}
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
+                  {referralAmount
+                    ? referralAmount.leve1Reward + referralAmount.leve2Reward
+                    : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
-                  Your Coin Worth at Launch
+                  UVI Referral Earnings
                 </p>
               </div>
-              <div className="text-white">
-                <BiDollar size={24} />
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <TbPigMoney size={32} color="white" />
               </div>
             </div>
 
-            {/* Referral Earnings Block */}
-            <div className="bg-[#1B1B1B] border-[1px] border-white border-opacity-15 rounded-xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center p-2 md:p-8">
+            {/* Coin Worth at launch */}
+            <div
+              className="bg-[#141414] shadow-xl rounded-3xl w-full md:w-full lg:w-full xl:w-[32%] flex flex-row justify-between items-center px-4 py-8 md:p-8"
+              style={{
+                boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 0 10px rgba(255, 255, 255, 0.1)
+              `, // White shadow with moderate opacity
+              }}
+            >
               <div>
-                <p className="text-sm md:text-2xl lg:text-xl xl:text-4xl text-white font-bold">
-                  {referralAmount && referralAmount > 0 && referralAmount}
+                <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
+                  ${" "}
+                  {referralAmount
+                  ? parseFloat(
+                  ((referralAmount.leve1Reward +
+                   referralAmount.leve2Reward +
+                   balance) *
+                   0.05).toFixed(6)
+                   ) + ''
+                   : 0}
                 </p>
-                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3">
-                  Your Referral Earnings
+                <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
+                  Coin Worth at Launch
                 </p>
               </div>
-              <div className="text-white">
-                <RiShareFill size={24} />
+              <div className="bg-[#202020] rounded-full p-[10px]">
+                <RiExchangeDollarLine size={32} color="white" />
+              </div>
+            </div>
+          </div>
+
+          {/* LeaderBoard */}
+          <div
+            className=" mt-16 bg-[#141414] rounded-3xl"
+            style={{
+              boxShadow: `
+              0 2px 10px rgba(255, 255, 255, 0.05), 
+              inset 0 0 10px rgba(255, 255, 255, 0.5)
+            `, // White shadow with moderate opacity
+            }}
+          >
+            <p
+              className="text-white font-bold text-xl text-center bg-[#141414] rounded-t-3xl py-4"
+              style={{
+                boxShadow: `
+                  0 2px 20px rgba(0, 0, 0, 0.4), 
+                  inset 0 2px 5px rgba(255, 255, 255, 0.1),
+                  inset 0 0px 2px rgba(255, 255, 255, 0.1)
+                `, // Outer shadow and inner shadow without affecting the bottom
+              }}
+            >
+              LeaderBoard
+            </p>
+            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
+              {leaderBoardData.map((data, index) => {
+                return (
+                  <>
+                    <div
+                      className={`flex flex-row justify-between py-4 ${
+                        index === leaderBoardData.length - 1
+                          ? ""
+                          : "border-b-[1px] border-[#171717]"
+                      } `}
+                    >
+                      {/* wallet address */}
+                      <div className="flex flex-row space-x-8 text-white">
+                        {/* Index */}
+                        <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <p className="text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+                          <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
+                            Total $UVI Balance{" "}
+                          </p>
+                        </div>
+                      </div>
+                      {/* total transactions */}
+                      <div>
+                        <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
+                          Total Transactions
+                        </p>
+                        <p className="text-white text-xs md:text-lg font-medium">
+                          $ {data?.tokenBalance}{" "}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+
+              <div className="flex items-center justify-center w-full space-x-2 ">
+                {/* Link for the text */}
+                <Link
+                  to="/leaderboard"
+                  className="text-lg text-[#FCC121] font-semibold cursor-pointer"
+                >
+                  More
+                </Link>
+
+                {/* Link for the icon */}
+                <Link to="/leaderboard">
+                  <MdArrowForward
+                    className="text-[#FCC121] cursor-pointer"
+                    size={24}
+                  />
+                </Link>
+              </div>
+
+              <div className="h-[2px] bg-[#171717] my-8"></div>
+
+              <p className=" text-lg text-[#FCC121] font-semibold">My Place</p>
+              {/* My Place */}
+              <div className="flex flex-row justify-between py-4 ">
+                {/* wallet address */}
+                <div className="flex flex-row space-x-8 text-white">
+                  {/* Index */}
+                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
+                    {userleaderBoardData?.[0]?.position}
+                  </div>
+                  <div>
+                    <p className="font-semibold">
+                      {" "}
+                      {userleaderBoardData?.[0]?.walletAddress && shortenString(userleaderBoardData?.[0]?.walletAddress, 8)}
+                    </p>
+                    <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
+                      Total $UVI Balance{" "}
+                    </p>
+                  </div>
+                </div>
+                {/* total transactions */}
+                <div>
+                  <p className="font-semibold text-sm md:text-lg text-[#FFC121]">
+                    Total Transactions
+                  </p>
+                  <p className="text-white text-sm md:text-lg font-medium">
+                    $ {userleaderBoardData?.[0]?.tokenBalance}{" "}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -276,9 +597,6 @@ const Home = () => {
         <div className="mx-0">
           <Footer />
         </div>
-
-        {/* Modal */}
-        {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
       </div>
     </div>
   );

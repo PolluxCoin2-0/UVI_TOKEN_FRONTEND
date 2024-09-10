@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { postSignup } from "../../utils/axios";
+import { postSetReferrer, postSignup, postVerifyReferral } from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -29,12 +30,19 @@ const Signup = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    if(!email && !walletAddress){
+      toast.error("Please enter your email and wallet address!");
+      return;
+    }
+
     if (!validateEmail(email)) {
       toast.error("Please enter a valid email address!");
       return;
     } 
 
     const apiData = await postSignup(walletAddress, email, referredBy)
+
     if(apiData?.data === "Invalid Referral Code"){
       toast.error("Invalid Referral Code");
       return;
@@ -47,6 +55,23 @@ const Signup = () => {
 
     // toast message >> OTP sent successfully
     if(apiData?.data?.email){
+
+      if(referredBy){
+        const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
+        console.log(setReferrerdata)
+  
+        const signedTransaction = await window.pox.signdata(
+          setReferrerdata?.data?.transaction
+        );
+    
+        console.log("signedTranaction3",signedTransaction);
+        const broadcast = JSON.stringify(
+          await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+        );
+    
+        console.log("boradcast3",broadcast)
+      }
+     
       toast.success("OTP sent successfully");
       // navigate
       navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});

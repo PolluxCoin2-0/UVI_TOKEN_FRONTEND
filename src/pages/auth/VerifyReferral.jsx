@@ -1,12 +1,13 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { postVerifyReferral } from "../../utils/axios";
 import LogoImg from "../../assets/UvitokenLogo.png";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { setDataObject, setLogin } from "../../redux/slice/walletslice";
 
 const VerifyReferral = () => {
+  const dispatch = useDispatch();
   const walletAddressBySignup = useSelector(
     (state) => state?.wallet?.dataObject?.walletAddress
   );
@@ -27,22 +28,31 @@ const VerifyReferral = () => {
         referralApi?.data?.trx1?.transaction
       );
 
-       JSON.stringify(
+      console.log("signTranaction1",signedTransaction1)
+
+       const broadcast1 = JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
       );
+
+      console.log("broadcast1",broadcast1)
 
       // Sign tranaction and broadcast transaction for trx2
       const signedTransaction2 = await window.pox.signdata(
         referralApi?.data?.trx2?.transaction
       );
 
+      console.log("signTranaction2",signedTransaction2)
       
-       JSON.stringify(
+       const broadcast2 = JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
       );
 
+      console.log("broadacst2", broadcast2);
+
       toast.success("Wallet address verified!");
-      navigate("/connectwallet");
+      dispatch(setDataObject(referralApi?.data?.user));
+      dispatch(setLogin(true));
+      navigate("/");
     } else {
       toast.error("Something went wrong!");
     }

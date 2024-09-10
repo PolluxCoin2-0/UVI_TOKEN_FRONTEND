@@ -29,6 +29,43 @@ export const postOTPVerify = async (email, otp) => {
   }
 };
 
+// referral verification
+export const postVerifyReferral = async (token, walletAddress, referralCode) => {
+  try {
+    const res = await axios.post(
+      BASE_URL + "/verifyReferralCode",
+      {
+        walletAddress: walletAddress,
+        referralCode: referralCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Set Referrer
+ export const postSetReferrer = async (walletAddress, referrer) => {
+  try {
+    const res = await axios.post(
+      BASE_URL + "/setReferrer",
+      {
+         "referrer": referrer,
+         "walletAddress": walletAddress
+      },
+    );
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Login
 export const postLogin = async (walletAddress) => {
   try {
@@ -78,7 +115,7 @@ export const postMintUser = async (walletAddress, token) => {
 // USER AMOUNT
 export const postUserAmount = async (walletAddress) => {
   try {
-    const res = await axios.post(BASE_URL + "/getBalanceOf", {
+    const res = await axios.post(BASE_URL + "/getTotalMintedUser", {
       walletAddress: walletAddress,
     });
     return res?.data;
@@ -122,25 +159,147 @@ export const getLeaderboardStats = async () => {
   }
 }
 
-
-// referral verification
-export const postVerifyReferral = async (token, walletAddress, referralCode) => {
+export const getProfileDetails = async(token)=>{
   try {
-    const res = await axios.post(
-      BASE_URL + "/verifyReferralCode",
-      {
-        walletAddress: walletAddress,
-        referralCode: referralCode,
+    const res = await axios.get(BASE_URL + "/getProfileById",{
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// GET REFERRAL REWARD DATA
+export const getReferralBalance = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getReferralRewards",{
+      "walletAddress":walletAddress
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getTransactionResult = async (transactionId) => {
+  try {
+    const res = await axios.post(BASE_URL + `/chaintransactionById`, {
+      value: transactionId,
+    });
     return res?.data;
   } catch (error) {
     console.log(error);
   }
 };
+
+// Save create mining data to database
+export const saveUserMinigData = async(token, trxId, walletAddress, status)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/createMint",{
+      "trxId": trxId,
+      "walletAddress": walletAddress,
+      "to": "PAxZmTCTKAbSvc4Y2H4WdZrtWWwsHsbUzg",
+      "amount": 25,
+      "status": status
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Distribute referral rewards
+export const postDistributeReferralRewards = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/distributeReferralRewards", {
+      "walletAddress": walletAddress
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get all transaction
+export const getAllTransactions = async()=>{
+  try {
+    const res = await axios.get(BASE_URL + "/getAllMintTransactions");
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get users transactions 
+export const getUserTransactions = async(token)=>{
+  try {
+    const res = await axios.get(BASE_URL + `/getAllUserTransactions?search=`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Update token Balance
+export const updateBalance = async(token)=>{
+  try {
+    const res = await axios.put(BASE_URL + "/updateTokenBalance",{},{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get Referrals
+export const getAllReferrals = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getReferrals",{
+      "walletAddress": walletAddress,
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Singup Bonus
+export const getSignupBonus = async(token)=>{
+  try {
+    const res = await axios.get(BASE_URL + "/getReferralBonus",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get all referrrals address 
+export const getAllReferralAddresses = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getAllMyReferrals",{
+    "walletAddress": walletAddress
+    })
+    return (res?.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
 

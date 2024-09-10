@@ -1,52 +1,87 @@
-import { TransactionData } from "../data/TransactionData";
-import BackgroundImg from "../assets/BGImage.png";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAllTransactions, getUserTransactions } from "../utils/axios";
+import { useSelector } from "react-redux";
+import { TimeFormat } from "../utils/TimeFormat";
+import { shortenString } from "../utils/shortenString";
 
 const TransactionPage = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
+  const [text, setText] = useState("");
+  const [transactionArray, setTransactionsArray] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (pathname === "/transaction" || pathname === "/transaction/alllivetransaction") {
+          setText("Live")
+          const allTransactions = await getAllTransactions();
+          console.log("all", allTransactions?.data?.transactions);
+          setTransactionsArray(allTransactions?.data?.transactions);
+        } else {
+          setText("My")
+            const userTransactions = await getUserTransactions(token);
+            console.log("user",userTransactions?.data?.transactions);
+            setTransactionsArray(userTransactions?.data?.transactions);
+
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [pathname, token]);
   return (
     <div>
       {/* Transaction content */}
-      <div className="bg-black w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20">
-        <img
-          src={BackgroundImg}
-          alt="background"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 "
-        />
-
+      <div
+        className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20 overflow-x-scroll md:overflow-x-hidden min-w-[400px]"
+        style={{
+          boxShadow:
+            "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
+        }}
+      >
         <div className="px-2 md:px-12 relative z-10">
           <p className="text-white text-2xl font-semibold mb-6 ">
-            My Transactions
+            {text} Transactions
           </p>
 
           {/* Transaction table */}
-          {/* {TransactionData.map((data, index) => {
+          {transactionArray && transactionArray.map((data, index) => {
             const isFirst = index === 0;
-            const isLast = index === TransactionData.length - 1;
+            const isLast = index === transactionArray.length - 1;
 
             return (
               <div
                 key={index}
-                className={`bg-[#1B1B1B] w-full flex flex-row justify-between p-4 md:p-7 border-[1px] border-white border-opacity-15 
-        ${isFirst ? "rounded-t-lg " : ""} 
-        ${isLast ? "rounded-b-lg" : ""}`}
+                className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
+                ${isFirst ? "rounded-t-3xl " : ""} 
+                ${isLast ? "rounded-b-3xl" : ""}
+                `}
               >
                 <div>
-                  <p className="text-white text-lg font-semibold">
-                    {data?.transactionId}{" "}
+                  <p className="text-xs md:text-lg font-semibold text-white">
+                    {data?.walletAddress}{" "}
                   </p>
-                  <p className="text-[#8C8B8B] pt-1">Rank: {data?.rank}</p>
-                </div>
+
+                  <p className="text-[#8C8B8B] text-xs md:text-lg font-normal ">
+                    {data?.trxId && shortenString(data?.trxId, 18)}{" "}
+                  </p>
+                  </div>
 
                 <div className="flex flex-col items-end">
-                  <p className="text-[#FFC121] text-lg font-semibold">
-                    {data?.payment}{" "}
+                  <p className="text-[#FFC121] text-xs md:text-lg font-semibold">
+                     {data?.amount}{" "} UVI
                   </p>
-                  <p className="text-[#8C8B8B] pt-1">{data?.LastDay} Day</p>
+                  <p className="text-[#8C8B8B] text-xs md:text-lg pt-1">{data?.createdAt && TimeFormat(data?.createdAt)}</p>
                 </div>
               </div>
             );
-          })} */}
+          })}
 
-          <p className="text-center text-white font-bold text-3xl">Coming Soon . . .</p>
         </div>
       </div>
     </div>

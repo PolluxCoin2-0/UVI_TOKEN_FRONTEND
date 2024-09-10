@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import Uvilogo from "../assets/uvilogo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataObject, setLogin, setWalletAddress } from "../redux/slice/walletslice";
+import {
+  setDataObject,
+  setLogin,
+  setWalletAddress,
+} from "../redux/slice/walletslice";
 import { postLogout } from "../utils/axios";
 import DashboardImg from "../assets/Dashboard.png";
 import BuyImg from "../assets/Buy.png";
@@ -14,6 +18,10 @@ import ProfileImg from "../assets/Profile.png";
 import LogoutImg from "../assets/Logout2.png";
 
 export default function Sidebar() {
+  // for active transaction modal
+  const [showModal, setShowModal] = useState("");
+  const [activeTab, setActiveTab] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -78,13 +86,12 @@ export default function Sidebar() {
       <aside
         id="nav-menu-1"
         aria-label="Side navigation"
-        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-[#000000] transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
+        className={`fixed top-14 lg:top-0 bottom-0 left-0 z-50 flex flex-col bg-[#151515] transition-transform lg:static lg:flex lg:w-1/4 xl:w-1/5 2xl:w-[15%] ${
           isSideNavOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 sidebar lg:relative`}
       >
-
-<style>
-    {`
+        <style>
+          {`
       #nav-menu-1::after {
         content: '';
         position: absolute;
@@ -93,7 +100,7 @@ export default function Sidebar() {
         height: 0;
         border-top: 20px solid transparent; /* Creates the arrow effect */
         border-bottom: 20px solid transparent;
-        border-right: 12px solid #151515;
+        border-right: 12px solid #0E0E0E; 
         top: ${
           selectedItem === "/"
             ? "125px"
@@ -101,11 +108,12 @@ export default function Sidebar() {
             ? "182px"
             : selectedItem === "/roi-calculator"
             ? "224px"
-            : selectedItem === "/blogs" || selectedItem.startsWith("/blogdetail") 
+            : selectedItem === "/blogs" ||
+              selectedItem.startsWith("/blogdetail")
             ? "306px"
             : selectedItem === "/leaderboard"
             ? "362px"
-            : selectedItem === "/transaction"
+            : selectedItem === "/transaction" || selectedItem.startsWith("/transaction/usertransaction")  || selectedItem.startsWith("/transaction/alllivetransaction")
             ? "422px"
             : selectedItem === "/profile"
             ? "485px"
@@ -114,7 +122,7 @@ export default function Sidebar() {
         transition: top 0.5s ease-in-out; /* Smooth transition for arrow movement */
       }
     `}
-  </style>
+        </style>
 
         <a
           aria-label="Uvi Token logo"
@@ -124,7 +132,7 @@ export default function Sidebar() {
           <img src={Uvilogo} alt="uvi-logo" className="" />
           Uvi Token
         </a>
-        <nav 
+        <nav
           aria-label="side navigation"
           className={`flex-1 divide-y divide-slate-100 overflow-auto`}
         >
@@ -134,12 +142,18 @@ export default function Sidebar() {
                 <Link
                   to="/"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-1 ${
-                    selectedItem === "/" ? "bg-[#F3BB1C] text-black font-semibold " : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/"
+                      ? "bg-[#F3BB1C] text-black font-semibold "
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/")}
                 >
                   <div className="flex items-center self-center">
-                    <img src={DashboardImg} alt="dashboard-image" className="text-white" />
+                    <img
+                      src={DashboardImg}
+                      alt="dashboard-image"
+                      className="text-white"
+                    />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold">
                     Dashboard
@@ -149,9 +163,11 @@ export default function Sidebar() {
 
               <li className="px-6">
                 <Link
-                  to="/buycoin"
+                  // to="/buycoin"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-2 ${
-                    selectedItem === "/buycoin" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/buycoin"
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/buycoin")}
                 >
@@ -166,9 +182,11 @@ export default function Sidebar() {
 
               <li className="px-6">
                 <Link
-                  to=""
+                  // to=""
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-3 ${
-                    selectedItem === "/roi-calculator" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/roi-calculator"
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/roi-calculator")}
                 >
@@ -185,7 +203,10 @@ export default function Sidebar() {
                 <Link
                   to="/blogs"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-4 ${
-                    selectedItem === "/blogs" || selectedItem.startsWith("/blogdetail")  ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/blogs" ||
+                    selectedItem.startsWith("/blogdetail")
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/blogs")}
                 >
@@ -202,12 +223,18 @@ export default function Sidebar() {
                 <Link
                   to="/leaderboard"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-5 ${
-                    selectedItem === "/leaderboard" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/leaderboard"
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/leaderboard")}
                 >
                   <div className="flex items-center self-center ">
-                    <img src={LeaderboardImg} alt="Leaderboard-image" className="" />
+                    <img
+                      src={LeaderboardImg}
+                      alt="Leaderboard-image"
+                      className=""
+                    />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold ">
                     LeaderBoard
@@ -219,12 +246,18 @@ export default function Sidebar() {
                 <Link
                   to="/transaction"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-6 ${
-                    selectedItem === "/transaction" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/transaction" || selectedItem.startsWith("/transaction/usertransaction")  || selectedItem.startsWith("/transaction/alllivetransaction")
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/transaction")}
                 >
                   <div className="flex items-center self-center ">
-                    <img src={TransactionImg} alt="transaction-image" className="" />
+                    <img
+                      src={TransactionImg}
+                      alt="transaction-image"
+                      className=""
+                    />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold">
                     Transaction
@@ -232,11 +265,39 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="px-6">
+              {/* Modal */}
+
+              <div className="ml-14 border-l-[1px] border-gray-500 mt-4">
+                <Link to="/transaction/alllivetransaction">
+                  <p
+                    className={`text-md pl-4 pt-0 cursor-pointer ${
+                      activeTab === "live" ? "text-white" : "text-gray-400"
+                    }`}
+                    onClick={() => setActiveTab("live")}
+                  >
+                    Live Transaction
+                  </p>
+                </Link>
+
+                <Link to="/transaction/usertransaction">
+                  <p
+                    className={`text-md pl-4 pt-8 cursor-pointer ${
+                      activeTab === "my" ? "text-white" : "text-gray-400"
+                    }`}
+                    onClick={() => setActiveTab("my")}
+                  >
+                    My Transaction
+                  </p>
+                </Link>
+              </div>
+
+              <li className="px-6 mt-4">
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-7 ${
-                    selectedItem === "/profile" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/profile"
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   }`}
                   onClick={() => handleItemClick("/profile")}
                 >
@@ -252,7 +313,9 @@ export default function Sidebar() {
               <li className="px-6" onClick={handleLogout}>
                 <Link
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-8 ${
-                    selectedItem === "/logout" ? "bg-[#F3BB1C] text-black font-semibold" : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                    selectedItem === "/logout"
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   } mb-0`}
                   onClick={() => handleItemClick("/logout")}
                 >

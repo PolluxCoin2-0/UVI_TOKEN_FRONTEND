@@ -3,6 +3,7 @@ import WinnerImg from "../assets/winner.png";
 import { getLeaderboardStats } from "../utils/axios";
 import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
+import { shortenString } from "../utils/shortenString";
 
 const LeaderBoard = () => {
   const [isFixed, setIsFixed] = useState(false);
@@ -38,19 +39,13 @@ const LeaderBoard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative bg-black px-4 lg:px-8 py-10">
-        <img
-        src={BackgroundImg}
-        alt="background"
-        className="absolute inset-0 w-full object-cover object-center opacity-30"
-        style={{ height: '100%', zIndex: 1 }}
-      />
+    <div className="min-h-screen relative bg-black px-4 lg:px-8 py-10 overflow-x-scroll">
       <div className="relative overflow-x-auto xl:overflow-x-clip 2xl:overflow-x-clip z-20">
-        <p className="text-3xl font-bold text-white text-center lg:text-left">
+        <p className="text-2xl md:text-3xl font-bold text-white text-center lg:text-left">
           Leaderboard
         </p>
 
-        <div className="mt-10 border border-white border-opacity-15 min-w-[800px] md:min-w-[300px] lg:min-w-[600px] xl:min-w-[1000px] rounded-3xl">
+        <div className="mt-10  border border-white border-opacity-15 min-w-[350px] md:min-w-[300px] lg:min-w-[600px] xl:min-w-[1000px] rounded-3xl">
           {leaderboardData && leaderboardData.map((data, index) => (
             <div
               key={data?.walletAddress}
@@ -80,16 +75,16 @@ const LeaderBoard = () => {
                   <img
                     src={WinnerImg}
                     alt="Top player"
-                    className="w-16 h-16 lg:w-full lg:h-12 xl:h-20"
+                    className=" w-12 h-12 md:w-16 md:h-16 lg:w-full lg:h-12 xl:h-20"
                   />
                 ) : (
-                  <p className="text-white text-xl lg:text-xl font-semibold bg-[#070707] rounded-full px-4 py-4 flex items-center justify-center w-10 h-10">
+                  <p className="text-white text-sm md:text-xl lg:text-xl font-semibold bg-[#070707] rounded-full px-4 py-4 flex items-center justify-center w-6 h-6 md:w-10 md:h-10">
                   {index + 1}
                 </p>
                 
                 )}
                 <div>
-                  <p
+                  {/* <p
                     className={`${
                       index === 0
                         ? "text-black text-2xl lg:text-xl xl:text-4xl font-bold"
@@ -97,16 +92,16 @@ const LeaderBoard = () => {
                     }`}
                   >
                     {data?.email}
-                  </p>
-                  <p className={`pt-1 ${index === 0 ? "text-black" : "text-[#8C8B8B]"}`}>
-                    {data?.walletAddress}
+                  </p> */}
+                  <p className={`pt-1 ${index === 0 ? "text-black text-lg md:text-2xl lg:text-xl xl:text-3xl font-bold" : "text-white text-lg lg:text-lg xl:text-xl font-semibold"}`}>
+                    {data?.walletAddress && shortenString(data?.walletAddress, 6)}
                   </p>
                 </div>
               </div>
               <div className={`${index === 0 ? "mt-4 lg:mt-0" : "mt-2 lg:mt-0"}`}>
                 <div className={`whitespace-nowrap flex ${index === 0 ? "flex-row space-x-4 lg:space-x-8" : "flex-row items-end space-x-4 lg:space-x-8"}`}>
-                  <p className="text-[#FFC121] text-lg">Total Transaction</p>
-                  <p className="text-white text-lg font-semibold">{data?.tokenBalance}</p>
+                  <p className="text-[#FFC121] text-sm md:text-xl font-semibold">Total Token</p>
+                  <p className="text-white text-sm md:text-xl font-semibold">{data?.tokenBalance}</p>
                 </div>
                 
               </div>

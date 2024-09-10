@@ -1,24 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const CountdownTimer = () => {
   // Determine the start time of the current 24-hour period
   const startOfDay = new Date().setHours(0, 0, 0, 0);
 
-  // Calculate the current slot based on the current time
+  // Calculate the slot duration and number based on the current time
+  const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
   const now = new Date().getTime();
-  const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
   const slotNumber = Math.floor((now - startOfDay) / slotDuration) + 1;
 
-  // Ensure the slot number is valid
-  const totalSlotsInADay = 48; // 24 hours * 2 slots per hour = 48 slots
-  const currentSlotNumber = slotNumber > totalSlotsInADay ? totalSlotsInADay : slotNumber;
+  // Ensure the slot number is between 1 and 4
+  const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
 
-  // Calculate the start time of the current slot
-  const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
-
-  // Calculate the end time of the current slot
+  // Calculate the start time and end time of the current slot
+  const currentSlotStartTime =
+    startOfDay + (currentSlotNumber - 1) * slotDuration;
   const currentSlotEndTime = currentSlotStartTime + slotDuration;
 
+  // Function to calculate the remaining time
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
     const difference = currentSlotEndTime - now;
@@ -40,42 +39,101 @@ const CountdownTimer = () => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [animationTrigger, setAnimationTrigger] = useState({
+    seconds: false,
+    minutes: false,
+    hours: false,
+  });
+
+  const prevTimeLeft = useRef(timeLeft);
 
   useEffect(() => {
-    // Update the countdown every second
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    // Clear interval on component unmount
     return () => clearInterval(timer);
   }, [currentSlotEndTime]);
 
+  useEffect(() => {
+    const newAnimationTrigger = {
+      seconds: false,
+      minutes: false,
+      hours: false,
+    };
+
+    if (prevTimeLeft.current.seconds !== timeLeft.seconds) {
+      newAnimationTrigger.seconds = true;
+    }
+    if (prevTimeLeft.current.minutes !== timeLeft.minutes) {
+      newAnimationTrigger.minutes = true;
+    }
+    if (prevTimeLeft.current.hours !== timeLeft.hours) {
+      newAnimationTrigger.hours = true;
+    }
+
+    setAnimationTrigger(newAnimationTrigger);
+    prevTimeLeft.current = timeLeft;
+
+    const resetAnimations = () => {
+      setAnimationTrigger({ seconds: false, minutes: false, hours: false });
+    };
+
+    // Reset the animation trigger after animation completes
+    const timer = setTimeout(resetAnimations, 500); // Animation duration
+
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
+
   return (
-    <div className="flex items-start justify-center w-full gap-3 count-down-main">
-      <div className="timer w-5">
-        <div>
-          <h3 className="countdown-element hours font-semibold text-2xl md:text-3xl text-white">
-            {String(timeLeft.hours).padStart(2, "0")}
-          </h3>
+    <div className="flex flex-col items-center justify-center w-full gap-2 count-down-main pt-6">
+      <div className="flex items-start justify-center w-full gap-4">
+        {/* Hours Section */}
+        <div className="flex flex-col items-center space-y-1">
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-5 text-5xl font-medium ${animationTrigger.hours ? 'animated' : ''}`}>
+              {String(timeLeft.hours).padStart(2, "0")}
+            </p>
+          </div>
+          <span className="text-white text-base font-normal share-tech-regular">
+            Hours
+          </span>
         </div>
-      </div>
-      <h3 className="font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
+        <h3 className="font-semibold text-2xl md:text-5xl text-white pt-2">
+          :
+        </h3>
 
-      <div className="timer w-5">
-        <div>
-          <h3 className="countdown-element minutes font-semibold text-2xl md:text-3xl text-white">
-            {String(timeLeft.minutes).padStart(2, "0")}
-          </h3>
+        {/* Minutes Section */}
+        <div className="flex flex-col items-center space-y-1">
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-4 text-5xl font-medium ${animationTrigger.minutes ? 'animated' : ''}`}>
+              {String(timeLeft.minutes).padStart(2, "0")}
+            </p>
+          </div>
+          <span className="text-white text-base font-normal share-tech-regular">
+            Minutes
+          </span>
         </div>
-      </div>
-      <h3 className="font-semibold text-2xl md:text-3xl text-white pl-2">:</h3>
+        <h3 className="font-semibold text-2xl md:text-5xl text-white pt-2">
+          :
+        </h3>
 
-      <div className="timer w-5">
-        <div>
-          <h3 className="countdown-element seconds font-semibold text-2xl md:text-3xl text-white">
-            {String(timeLeft.seconds).padStart(2, "0")}
-          </h3>
+        {/* Seconds Section */}
+        <div className="flex flex-col items-center space-y-1">
+          <div className="w-20 rounded-lg text-center share-tech-regular h-[68px] relative overflow-hidden custom-curve">
+            <div className="h-1/2 mb-[3px] bg-[#B68B1B] "></div>
+            <div className="h-1/2 bg-[#B68B1B] "></div>
+            <p className={`absolute top-3 left-5 text-5xl font-medium ${animationTrigger.seconds ? 'animated' : ''}`}>
+              {String(timeLeft.seconds).padStart(2, "0")}
+            </p>
+          </div>
+          <span className="text-white text-base font-normal share-tech-regular">
+            Seconds
+          </span>
         </div>
       </div>
     </div>
