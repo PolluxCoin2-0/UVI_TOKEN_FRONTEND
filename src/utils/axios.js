@@ -254,7 +254,7 @@ export const getUserTransactions = async(token)=>{
 // Update token Balance
 export const updateBalance = async(token)=>{
   try {
-    const res = await axios.put(BASE_URL + "/updateTokenBalance",{
+    const res = await axios.put(BASE_URL + "/updateTokenBalance",{},{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -286,6 +286,18 @@ export const getSignupBonus = async(token)=>{
       },
     })
     return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get all referrrals address 
+export const getAllReferralAddresses = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getAllMyReferrals",{
+    "walletAddress": walletAddress
+    })
+    return (res?.data);
   } catch (error) {
     console.log(error);
   }

@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { getAllReferrals, getSignupBonus, postUserAmount } from "../utils/axios";
+import {
+  getAllReferralAddresses,
+  getAllReferrals,
+  getSignupBonus,
+  postUserAmount,
+} from "../utils/axios";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -12,11 +17,14 @@ const ProfilePage = () => {
   const isReferralVerified = useSelector(
     (state) => state?.wallet?.dataObject?.isReferralVerify
   );
-  const referralAddress = useSelector((state)=>state?.wallet?.dataObject?.referredBy)
+  const referralAddress = useSelector(
+    (state) => state?.wallet?.dataObject?.referredBy
+  );
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [userAmount, setUserAmount] = useState(0);
   const [referralData, setReferralData] = useState({});
   const [signupBonus, setSignupBonus] = useState(0);
+  const [allReferralAddresses, setAllReferralAddresses] = useState([]);
 
   useEffect(() => {
     if (!isLogin) {
@@ -26,15 +34,19 @@ const ProfilePage = () => {
     const fetchData = async () => {
       const apiData = await postUserAmount(userData?.address);
       setUserAmount(apiData?.data);
-      const referralData = await getAllReferrals(userData?.address)
+      const referralData = await getAllReferrals(userData?.address);
+      console.log(referralData);
       setReferralData(referralData?.data);
       const signupBonusData = await getSignupBonus(token);
       setSignupBonus(signupBonusData?.data?.referralAmount);
+      const referralAddresses = await getAllReferralAddresses(
+        userData?.address
+      );
+      setAllReferralAddresses(referralAddresses?.data);
     };
     fetchData();
   }, []);
 
-  console.log(referralData);
   const handleCopy = (copiedText) => {
     navigator.clipboard.writeText(copiedText);
     toast.success("Address copied");
@@ -46,17 +58,26 @@ const ProfilePage = () => {
     toast.success("Referral link copied");
   };
 
+  const totalAmount =
+    userAmount +
+    signupBonus +
+    referralData?.leve1Reward +
+    referralData?.leve2Reward;
+
   return (
     <div>
       {/* Profile */}
-      <div className="bg-[#0E0E0E] w-full h-screen  xl:px-20 relative">
+      <div className="bg-[#0E0E0E] w-full min-h-screen  xl:px-20 relative pb-12">
         <div className="px-4 md:px-12 relative z-10">
           <p className="text-white text-xl font-semibold pt-10 ">Profile</p>
 
-          <div className="bg-[#141414] bg-opacity-5 w-full h-auto rounded-3xl mt-5 pt-5"
-           style={{
-            boxShadow: '0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
-          }}>
+          <div
+            className="bg-[#141414] bg-opacity-5 w-full  rounded-3xl mt-5 pt-5"
+            style={{
+              boxShadow:
+                "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
+            }}
+          >
             <div className="flex flex-col md:flex-row justify-between">
               <div className="pl-5">
                 <p className="text-white text-lg font-bold">
@@ -66,18 +87,16 @@ const ProfilePage = () => {
 
               <div className="flex flex-col items-start md:items-end pl-5 md:pl-0 pr-5 mt-8 md:mt-0">
                 <p className="text-[#FFC121]">Total Amount</p>
-                <p className="text-white text-lg font-bold">
-                  $ {userAmount && userAmount}
-                </p>
+                <p className="text-white text-lg font-bold">$ {totalAmount}</p>
               </div>
             </div>
-            
+
             <div className="flex flex-row justify-between items-center px-4 py-4">
               <p className="text-white font-bold text-lg">Signup Bonus:</p>
-              <p className="text-white text-lg font-bold">${signupBonus}</p>
+              <p className="text-white text-lg font-bold">{signupBonus} UVI</p>
             </div>
 
-            {/* {userData?.dataObject?.referredBy && (
+            {userData?.dataObject?.referredBy && (
               <div className="flex flex-row justify-between  py-2 p-3">
                 <p className="pt-0 text-white text-sm md:text-md">
                   <span className="font-bold">Referral Code Status: </span>
@@ -92,7 +111,7 @@ const ProfilePage = () => {
                   </button>
                 </Link>
               </div>
-            )} */}
+            )}
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-4 p-3 ">
               <p className="pt-0 text-white text-sm md:text-md ">
@@ -109,18 +128,22 @@ const ProfilePage = () => {
             </div>
           </div>
 
-           {/* Your Referral Section */}
-          <div className="bg-[#141414] bg-opacity-5  shadow-inner shadow-gray-600 w-full h-auto rounded-3xl mt-10  p-5 "
-             style={{
-              boxShadow: '0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
-            }}>
+          {/* Your Referral Section */}
+          <div
+            className="bg-[#141414] bg-opacity-5  shadow-inner shadow-gray-600 w-full  rounded-3xl mt-10  p-5 "
+            style={{
+              boxShadow:
+                "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
+            }}
+          >
+            <p className="text-white text-xl font-semibold">Your Referral </p>
+            <div className=" flex flex-row justify-between mt-4 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
+            <p
+  className="pt-0 text-[#6A6A6A] text-sm md:text-md font-bold text-ellipsis whitespace-nowrap overflow-hidden max-w-full"
+>
+  {`https://uvitokendev.netlify.app/referral/${userData?.address}`}
+</p>
 
-          <p className="text-white text-xl font-semibold">Your Referral </p>
-           <div className=" flex flex-row justify-between mt-10 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
-     
-              <p className="pt-0  text-[#6A6A6A] text-sm md:text-md font-bold ">
-                {`https://uvitokendev.netlify.app/referral/${userData?.address}`}
-              </p>
               <p
                 className="text-white pl-2 cursor-pointer"
                 onClick={handleGenerateReferralLink}
@@ -130,32 +153,35 @@ const ProfilePage = () => {
               </p>
             </div>
 
-            <div className=" w-full pt-10">
-              <div className="w-full flex flex-row justify-between items-center pb-2">
-                <p className="text-white text-xl font-semibold">
-                  Referral Address
-                </p>
+            <div className="pt-6">
+              <p className="text-white text-xl font-semibold pb-4">
+                Referral Amount
+              </p>
+              <p className=" bg-[#151515] rounded-xl py-3 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
+                {referralData &&
+                  referralData?.leve1Reward + referralData?.leve2Reward}
+              </p>
+            </div>
 
-                <div className="pt-2">
-                <p className="text-white text-xl font-semibold ">
-                  Referral Amount
-                </p>
-                 
-                </div>
-              </div>
+            <div className=" w-full pt-6">
+              <p className="text-white text-xl font-semibold pb-4">
+                Referral Address
+              </p>
 
-              <div className="w-full flex flex-row justify-between items-center space-x-8">
-              <p className="w-[50%] bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] text-md font-semibold shadow-2xl">
-                    {referralAddress ? referralAddress : "No Referral Address"}
+              <div className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-2">
+                {allReferralAddresses.map((item, index) => (
+                  <p
+                    key={index}
+                    className="w-full bg-[#151515] rounded-xl py-3 px-4 text-[#6A6A6A] text-md font-semibold shadow-2xl my-1"
+                  >
+                    {item?.walletAddress
+                      ? item?.walletAddress
+                      : "No Referral Address"}
                   </p>
-                <div className=" w-[50%]">
-                  <p className=" bg-[#151515] rounded-xl py-4 p-4 text-[#6A6A6A] shadow-2xl text-md font-semibold ">
-                    {referralData && (referralData?.leve1Reward + referralData?.leve2Reward)}
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
-      </div>
+          </div>
         </div>
       </div>
     </div>

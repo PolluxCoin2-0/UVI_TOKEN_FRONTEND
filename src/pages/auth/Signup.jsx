@@ -42,6 +42,7 @@ const Signup = () => {
     } 
 
     const apiData = await postSignup(walletAddress, email, referredBy)
+
     if(apiData?.data === "Invalid Referral Code"){
       toast.error("Invalid Referral Code");
       return;

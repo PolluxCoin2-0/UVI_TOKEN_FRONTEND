@@ -4,7 +4,7 @@ import { postVerifyReferral } from "../../utils/axios";
 import LogoImg from "../../assets/UvitokenLogo.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { setLogin } from "../../redux/slice/walletslice";
+import { setDataObject, setLogin } from "../../redux/slice/walletslice";
 
 const VerifyReferral = () => {
   const dispatch = useDispatch();
@@ -50,6 +50,7 @@ const VerifyReferral = () => {
       console.log("broadacst2", broadcast2);
 
       toast.success("Wallet address verified!");
+      dispatch(setDataObject(referralApi?.data?.user));
       dispatch(setLogin(true));
       navigate("/");
     } else {

@@ -93,8 +93,10 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       const apiData = await postUserAmount(walletAddress);
+      console.log(apiData);
       setBalance(apiData?.data);
       const amount = await getReferralBalance(walletAddress);
+      console.log(amount);
       setReferralAmount(amount?.data);
       const leaderboard = await getLeaderboardStats(walletAddress);
       setLeaderBoardData(leaderboard?.data.slice(0, 5));
@@ -125,19 +127,15 @@ const Home = () => {
       return;
     }
 
-    if (
-      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate &&
-      walletAddress === slotsNumber?.userClickedWalletAddress
-    ) {
-      toast.error("You have already minted in this slot.");
-      return;
-    }
+    // if (
+    //   slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+    //   slotsNumber?.userSlotDate === currentDate &&
+    //   walletAddress === slotsNumber?.userClickedWalletAddress
+    // ) {
+    //   toast.error("You have already minted in this slot.");
+    //   return;
+    // }
 
-    // save the clicked time slots in state management
-    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
-    dispatch(setUserSlotDate(currentDate));
-    dispatch(setUserClickedWalletAddress(walletAddress));
     const apiData = await postMintUser(walletAddress, token);
     console.log(apiData);
 
@@ -189,6 +187,11 @@ const Home = () => {
     console.log("updateTokenBalance", updateTokenBalance);
 
     toast.success("Your mining has started.");
+
+    // save the clicked time slots in state management
+    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
+    dispatch(setUserSlotDate(currentDate));
+    dispatch(setUserClickedWalletAddress(walletAddress));
   };
 
   return (
@@ -333,7 +336,7 @@ const Home = () => {
                   <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
-                  <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+          e       <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
                       type="button"
                       className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
@@ -403,12 +406,12 @@ const Home = () => {
                 boxShadow: `
                 0 2px 20px rgba(0, 0, 0, 0.4), 
                 inset 0 0 10px rgba(255, 255, 255, 0.1)
-              `, // White shadow with moderate opacity
-              }}
-            >
+                 `, // White shadow with moderate opacity
+                 }}
+                >
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
-                  {balance ? Number(balance).toFixed(6) : 0}
+                  {balance ? parseFloat((balance).toFixed(6))+'' : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Total Minted Balance
@@ -456,14 +459,15 @@ const Home = () => {
             >
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
-                  {balance && referralAmount
-                    ? Number(
-                        (referralAmount.leve1Reward +
-                          referralAmount.leve2Reward +
-                          balance) *
-                          0.05
-                      ).toFixed(6)
-                    : 0}
+                  ${" "}
+                  {referralAmount
+                  ? parseFloat(
+                  ((referralAmount.leve1Reward +
+                   referralAmount.leve2Reward +
+                   balance) *
+                   0.05).toFixed(6)
+                   ) + ''
+                   : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Coin Worth at Launch
