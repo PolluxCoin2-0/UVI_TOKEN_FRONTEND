@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
 const CountdownTimer = () => {
-  // Determine the start time of the current 24-hour period
-  const startOfDay = new Date().setHours(0, 0, 0, 0);
+  // Determine the start time of the current 24-hour period at 15:45
+  const startOfDay = new Date().setHours(15, 45, 0, 0); // 15:45:00
 
   // Calculate the slot duration and number based on the current time
   const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
@@ -13,8 +13,7 @@ const CountdownTimer = () => {
   const currentSlotNumber = slotNumber > 4 ? 4 : slotNumber;
 
   // Calculate the start time and end time of the current slot
-  const currentSlotStartTime =
-    startOfDay + (currentSlotNumber - 1) * slotDuration;
+  const currentSlotStartTime = startOfDay + (currentSlotNumber - 1) * slotDuration;
   const currentSlotEndTime = currentSlotStartTime + slotDuration;
 
   // Function to calculate the remaining time

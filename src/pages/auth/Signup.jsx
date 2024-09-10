@@ -154,7 +154,7 @@ const Signup = () => {
                 type="submit"
                 className="text-white bg-transparent cursor-pointer"
               >
-                <FaArrowAltCircleRight size={30} />
+                <FaArrowAltCircleRight size={36} />
               </button>
             </div>
           </form>
