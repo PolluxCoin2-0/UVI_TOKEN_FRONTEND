@@ -58,10 +58,11 @@ const Home = () => {
   var settings = {
     infinite: true,
     dots: false,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 1500,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
+    adaptiveHeight: true,
   };
 
   const dispatch = useDispatch();
@@ -266,7 +267,7 @@ const Home = () => {
                     <img
                       src={PolinkImg}
                       alt="polink-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain  mb-14 xl:mb-32 "
+                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain mb-14 xl:mb-32"
                     />
 
                     <div className="text-center flex flex-col justify-center items-center">
@@ -276,7 +277,8 @@ const Home = () => {
                       <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
                         <button
                           type="button"
-                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32 px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
+                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32
+                           px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
                         >
                           Download the App today
                         </button>
@@ -286,7 +288,7 @@ const Home = () => {
                     <img
                       src={PlayStoreImg}
                       alt=" playstore-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32 "
+                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32"
                     />
                   </div>
                 </div>
@@ -319,10 +321,9 @@ const Home = () => {
 
               <div className="text-center ">
                 <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
-                  UVI Token Management on the Go! Access, trade, and manage your
-                  UVI Tokens from <br />
-                  anywhere, anytime with the Polink mobile app. Available on
-                  Android.
+                Manage your Tokens effortlessly with the Polink browser extension. 
+                  <br />
+                  Fast, secure, and built for Web3 transactions.
                 </p>
               </div>
 
@@ -336,7 +337,7 @@ const Home = () => {
                   <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
-          e       <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+              <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
                       type="button"
                       className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
