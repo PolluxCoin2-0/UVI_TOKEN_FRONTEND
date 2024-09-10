@@ -27,6 +27,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import Footer from "../src/layout/Footer";
 import VerifyReferral from "./pages/auth/VerifyReferral";
+import ComingSoon from "./pages/ComingSoon";
 
 
 
@@ -107,7 +108,8 @@ function AppContent() {
 
   return (
     <>
-      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
+    <ComingSoon/>
+      {/* {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="main-content">
         <Navbar />
         <ToastContainer
@@ -141,7 +143,7 @@ function AppContent() {
           
         </Routes>
       </div>
-      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
+      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />} */}
     </>
   );
 }

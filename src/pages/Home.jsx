@@ -527,17 +527,17 @@ const Home = () => {
                           {/* for tablet and above devices */}
                           <p  className="hidden md:block text-xs md:text-lg font-semibold">{data?.walletAddress}</p>
                           <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
-                            Total $UVI Balance{" "}
+                            Total UVI Balance{" "}
                           </p>
                         </div>
                       </div>
                       {/* total transactions */}
                       <div>
                         <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
-                          Total Transactions
+                          Total Holding
                         </p>
                         <p className="text-white text-xs md:text-lg font-medium">
-                          $ {data?.tokenBalance}{" "}
+                           {data?.tokenBalance}{" "}UVI
                         </p>
                       </div>
                     </div>
@@ -588,17 +588,17 @@ const Home = () => {
                       {userleaderBoardData?.[0]?.walletAddress }
                     </p>
                     <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
-                      Total $UVI Balance{" "}
+                      Total UVI Balance{" "}
                     </p>
                   </div>
                 </div>
                 {/* total transactions */}
                 <div>
                   <p className="font-semibold text-sm md:text-lg text-[#FFC121]">
-                    Total Transactions
+                    Total Holding
                   </p>
                   <p className="text-white text-sm md:text-lg font-medium">
-                    $ {userleaderBoardData?.[0]?.tokenBalance}{" "}
+                     {userleaderBoardData?.[0]?.tokenBalance}{" "}UVI
                   </p>
                 </div>
               </div>
