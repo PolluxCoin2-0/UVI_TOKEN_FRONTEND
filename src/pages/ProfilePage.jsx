@@ -34,7 +34,7 @@ const ProfilePage = () => {
     fetchData();
   }, []);
 
-
+  console.log(referralData);
   const handleCopy = (copiedText) => {
     navigator.clipboard.writeText(copiedText);
     toast.success("Address copied");
