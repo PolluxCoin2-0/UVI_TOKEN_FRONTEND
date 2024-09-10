@@ -276,7 +276,7 @@ const Home = () => {
                     <img
                       src={PolinkImg}
                       alt="polink-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain mb-14 xl:mb-32"
+                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain mb-1 xl:mb-2"
                     />
 
                     <div className="text-center flex flex-col justify-center items-center">
@@ -286,8 +286,8 @@ const Home = () => {
                       <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
                         <button
                           type="button"
-                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32
-                           px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
+                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-1 md:mb-0 lg:mb-0 xl:mb-4 2xl:mb-2
+                           px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-2 xl:mt-0 border-[1px] border-black"
                         >
                           Download the App today
                         </button>
@@ -297,7 +297,7 @@ const Home = () => {
                     <img
                       src={PlayStoreImg}
                       alt=" playstore-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32"
+                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-1 xl:mb-6"
                     />
                   </div>
                 </div>
