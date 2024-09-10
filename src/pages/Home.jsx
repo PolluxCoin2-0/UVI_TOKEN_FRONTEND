@@ -223,22 +223,30 @@ const Home = () => {
 
             {/* Banner1 */}
             <div
-              className="bg-gradient-to-r to-[#161616] via-[#1f1400] from-[#141414] rounded-3xl  h-[250px] md:h-[330px] flex items-center justify-center "
+              className="bg-gradient-to-r to-[#161616] via-[#1f1400] from-[#141414] rounded-3xl  h-[200px] md:h-[330px] flex items-center justify-center "
               style={{
                 boxShadow:
                   "0 2px 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
               }}
             >
               <div className="flex flex-row  justify-around">
-                <img src={PlayStoreImg} alt="playstore-image" className="" />
-                <p className="text-4xl text-[#F6B63E] font-bold pt-14">
+                <img
+                  src={PlayStoreImg}
+                  alt="playstore-image"
+                  className=" w-14 md:w-24 lg:w-24 xl:w-32 2xl:w-32 object-contain"
+                />
+                <p className="text-md md:text-2xl lg:text-3xl 2xl:text-4xl text-[#F6B63E] font-bold pt-6 md:pt-14 2xl:pt-12">
                   Polink Mobile App
                 </p>
-                <img src={PolinkImg} alt="polink-image" className="" />
+                <img
+                  src={PolinkImg}
+                  alt="polink-image"
+                  className=" w-14  md:w-20 lg:w-20 xl:w-32 2xl:w-28 object-contain"
+                />
               </div>
 
               <div className="text-center ">
-                <p className="text-xl font-semibold text-white pt-2">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-medium lg:font-semibold text-white pt-2 ">
                   UVI Token Management on the Go! Access, trade, and manage your
                   UVI Tokens from <br />
                   anywhere, anytime with the Polink mobile app. Available on
@@ -246,27 +254,39 @@ const Home = () => {
                 </p>
               </div>
 
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center ">
                 <div className="relative">
-                  <img src={CurveImg} alt="" className="w-full h-auto mt-4" />
+                  <img
+                    src={CurveImg}
+                    alt=""
+                    className="w-full h-auto mt-11 md:mt-[90px] lg:mt-20 xl:mt-2  object-contain"
+                  />
 
-                  <div className="absolute z-10 inset-0 flex flex-row justify-evenly px-32 items-center -mt-32 ">
-                    <img src={PolinkImg} alt="polink-image" className="" />
-                    <div className="text-center">
-                      <p className="text-xl font-semibold pt-8">Click Here</p>
+                  <div className="text-center absolute z-10 inset-0 flex flex-row justify-evenly items-center px-4 md:px-32 ml-4 mr-4">
+                    <img
+                      src={PolinkImg}
+                      alt="polink-image"
+                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain  mb-14 xl:mb-32 "
+                    />
+
+                    <div className="text-center flex flex-col justify-center items-center">
+                      <p className="text-sm md:text-xl font-semibold pt-10 xl:pt-0 xl:mb-5 2xl:pt-0 text-white lg:text-black ">
+                        Click Here
+                      </p>
                       <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
                         <button
                           type="button"
-                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 px-14 py-2 rounded-full text-xl font-semibold mt-4 border-[1px] border-black"
+                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32 px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
                         >
                           Download the App today
                         </button>
                       </a>
                     </div>
+
                     <img
                       src={PlayStoreImg}
-                      alt="playstore-image"
-                      className=""
+                      alt=" playstore-image"
+                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32 "
                     />
                   </div>
                 </div>
@@ -275,7 +295,7 @@ const Home = () => {
 
             {/* Banner2 */}
             <div
-              className="bg-gradient-to-r to-[#181717] via-[#3b3724] from-[#131212] bg-opacity-5 rounded-3xl  h-[250px] md:h-[330px] flex items-center justify-center "
+              className="bg-gradient-to-r to-[#181717] via-[#3b3724] from-[#131212] bg-opacity-5 rounded-3xl  h-[200px] md:h-[330px] flex items-center justify-center "
               style={{
                 boxShadow:
                   "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
@@ -285,20 +305,20 @@ const Home = () => {
                 <img
                   src={ChromeImg}
                   alt="playstore-image"
-                  className="object-contain"
+                  className="w-8 md:w-20 lg:w-24 xl:w-32 2xl:w-28 object-contain"
                 />
-                <p className="text-4xl text-[#F6B63E] font-bold pt-14">
+                <p className="text-md md:text-2xl lg:text-3xl xl:text-4xl  text-[#F6B63E] font-bold pt-6 md:pt-14">
                   Polink Wallet Extension
                 </p>
                 <img
                   src={PolinkExtensionImg}
                   alt="polink-image"
-                  className="object-contain"
+                  className="w-8 md:w-16 lg:w-20 xl:w-28 2xl:w-24 object-contain"
                 />
               </div>
 
               <div className="text-center ">
-                <p className="text-xl font-semibold text-white pt-2">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
                   UVI Token Management on the Go! Access, trade, and manage your
                   UVI Tokens from <br />
                   anywhere, anytime with the Polink mobile app. Available on
@@ -310,16 +330,16 @@ const Home = () => {
                 <img
                   src={PolinkExtensionImg}
                   alt="polink-image"
-                  className="object-contain"
+                  className="w-6 md:w-16 lg:w-16 xl:w-20 2xl:w-20 object-contain"
                 />
                 <div className="text-center ">
-                  <p className="text-xl font-semibold text-white pt-8">
+                  <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
-                  <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+          e       <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
                       type="button"
-                      className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55] bg-opacity-5 px-14 py-2 rounded-full text-xl font-semibold mt-4 border-[1px] border-gray-500 text-white"
+                      className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
                     >
                       Add Polink Extension Now
                     </button>
@@ -329,7 +349,7 @@ const Home = () => {
                 <img
                   src={ChromeImg}
                   alt="playstore-image"
-                  className="object-contain"
+                  className="w-7  md:w-20 lg:w-16 xl:w-24 2xl:w-20 object-contain"
                 />
               </div>
             </div>

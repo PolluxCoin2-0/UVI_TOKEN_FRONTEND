@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getAllTransactions, getUserTransactions } from "../utils/axios";
 import { useSelector } from "react-redux";
 import { TimeFormat } from "../utils/TimeFormat";
+import { shortenString } from "../utils/shortenString";
 
 const TransactionPage = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ const TransactionPage = () => {
     <div>
       {/* Transaction content */}
       <div
-        className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20"
+        className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20 overflow-x-scroll md:overflow-x-hidden min-w-[400px]"
         style={{
           boxShadow:
             "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
@@ -62,20 +63,20 @@ const TransactionPage = () => {
                 `}
               >
                 <div>
-                  <p className="text-lg font-semibold text-white">
+                  <p className="text-xs md:text-lg font-semibold text-white">
                     {data?.walletAddress}{" "}
                   </p>
 
-                  <p className="text-[#8C8B8B] text-lg font-normal ">
-                    {data?.trxId}{" "}
+                  <p className="text-[#8C8B8B] text-xs md:text-lg font-normal ">
+                    {data?.trxId && shortenString(data?.trxId, 18)}{" "}
                   </p>
                   </div>
 
                 <div className="flex flex-col items-end">
-                  <p className="text-[#FFC121] text-lg font-semibold">
+                  <p className="text-[#FFC121] text-xs md:text-lg font-semibold">
                      {data?.amount}{" "} UVI
                   </p>
-                  <p className="text-[#8C8B8B] pt-1">{data?.createdAt && TimeFormat(data?.createdAt)}</p>
+                  <p className="text-[#8C8B8B] text-xs md:text-lg pt-1">{data?.createdAt && TimeFormat(data?.createdAt)}</p>
                 </div>
               </div>
             );
