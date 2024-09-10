@@ -34,7 +34,6 @@ const ProfilePage = () => {
     fetchData();
   }, []);
 
-  console.log(referralData);
   const handleCopy = (copiedText) => {
     navigator.clipboard.writeText(copiedText);
     toast.success("Address copied");
@@ -45,6 +44,8 @@ const ProfilePage = () => {
     navigator.clipboard.writeText(referralLink);
     toast.success("Referral link copied");
   };
+
+  const totalAmount = userAmount + signupBonus + referralData?.leve1Reward + referralData?.leve2Reward;
 
   return (
     <div>
@@ -67,17 +68,17 @@ const ProfilePage = () => {
               <div className="flex flex-col items-start md:items-end pl-5 md:pl-0 pr-5 mt-8 md:mt-0">
                 <p className="text-[#FFC121]">Total Amount</p>
                 <p className="text-white text-lg font-bold">
-                  $ {userAmount && userAmount}
+                  $ { totalAmount }
                 </p>
               </div>
             </div>
             
             <div className="flex flex-row justify-between items-center px-4 py-4">
               <p className="text-white font-bold text-lg">Signup Bonus:</p>
-              <p className="text-white text-lg font-bold">${signupBonus}</p>
+              <p className="text-white text-lg font-bold">{signupBonus} UVI</p>
             </div>
 
-            {/* {userData?.dataObject?.referredBy && (
+            {userData?.dataObject?.referredBy && (
               <div className="flex flex-row justify-between  py-2 p-3">
                 <p className="pt-0 text-white text-sm md:text-md">
                   <span className="font-bold">Referral Code Status: </span>
@@ -92,7 +93,7 @@ const ProfilePage = () => {
                   </button>
                 </Link>
               </div>
-            )} */}
+            )}
 
             <div className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C] flex flex-row justify-between rounded-b-3xl py-4 p-3 ">
               <p className="pt-0 text-white text-sm md:text-md ">

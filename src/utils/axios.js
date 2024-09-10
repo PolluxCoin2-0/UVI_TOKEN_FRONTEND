@@ -254,7 +254,7 @@ export const getUserTransactions = async(token)=>{
 // Update token Balance
 export const updateBalance = async(token)=>{
   try {
-    const res = await axios.put(BASE_URL + "/updateTokenBalance",{
+    const res = await axios.put(BASE_URL + "/updateTokenBalance",{},{
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -38,8 +38,6 @@ const Otp = () => {
 
     const apiData = await postOTPVerify(emailBySignup, otp);
 
-    console.log(apiData);
-
     if (apiData?.data?._id) {
       dispatch(setDataObject(apiData?.data));
       dispatch(setWalletAddress(walletAddressBySignup));

@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { TransactionData } from "../data/TransactionData";
 import { useEffect, useState } from "react";
 import { getAllTransactions, getUserTransactions } from "../utils/axios";
 import { useSelector } from "react-redux";
@@ -55,19 +54,13 @@ const TransactionPage = () => {
             const isLast = index === transactionArray.length - 1;
 
             return (
-
               <div
                 key={index}
                 className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
-        ${isFirst ? "rounded-t-3xl " : ""} 
-        ${isLast ? "rounded-b-3xl" : ""}
-
-        
-        `}
-        
-        
+                ${isFirst ? "rounded-t-3xl " : ""} 
+                ${isLast ? "rounded-b-3xl" : ""}
+                `}
               >
-
                 <div>
                   <p className="text-lg font-semibold text-white">
                     {data?.walletAddress}{" "}
@@ -80,7 +73,7 @@ const TransactionPage = () => {
 
                 <div className="flex flex-col items-end">
                   <p className="text-[#FFC121] text-lg font-semibold">
-                    $ {data?.amount}{" "}
+                     {data?.amount}{" "} UVI
                   </p>
                   <p className="text-[#8C8B8B] pt-1">{data?.createdAt && TimeFormat(data?.createdAt)}</p>
                 </div>

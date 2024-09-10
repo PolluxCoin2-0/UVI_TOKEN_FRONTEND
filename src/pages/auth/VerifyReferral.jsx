@@ -21,8 +21,6 @@ const VerifyReferral = () => {
       walletAddressBySignup,
       referredBy
     );
-
-    console.log(referralApi?.data?.user);
     
     if (referralApi?.data?.trx1) {
       // Sign tranaction and broadcast transaction for trx1
