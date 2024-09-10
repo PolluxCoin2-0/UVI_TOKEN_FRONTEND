@@ -31,7 +31,7 @@ const Signup = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-    if(!email && !walletAddress){
+    if(!email && walletAddress.length>0){
       toast.error("Please enter your email and wallet address!");
       return;
     }
