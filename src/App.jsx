@@ -108,8 +108,8 @@ function AppContent() {
 
   return (
     <>
-    <ComingSoon/>
-      {/* {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
+    {/* <ComingSoon/> */}
+      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="main-content">
         <Navbar />
         <ToastContainer
@@ -143,7 +143,7 @@ function AppContent() {
           
         </Routes>
       </div>
-      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />} */}
+      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
     </>
   );
 }
