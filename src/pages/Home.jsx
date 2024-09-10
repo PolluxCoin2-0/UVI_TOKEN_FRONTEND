@@ -38,6 +38,7 @@ import PolinkExtensionImg from "../assets/PolinkEx.png";
 import { SlArrowLeft } from "react-icons/sl";
 import { SlArrowRight } from "react-icons/sl";
 import CurveImg from "../assets/Curve.png";
+import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
   const CustomNextArrow = ({ onClick }) => (
@@ -502,7 +503,7 @@ const Home = () => {
             >
               LeaderBoard
             </p>
-            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden">
+            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
               {leaderBoardData.map((data, index) => {
                 return (
                   <>
@@ -511,27 +512,31 @@ const Home = () => {
                         index === leaderBoardData.length - 1
                           ? ""
                           : "border-b-[1px] border-[#171717]"
-                      } min-w-[600px]`}
+                      } `}
                     >
                       {/* wallet address */}
                       <div className="flex flex-row space-x-8 text-white">
                         {/* Index */}
-                        <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
+                        <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
                           {index + 1}
                         </div>
                         <div>
-                          <p className="font-semibold">{data?.walletAddress}</p>
-                          <p className="text-[#8C8B8B] font-medium">
+                          {/* for mobile screen */}
+                          <p className="block md:hidden text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+
+                          {/* for tablet and above devices */}
+                          <p  className="hidden md:block text-xs md:text-lg font-semibold">{data?.walletAddress}</p>
+                          <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
                             Total $UVI Balance{" "}
                           </p>
                         </div>
                       </div>
                       {/* total transactions */}
                       <div>
-                        <p className="font-semibold text-[#FFC121]">
+                        <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
                           Total Transactions
                         </p>
-                        <p className="text-white font-medium">
+                        <p className="text-white text-xs md:text-lg font-medium">
                           $ {data?.tokenBalance}{" "}
                         </p>
                       </div>
@@ -562,29 +567,37 @@ const Home = () => {
 
               <p className=" text-lg text-[#FCC121] font-semibold">My Place</p>
               {/* My Place */}
-              <div className="flex flex-row justify-between py-4 min-w-[600px]">
+              <div className="flex flex-row justify-between py-4 ">
                 {/* wallet address */}
                 <div className="flex flex-row space-x-8 text-white">
                   {/* Index */}
-                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center h-10 w-10">
+                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
                     {userleaderBoardData?.[0]?.position}
                   </div>
                   <div>
-                    <p className="font-semibold">
+
+                    {/* for mobile screen */}
+                    <p className="block md:hidden font-semibold">
                       {" "}
-                      {userleaderBoardData?.[0]?.walletAddress}
+                      {userleaderBoardData?.[0]?.walletAddress && shortenString(userleaderBoardData?.[0]?.walletAddress, 8)}
                     </p>
-                    <p className="text-[#8C8B8B] font-medium">
+
+                    {/* for mobile and above devices */}
+                    <p className="hidden md:block  font-semibold">
+                      {" "}
+                      {userleaderBoardData?.[0]?.walletAddress }
+                    </p>
+                    <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
                       Total $UVI Balance{" "}
                     </p>
                   </div>
                 </div>
                 {/* total transactions */}
                 <div>
-                  <p className="font-semibold text-[#FFC121]">
+                  <p className="font-semibold text-sm md:text-lg text-[#FFC121]">
                     Total Transactions
                   </p>
-                  <p className="text-white font-medium">
+                  <p className="text-white text-sm md:text-lg font-medium">
                     $ {userleaderBoardData?.[0]?.tokenBalance}{" "}
                   </p>
                 </div>
