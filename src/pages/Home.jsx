@@ -41,6 +41,8 @@ import CurveImg from "../assets/Curve.png";
 import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
+
+  
   const CustomNextArrow = ({ onClick }) => (
     <div
       className="slider-arrow slider-arrow--next font-bold"
@@ -59,7 +61,7 @@ const Home = () => {
   var settings = {
     infinite: true,
     dots: false,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 1500,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
@@ -380,18 +382,21 @@ const Home = () => {
 
           {/* Start Mining */}
           <div
-            ref={buttonRef}
-            className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
-          ${buttonInView ? "animate-pop-in" : ""}
-          `}
-          >
-            <button
-              onClick={handleTapMining}
-              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-white text-white text-2xl font-bold bg-gradient-to-tl from-[#FF5858] to-[#FFFF45]"
-            >
-              Tap to Mine
-            </button>
-          </div>
+    ref={buttonRef}
+    className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
+    ${buttonInView ? "animate-pop-in" : ""}
+    `}
+  >
+    <button
+      onClick={handleTapMining}
+      className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
+    >
+      <div className=""></div>
+      <span className="relative z-10">Tap to Mine</span>
+    </button>
+
+    
+  </div>
 
           {/* Blocks */}
           <div
