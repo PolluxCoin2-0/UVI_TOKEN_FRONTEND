@@ -127,14 +127,14 @@ const Home = () => {
       return;
     }
 
-    if (
-      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate &&
-      walletAddress === slotsNumber?.userClickedWalletAddress
-    ) {
-      toast.error("You have already minted in this slot.");
-      return;
-    }
+    // if (
+    //   slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+    //   slotsNumber?.userSlotDate === currentDate &&
+    //   walletAddress === slotsNumber?.userClickedWalletAddress
+    // ) {
+    //   toast.error("You have already minted in this slot.");
+    //   return;
+    // }
 
     const apiData = await postMintUser(walletAddress, token);
     console.log(apiData);
