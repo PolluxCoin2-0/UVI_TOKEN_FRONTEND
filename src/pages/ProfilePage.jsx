@@ -138,9 +138,12 @@ const ProfilePage = () => {
           >
             <p className="text-white text-xl font-semibold">Your Referral </p>
             <div className=" flex flex-row justify-between mt-4 rounded-xl py-3 p-3 bg-[#151515] shadow-2xl">
-              <p className="pt-0  text-[#6A6A6A] text-sm md:text-md font-bold ">
-                {`https://uvitokendev.netlify.app/referral/${userData?.address}`}
-              </p>
+            <p
+  className="pt-0 text-[#6A6A6A] text-sm md:text-md font-bold text-ellipsis whitespace-nowrap overflow-hidden max-w-full"
+>
+  {`https://uvitokendev.netlify.app/referral/${userData?.address}`}
+</p>
+
               <p
                 className="text-white pl-2 cursor-pointer"
                 onClick={handleGenerateReferralLink}
