@@ -69,7 +69,7 @@ const Home = () => {
   };
 
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
   const [leaderBoardData, setLeaderBoardData] = useState([]);
@@ -140,6 +140,11 @@ const Home = () => {
       return;
     }
 
+    if(isLoading){
+      return;
+    }
+
+    setIsLoading(true);
     const apiData = await postMintUser(walletAddress, token);
     console.log(apiData);
 
@@ -170,7 +175,7 @@ const Home = () => {
     console.log("savedData", savedData);
 
     // Distribute referral rewards
-    if (referralAddress) {
+    if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
       const referralData = await postDistributeReferralRewards(walletAddress);
       console.log("referralData", referralData);
 
@@ -196,6 +201,7 @@ const Home = () => {
     dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
     dispatch(setUserSlotDate(currentDate));
     dispatch(setUserClickedWalletAddress(walletAddress));
+    setIsLoading(false);
   };
 
   return (
@@ -392,7 +398,9 @@ const Home = () => {
       className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
     >
       <div className=""></div>
+      {isLoading?<span className="relative z-10 pulse-animation">Loading...</span>:
       <span className="relative z-10">Tap to Mine</span>
+      }
     </button>
 
     

@@ -311,6 +311,24 @@ button .wave {
   fill: #f6b63e; /* Custom hover color */
 }
 
+/* Add this CSS to your stylesheet */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.pulse-animation {
+  animation: pulse 1.5s infinite;
+}
+
+
 
 
 
