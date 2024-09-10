@@ -291,3 +291,15 @@ export const getSignupBonus = async(token)=>{
   }
 }
 
+// Get all referrrals address 
+export const getAllReferralAddresses = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getAllMyReferrals",{
+    "walletAddress": walletAddress
+    })
+    return (res?.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
