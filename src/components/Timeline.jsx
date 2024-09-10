@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { setCurrentSlotNumber } from "../redux/slice/SlotsSlice";
 
 const intervals = [
-  { label: "Slot No: 1/4 (0-6 hours)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
-  { label: "Slot No: 2/4 (6-12 hours)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
-  { label: "Slot No: 3/4 (12-18 hours)", value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
-  { label: "Slot No: 4/4 (18-24 hours)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
+  { label: "Slot No: 1/4 (15:45 - 21:45)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
+  { label: "Slot No: 2/4 (21:45 - 03:45)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
+  { label: "Slot No: 3/4 (03:45 - 09:45)", value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
+  { label: "Slot No: 4/4 (09:45 - 15:45)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
 ];
 
 const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
