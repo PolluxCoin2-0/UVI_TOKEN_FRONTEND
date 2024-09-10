@@ -245,7 +245,7 @@ button .wave {
   left: 50%; /* Start from the center */
   width: 200%; /* Extend beyond the button for a wave effect */
   height: 100%;
-  background: linear-gradient(180deg, #FF7E00, #FFB800); /* Orange gradient */
+  background: #ffff; /* Orange gradient */
   transform-origin: center bottom; /* Origin from center bottom */
   clip-path: polygon(50% 100%, 100% 100%, 75% 50%, 100% 0%, 0% 0%, 25% 50%, 0% 100%); /* Wave shape */
   animation: wave-rise-motion 4s ease-in-out infinite;
@@ -266,10 +266,13 @@ button .wave {
 }
 
 
+
+
 /* react-slick */
 /* General arrow styling */
 .slider-arrow {
   position: absolute;
+
   top: 40%;
   transform: translateY(-50%);
   z-index: 10;
@@ -307,6 +310,24 @@ button .wave {
 .slider-arrow:hover svg {
   fill: #f6b63e; /* Custom hover color */
 }
+
+/* Add this CSS to your stylesheet */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.pulse-animation {
+  animation: pulse 1.5s infinite;
+}
+
 
 
 

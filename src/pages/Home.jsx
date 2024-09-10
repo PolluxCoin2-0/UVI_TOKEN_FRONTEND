@@ -41,6 +41,8 @@ import CurveImg from "../assets/Curve.png";
 import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
+
+  
   const CustomNextArrow = ({ onClick }) => (
     <div
       className="slider-arrow slider-arrow--next font-bold"
@@ -63,10 +65,11 @@ const Home = () => {
     autoplaySpeed: 1500,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
+    adaptiveHeight: true,
   };
 
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
   const [leaderBoardData, setLeaderBoardData] = useState([]);
@@ -137,6 +140,11 @@ const Home = () => {
       return;
     }
 
+    if(isLoading){
+      return;
+    }
+
+    setIsLoading(true);
     const apiData = await postMintUser(walletAddress, token);
     console.log(apiData);
 
@@ -167,7 +175,7 @@ const Home = () => {
     console.log("savedData", savedData);
 
     // Distribute referral rewards
-    if (referralAddress) {
+    if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
       const referralData = await postDistributeReferralRewards(walletAddress);
       console.log("referralData", referralData);
 
@@ -193,6 +201,7 @@ const Home = () => {
     dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
     dispatch(setUserSlotDate(currentDate));
     dispatch(setUserClickedWalletAddress(walletAddress));
+    setIsLoading(false);
   };
 
   return (
@@ -267,7 +276,7 @@ const Home = () => {
                     <img
                       src={PolinkImg}
                       alt="polink-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain  mb-14 xl:mb-32 "
+                      className="w-8 md:w-14 lg:w-16 xl:w-24 2xl:w-28 object-contain mb-1 xl:mb-2"
                     />
 
                     <div className="text-center flex flex-col justify-center items-center">
@@ -277,7 +286,8 @@ const Home = () => {
                       <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
                         <button
                           type="button"
-                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-14 xl:mb-24 2xl:mb-32 px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-4 xl:mt-0 border-[1px] border-black"
+                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-1 md:mb-0 lg:mb-0 xl:mb-4 2xl:mb-2
+                           px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-2 xl:mt-0 border-[1px] border-black"
                         >
                           Download the App today
                         </button>
@@ -287,7 +297,7 @@ const Home = () => {
                     <img
                       src={PlayStoreImg}
                       alt=" playstore-image"
-                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-14 xl:mb-32 "
+                      className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-1 xl:mb-6"
                     />
                   </div>
                 </div>
@@ -320,10 +330,9 @@ const Home = () => {
 
               <div className="text-center ">
                 <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
-                  UVI Token Management on the Go! Access, trade, and manage your
-                  UVI Tokens from <br />
-                  anywhere, anytime with the Polink mobile app. Available on
-                  Android.
+                Manage your Tokens effortlessly with the Polink browser extension. 
+                  <br />
+                  Fast, secure, and built for Web3 transactions.
                 </p>
               </div>
 
@@ -337,7 +346,7 @@ const Home = () => {
                   <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
-          e       <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+              <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
                       type="button"
                       className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
@@ -379,18 +388,23 @@ const Home = () => {
 
           {/* Start Mining */}
           <div
-            ref={buttonRef}
-            className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
-          ${buttonInView ? "animate-pop-in" : ""}
-          `}
-          >
-            <button
-              onClick={handleTapMining}
-              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-white text-white text-2xl font-bold bg-gradient-to-tl from-[#FF5858] to-[#FFFF45]"
-            >
-              Tap to Mine
-            </button>
-          </div>
+    ref={buttonRef}
+    className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
+    ${buttonInView ? "animate-pop-in" : ""}
+    `}
+  >
+    <button
+      onClick={handleTapMining}
+      className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
+    >
+      <div className=""></div>
+      {isLoading?<span className="relative z-10 pulse-animation">Loading...</span>:
+      <span className="relative z-10">Tap to Mine</span>
+      }
+    </button>
+
+    
+  </div>
 
           {/* Blocks */}
           <div
@@ -520,19 +534,23 @@ const Home = () => {
                           {index + 1}
                         </div>
                         <div>
-                          <p className="text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+                          {/* for mobile screen */}
+                          <p className="block md:hidden text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+
+                          {/* for tablet and above devices */}
+                          <p  className="hidden md:block text-xs md:text-lg font-semibold">{data?.walletAddress}</p>
                           <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
-                            Total $UVI Balance{" "}
+                            Total UVI Balance{" "}
                           </p>
                         </div>
                       </div>
                       {/* total transactions */}
                       <div>
                         <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
-                          Total Transactions
+                          Total Holding
                         </p>
                         <p className="text-white text-xs md:text-lg font-medium">
-                          $ {data?.tokenBalance}{" "}
+                           {data?.tokenBalance}{" "}UVI
                         </p>
                       </div>
                     </div>
@@ -570,22 +588,30 @@ const Home = () => {
                     {userleaderBoardData?.[0]?.position}
                   </div>
                   <div>
-                    <p className="font-semibold">
+
+                    {/* for mobile screen */}
+                    <p className="block md:hidden font-semibold">
                       {" "}
                       {userleaderBoardData?.[0]?.walletAddress && shortenString(userleaderBoardData?.[0]?.walletAddress, 8)}
                     </p>
+
+                    {/* for mobile and above devices */}
+                    <p className="hidden md:block  font-semibold">
+                      {" "}
+                      {userleaderBoardData?.[0]?.walletAddress }
+                    </p>
                     <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
-                      Total $UVI Balance{" "}
+                      Total UVI Balance{" "}
                     </p>
                   </div>
                 </div>
                 {/* total transactions */}
                 <div>
                   <p className="font-semibold text-sm md:text-lg text-[#FFC121]">
-                    Total Transactions
+                    Total Holding
                   </p>
                   <p className="text-white text-sm md:text-lg font-medium">
-                    $ {userleaderBoardData?.[0]?.tokenBalance}{" "}
+                     {userleaderBoardData?.[0]?.tokenBalance}{" "}UVI
                   </p>
                 </div>
               </div>
