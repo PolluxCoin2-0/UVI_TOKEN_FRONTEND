@@ -130,10 +130,6 @@ const Home = () => {
       return;
     }
 
-    // save the clicked time slots in state management
-    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
-    dispatch(setUserSlotDate(currentDate));
-    dispatch(setUserClickedWalletAddress(walletAddress));
     const apiData = await postMintUser(walletAddress, token);
     console.log(apiData);
 
@@ -185,6 +181,11 @@ const Home = () => {
     console.log("updateTokenBalance", updateTokenBalance);
 
     toast.success("Your mining has started.");
+
+      // save the clicked time slots in state management
+      dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
+      dispatch(setUserSlotDate(currentDate));
+      dispatch(setUserClickedWalletAddress(walletAddress));
   };
 
   return (

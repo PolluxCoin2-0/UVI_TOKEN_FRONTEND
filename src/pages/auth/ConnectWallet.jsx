@@ -30,6 +30,8 @@ const ConnectWallet = () => {
           parsedDetailsObject[1].data?.wallet_address
         );
 
+        console.log(apiData);
+
         if (apiData?.data?._id) {
           dispatch(
             setWalletAddress(parsedDetailsObject[1].data?.wallet_address)
