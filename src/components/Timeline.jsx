@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentSlotNumber } from "../redux/slice/SlotsSlice";
 
+// Define the time slots with labels, values, and colors
 const intervals = [
   { label: "Slot No: 1/4 (15:45 - 21:45)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
   { label: "Slot No: 2/4 (21:45 - 03:45)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
@@ -9,12 +10,14 @@ const intervals = [
   { label: "Slot No: 4/4 (09:45 - 15:45)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
 ];
 
+// Helper function to calculate percentage progress
 const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
 
 const TimelineProgressBar = () => {
   const dispatch = useDispatch();
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  // Update current time every minute
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
@@ -23,39 +26,46 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const getHoursPassedSinceMidnight = () => {
+  // Calculate hours passed since the base time of 15:45
+  const getHoursPassedSinceBaseTime = () => {
     const now = currentTime;
-    const midnight = new Date(
+    const baseTime = new Date(
       now.getFullYear(),
       now.getMonth(),
       now.getDate(),
-      0,
-      0,
-      0
+      15, // Base hour (3 PM)
+      45, // Base minutes (45)
+      0   // Base seconds
     );
-    const diff = now - midnight;
-    return diff / (1000 * 60 * 60);
+
+    // If the current time is before the base time, subtract a day
+    if (now < baseTime) {
+      baseTime.setDate(baseTime.getDate() - 1);
+    }
+
+    const diff = now - baseTime;
+    return diff / (1000 * 60 * 60); // Convert milliseconds to hours
   };
 
-  const hoursPassed = getHoursPassedSinceMidnight();
+  const hoursPassed = getHoursPassedSinceBaseTime();
 
-// Determine the current time slot number based on the hours passed
-const determineCurrentSlotNumber = () => {
-  const currentSlotIndex = intervals.findIndex((interval, index) => {
-    const start = index === 0 ? 0 : intervals[index - 1].value;
-    return hoursPassed >= start && hoursPassed < interval.value;
-  });
+  // Determine the current time slot number based on hours passed
+  const determineCurrentSlotNumber = () => {
+    const currentSlotIndex = intervals.findIndex((interval, index) => {
+      const start = index === 0 ? 0 : intervals[index - 1].value;
+      return hoursPassed >= start && hoursPassed < interval.value;
+    });
 
-  if (currentSlotIndex !== -1) {
-    const slotNumber = currentSlotIndex + 1; // Slot numbers are 1-based (1, 2, 3, 4)
-    dispatch(setCurrentSlotNumber(slotNumber)); // Dispatch the current slot number
-  }
-};
+    if (currentSlotIndex !== -1) {
+      const slotNumber = currentSlotIndex + 1; // Slot numbers are 1-based (1, 2, 3, 4)
+      dispatch(setCurrentSlotNumber(slotNumber)); // Dispatch the current slot number
+    }
+  };
 
-// Calculate the current slot number whenever the time updates
-useEffect(() => {
-  determineCurrentSlotNumber();
-}, [hoursPassed]);
+  // Calculate the current slot number whenever the time updates
+  useEffect(() => {
+    determineCurrentSlotNumber();
+  }, [hoursPassed]);
 
   return (
     <>
