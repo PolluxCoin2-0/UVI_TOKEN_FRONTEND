@@ -520,7 +520,11 @@ const Home = () => {
                           {index + 1}
                         </div>
                         <div>
-                          <p className="text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+                          {/* for mobile screen */}
+                          <p className="block md:hidden text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+
+                          {/* for tablet and above devices */}
+                          <p  className="hidden md:block text-xs md:text-lg font-semibold">{data?.walletAddress}</p>
                           <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
                             Total $UVI Balance{" "}
                           </p>
@@ -570,9 +574,17 @@ const Home = () => {
                     {userleaderBoardData?.[0]?.position}
                   </div>
                   <div>
-                    <p className="font-semibold">
+
+                    {/* for mobile screen */}
+                    <p className="block md:hidden font-semibold">
                       {" "}
                       {userleaderBoardData?.[0]?.walletAddress && shortenString(userleaderBoardData?.[0]?.walletAddress, 8)}
+                    </p>
+
+                    {/* for mobile and above devices */}
+                    <p className="hidden md:block  font-semibold">
+                      {" "}
+                      {userleaderBoardData?.[0]?.walletAddress }
                     </p>
                     <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
                       Total $UVI Balance{" "}
