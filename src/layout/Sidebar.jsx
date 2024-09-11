@@ -309,11 +309,11 @@ export default function Sidebar() {
               <li className="px-6" onClick={handleLogout}>
                 <Link
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-8 ${
-                    selectedItem === "/logout"
+                    selectedItem === "/connectwallet"
                       ? "bg-[#F3BB1C] text-black font-semibold"
                       : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   } mb-0`}
-                  onClick={() => handleItemClick("/logout")}
+                  onClick={() => handleItemClick("/connectwallet")}
                 >
                   <div className="flex items-center self-center ">
                     <img src={LogoutImg} alt="logout-image" className="" />
