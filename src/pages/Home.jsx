@@ -41,6 +41,8 @@ import CurveImg from "../assets/Curve.png";
 import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const CustomNextArrow = ({ onClick }) => (
     <div
       className="slider-arrow slider-arrow--next font-bold"
@@ -111,6 +113,9 @@ const Home = () => {
   }, [walletAddress]);
 
   const handleTapMining = async () => {
+    setIsAnimating(true);
+    // Optionally, reset the animation after some time if needed
+    setTimeout(() => setIsAnimating(false), 4000);
     const currentDate = new Date().toISOString().split("T")[0];
     if (!walletAddress) {
       toast.error("Connect your wallet.");
@@ -257,7 +262,7 @@ const Home = () => {
               </div>
 
               <div className="text-center ">
-                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-medium lg:font-semibold text-white pt-2 ">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-medium lg:font-semibold text-[#f7f4f4] pt-2 ">
                   UVI Token Management on the Go! Access, trade, and manage your
                   UVI Tokens from <br />
                   anywhere, anytime with the Polink mobile app. Available on
@@ -291,7 +296,7 @@ const Home = () => {
                           className="relative inline-flex items-center justify-center bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-1 md:mb-0 lg:mb-0 xl:mb-4 2xl:mb-2
                                      px-4 py-0 xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-2 xl:mt-0 border-[1px] border-black overflow-hidden group"
                         >
-                          <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 border-2 border-[#ADAAA3] rounded-full">
+                          <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 ">
                             <span className="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 bg-gradient-to-r to-[#EA4234] via-[#8CCBF9] from-purple-950 rounded-full blur-md transition-all duration-700 ease group-hover:scale-125 opacity-0 group-hover:opacity-100"></span>
                             <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#EA4234] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
                             <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#8CCBF9] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
@@ -339,7 +344,7 @@ const Home = () => {
               </div>
 
               <div className="text-center ">
-                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
+                <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-[#f7f4f4] pt-2">
                   Manage your Tokens effortlessly with the Polink browser
                   extension.
                   <br />
@@ -354,24 +359,24 @@ const Home = () => {
                   className="w-6 md:w-16 lg:w-16 xl:w-20 2xl:w-20 object-contain"
                 />
                 <div className="text-center ">
-                  <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
+                  <p className="text-sm md:text-xl font-semibold text-[#f7f4f4] pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
                   <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
-
-                  type="button"
-                  className="relative inline-flex items-center justify-center bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55] leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white overflow-hidden group"
-                >
-                  <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 border-[1px] border-gray-500">
-                    <span className="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 bg-gradient-to-r to-[#694F8E] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md transition-all duration-700 ease group-hover:scale-125 opacity-0 group-hover:opacity-100"></span>
-                    <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFFED3] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
-                    <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFDFD6] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
-                    <span className="absolute bottom-0 right-0 w-40 h-40 -mr-10 bg-gradient-to-r to-[#694F8E] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
-                  </span>
-                  <span className="relative">Add Polink Extension Now</span>
-                </button>
-                
+                      type="button"
+                      className="relative inline-flex items-center justify-center bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55] leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white overflow-hidden group"
+                    >
+                      <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 ">
+                        <span className="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 bg-gradient-to-r to-[#6B8BFC] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md transition-all duration-700 ease group-hover:scale-125 opacity-0 group-hover:opacity-100"></span>
+                        <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFFED3] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                        <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFDFD6] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                        <span className="absolute bottom-0 right-0 w-40 h-40 -mr-10 bg-gradient-to-r to-[#3098FE] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                      </span>
+                      <span className="relative text-[#f7f4f4]">
+                        Add Polink Extension Now
+                      </span>
+                    </button>
                   </a>
                 </div>
 
@@ -409,14 +414,31 @@ const Home = () => {
           <div
             ref={buttonRef}
             className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
-    ${buttonInView ? "animate-pop-in" : ""}
-    `}
+                       ${buttonInView ? "animate-pop-in" : ""}
+                      `}
           >
             <button
               onClick={handleTapMining}
-              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
+              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#F99004] to-[#F87504]"
             >
-              <div className=""></div>
+              {isAnimating && (
+                <svg
+                  className={`absolute inset-0 w-full h-full ${
+                    isAnimating ? "animate-wave" : ""
+                  }`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 1440 320"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    fill="#FFFFFF"
+                    d="M0,320L30,293.3C60,267,120,213,180,192C240,171,300,171,360,186.7C420,203,480,245,540,245.3C600,
+          245,660,203,720,181.3C780,160,840,160,900,186.7C960,213,1020,267,1080,266.7C1140,267,1200,213,1260,
+          192C1320,171,1380,203,1410,218.7L1440,235L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,
+          320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+                  />
+                </svg>
+              )}
               {isLoading ? (
                 <span className="relative z-10 pulse-animation">
                   Loading...

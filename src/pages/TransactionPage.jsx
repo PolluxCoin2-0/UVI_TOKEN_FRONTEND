@@ -15,17 +15,19 @@ const TransactionPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (pathname === "/transaction" || pathname === "/transaction/alllivetransaction") {
-          setText("Live")
+        if (
+          pathname === "/transaction" ||
+          pathname === "/transaction/alllivetransaction"
+        ) {
+          setText("Live");
           const allTransactions = await getAllTransactions();
           console.log("all", allTransactions?.data?.transactions);
           setTransactionsArray(allTransactions?.data?.transactions);
         } else {
-          setText("My")
-            const userTransactions = await getUserTransactions(token);
-            console.log("user",userTransactions?.data?.transactions);
-            setTransactionsArray(userTransactions?.data?.transactions);
-
+          setText("My");
+          const userTransactions = await getUserTransactions(token);
+          console.log("user", userTransactions?.data?.transactions);
+          setTransactionsArray(userTransactions?.data?.transactions);
         }
       } catch (error) {
         console.error(error);
@@ -50,54 +52,53 @@ const TransactionPage = () => {
           </p>
 
           {/* Transaction table */}
-          {transactionArray && transactionArray.map((data, index) => {
-            const isFirst = index === 0;
-            const isLast = index === transactionArray.length - 1;
+          {transactionArray &&
+            transactionArray.map((data, index) => {
+              const isFirst = index === 0;
+              const isLast = index === transactionArray.length - 1;
 
-            return (
-              <div
-                key={index}
-                className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
+              return (
+                <div
+                  key={index}
+                  className={`bg-[#141414] w-full flex flex-row justify-between p-4 md:p-7 border-b-[1px]  border-[#2A2A2A] 
                 ${isFirst ? "rounded-t-3xl " : ""} 
                 ${isLast ? "rounded-b-3xl" : ""}
                 `}
-              >
-                <div>
-                  {/* for mobile device- wallet address */}
-                  <p className="block md:hidden text-xs md:text-lg font-semibold text-white">
-                    {data?.walletAddress && shortenString(data?.walletAddress, 10)}{" "}
-                  </p>
-                   
-                   {/* for devices above mobile-wallet address  */}
-                  <p className="hidden md:block text-xs md:text-lg font-semibold text-white">
-                    {data?.walletAddress }{" "}
-                  </p>
-                  
+                >
+                  <div>
+                    {/* for mobile device- wallet address */}
+                    <p className="block md:hidden text-xs md:text-lg font-semibold text-white">
+                      {data?.walletAddress &&
+                        shortenString(data?.walletAddress, 10)}{" "}
+                    </p>
 
-                 {/* For mobile and tablet devices - shortened transaction ID */}
-<p className="block  xl:hidden text-[#8C8B8B] text-xs md:text-lg font-normal">
-  {data?.trxId && shortenString(data?.trxId, 12)}
-</p>
+                    {/* for devices above mobile-wallet address  */}
+                    <p className="hidden md:block text-xs md:text-lg font-semibold text-white">
+                      {data?.walletAddress}{" "}
+                    </p>
 
-{/* For devices larger than tablet - full transaction ID */}
-<p className="hidden xl:block text-[#8C8B8B] text-xs md:text-lg font-normal">
-  {data?.trxId}
-</p>
+                    {/* For mobile and tablet devices - shortened transaction ID */}
+                    <p className="block  xl:hidden text-[#8C8B8B] text-xs md:text-lg font-normal">
+                      {data?.trxId && shortenString(data?.trxId, 12)}
+                    </p>
 
-                  
-
+                    {/* For devices larger than tablet - full transaction ID */}
+                    <p className="hidden xl:block text-[#8C8B8B] text-xs md:text-lg font-normal">
+                      {data?.trxId}
+                    </p>
                   </div>
 
-                <div className="flex flex-col items-end">
-                  <p className="text-[#FFC121] text-xs md:text-lg font-semibold">
-                     {data?.amount}{" "} UVI
-                  </p>
-                  <p className="text-[#8C8B8B] text-xs md:text-lg pt-1">{data?.createdAt && TimeFormat(data?.createdAt)}</p>
+                  <div className="flex flex-col items-end">
+                    <p className="text-[#FFC121] text-xs md:text-lg font-semibold">
+                      {data?.amount} UVI
+                    </p>
+                    <p className="text-[#8C8B8B] text-xs md:text-lg pt-1">
+                      {data?.createdAt && TimeFormat(data?.createdAt)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-
+              );
+            })}
         </div>
       </div>
     </div>
