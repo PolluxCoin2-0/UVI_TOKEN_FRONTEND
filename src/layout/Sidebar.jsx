@@ -40,15 +40,11 @@ export default function Sidebar() {
   };
 
   const handleLogout = async () => {
-    if (isLogin) {
       await postLogout(token);
       dispatch(setLogin(false));
       dispatch(setWalletAddress(""));
       dispatch(setDataObject({}));
       navigate("/connectwallet");
-    } else {
-      navigate("/signup");
-    }
   };
 
   return (
@@ -323,7 +319,7 @@ export default function Sidebar() {
                     <img src={LogoutImg} alt="logout-image" className="" />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold ">
-                    {isLogin ? "Signout" : "Signup"}
+                    {isLogin ? "Sign out" : "Sign In"}
                   </div>
                 </Link>
               </li>

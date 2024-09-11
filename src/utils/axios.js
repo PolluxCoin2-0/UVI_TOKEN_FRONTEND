@@ -303,3 +303,35 @@ export const getAllReferralAddresses = async(walletAddress)=>{
   }
 }
 
+// save data of mining into db
+export const saveDataOfMiningInDatabase = async(
+  token, 
+  userSlotNumber, 
+  walletAddress
+ )=>{
+  try {
+    const res = await axios.put(BASE_URL + `/createSlot/${walletAddress}`, {
+      "userSlotNumber":userSlotNumber
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// get data of mining from db
+export const getDataOfMiningFromDatabase = async(walletAddress)=>{
+  try {
+    const res = await axios.post(BASE_URL + "/getSlotByWalletAddress", {
+      "walletAddress": walletAddress,
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

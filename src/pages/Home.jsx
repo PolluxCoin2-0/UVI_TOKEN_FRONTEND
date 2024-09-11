@@ -5,6 +5,8 @@ import { MdArrowForward, MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  getCountOfUsers,
+  getDataOfMiningFromDatabase,
   getLeaderboardStats,
   getReferralBalance,
   getTransactionResult,
@@ -12,19 +14,13 @@ import {
   postDistributeReferralRewards,
   postMintUser,
   postUserAmount,
+  saveDataOfMiningInDatabase,
   saveUserMinigData,
   updateBalance,
 } from "../utils/axios";
 import HeroVideo from "../assets/HeroVideo.mp4";
-import { useEffect, useRef, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import SliderButton from "../components/SliderButton";
+import { useEffect, useState } from "react";
 import { RiExchangeDollarLine } from "react-icons/ri";
-import {
-  setUserClickedWalletAddress,
-  setUserSlotDate,
-  setUserSlotNumber,
-} from "../redux/slice/SlotsSlice";
 import Footer from "../layout/Footer";
 import { TbPigMoney } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -68,12 +64,12 @@ const Home = () => {
     adaptiveHeight: true,
   };
 
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [referralAmount, setReferralAmount] = useState({});
   const [leaderBoardData, setLeaderBoardData] = useState([]);
   const [userleaderBoardData, setUserLeaderBoardData] = useState([]);
+  const [userCount, setUserCount] = useState(0);
   const slotsNumber = useSelector((state) => state?.slots);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const referralAddress = useSelector(
@@ -108,9 +104,27 @@ const Home = () => {
         (item) => item.walletAddress === walletAddress
       );
       setUserLeaderBoardData(filteredResult);
+      const userCountData = await getCountOfUsers();
+      setUserCount(userCountData?.data);
     };
     fetchData();
   }, [walletAddress]);
+
+  useEffect(() => {
+    const handleChange = (event) => {
+        alert(event.detail.Network);
+      if (event.detail.Network !== "Mainnet") {
+        toast.error("Attention: Your wallet address has changed. Please proceed to log in and register the new wallet address.");
+        localStorage.clear();
+        // navigate("/");
+      }
+    };
+    document.addEventListener('Change', handleChange);
+
+    return () => {
+      document.removeEventListener('Change', handleChange);
+    };
+  }, []);
 
   const handleTapMining = async () => {
     const currentDate = new Date().toISOString().split("T")[0];
@@ -131,77 +145,88 @@ const Home = () => {
       return;
     }
 
-    if (
-      slotsNumber?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      slotsNumber?.userSlotDate === currentDate &&
-      walletAddress === slotsNumber?.userClickedWalletAddress
-    ) {
-      toast.error("You have already minted in this slot.");
-      return;
-    }
+    const userData = await getDataOfMiningFromDatabase(walletAddress);
+
+    // if (
+    //   userData?.data?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+    //   userData?.data?.userSlotDate.split("T")[0] === currentDate &&
+    //   walletAddress === userData?.data?.walletAddress
+    // ) {
+    //   toast.error("You have already minted in this slot.");
+    //   return;
+    // }
 
     if(isLoading){
       return;
     }
 
     setIsLoading(true);
-    const apiData = await postMintUser(walletAddress, token);
-    console.log(apiData);
-
-    const signedTransaction = await window.pox.signdata(
-      apiData?.data?.transaction
-    );
-
-    console.log("signedTransaction: ", signedTransaction);
-
-    const broadcast = JSON.stringify(
-      await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-    );
-
-    console.log("broadcast", broadcast);
-
-    // check transaction result >> SUCCESS : REVERT
-    const transactionResult = await getTransactionResult(
-      apiData?.data?.transaction?.txID
-    );
-    console.log(transactionResult?.data?.receipt?.result);
-    // Call the api of update Token balance
-    const savedData = await saveUserMinigData(
-      token,
-      apiData?.data?.transaction?.txID,
-      walletAddress,
-      transactionResult?.data?.receipt?.result
-    );
-    console.log("savedData", savedData);
-
-    // Distribute referral rewards
-    if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
-      const referralData = await postDistributeReferralRewards(walletAddress);
-      console.log("referralData", referralData);
-
-      const signedTransaction2 = await window.pox.signdata(
-        referralData?.data?.transaction
+    try {
+      const apiData = await postMintUser(walletAddress, token);
+      console.log(apiData);
+  
+      const signedTransaction = await window.pox.signdata(
+        apiData?.data?.transaction
       );
-
-      console.log("signedTranaction3", signedTransaction2);
-      const broadcast2 = JSON.stringify(
-        await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+  
+      console.log("signedTransaction: ", signedTransaction);
+  
+      const broadcast = JSON.stringify(
+        await window.pox.broadcast(JSON.parse(signedTransaction[1]))
       );
-
-      console.log("boradcast2", broadcast2);
+  
+      console.log("broadcast", broadcast);
+  
+      // check transaction result >> SUCCESS : REVERT
+      const transactionResult = await getTransactionResult(
+        apiData?.data?.transaction?.txID
+      );
+      console.log("result",transactionResult);
+      // Call the api of update Token balance
+      const savedData = await saveUserMinigData(
+        token,
+        apiData?.data?.transaction?.txID,
+        walletAddress,
+        transactionResult?.data?.receipt?.result
+      );
+      console.log("savedData", savedData);
+  
+      // Distribute referral rewards
+      if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
+        const referralData = await postDistributeReferralRewards(walletAddress);
+        console.log("referralData", referralData);
+  
+        const signedTransaction2 = await window.pox.signdata(
+          referralData?.data?.transaction
+        );
+  
+        console.log("signedTranaction2", signedTransaction2);
+        const broadcast2 = JSON.stringify(
+          await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
+        );
+  
+        console.log("boradcast2", broadcast2);
+      }
+  
+      // update token balance
+      const updateTokenBalance = await updateBalance(token);
+      console.log("updateTokenBalance", updateTokenBalance);
+  
+      toast.success("Your mining has started.");
+  
+      // save the mining data in database
+      const usersavedData = await saveDataOfMiningInDatabase(
+        token,
+        slotsNumber?.currentSlotNumber, 
+        walletAddress
+      )
+  
+      console.log("saveDataOfMiningInDatabase", usersavedData)
+    } catch (error) {
+      toast.error("Mining was canceled or failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    // update token balance
-    const updateTokenBalance = await updateBalance(token);
-    console.log("updateTokenBalance", updateTokenBalance);
-
-    toast.success("Your mining has started.");
-
-    // save the clicked time slots in state management
-    dispatch(setUserSlotNumber(slotsNumber?.currentSlotNumber));
-    dispatch(setUserSlotDate(currentDate));
-    dispatch(setUserClickedWalletAddress(walletAddress));
-    setIsLoading(false);
   };
 
   return (
@@ -395,7 +420,9 @@ const Home = () => {
   >
     <button
       onClick={handleTapMining}
-      className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
+      className={`relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-2xl font-bold
+       ${isLoading ? "cursor-not-allowed bg-gradient-to-b from-slate-600 to-gray-900 text-white" :"text-black cursor-pointer  bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"}`}
+       disabled={isLoading}
     >
       <div className=""></div>
       {isLoading?<span className="relative z-10 pulse-animation">Loading...</span>:
@@ -504,18 +531,17 @@ const Home = () => {
             `, // White shadow with moderate opacity
             }}
           >
-            <p
-              className="text-white font-bold text-xl text-center bg-[#141414] rounded-t-3xl py-4"
-              style={{
-                boxShadow: `
-                  0 2px 20px rgba(0, 0, 0, 0.4), 
-                  inset 0 2px 5px rgba(255, 255, 255, 0.1),
-                  inset 0 0px 2px rgba(255, 255, 255, 0.1)
-                `, // Outer shadow and inner shadow without affecting the bottom
-              }}
-            >
-              LeaderBoard
-            </p>
+            <div className="flex flex-row justify-between items-center bg-[#141414] rounded-t-3xl py-4 px-8"
+            style={{
+              boxShadow: `
+                0 2px 20px rgba(0, 0, 0, 0.4), 
+                inset 0 2px 5px rgba(255, 255, 255, 0.1),
+                inset 0 0px 2px rgba(255, 255, 255, 0.1)
+              `, // Outer shadow and inner shadow without affecting the bottom
+            }}>
+            <p className="text-white font-bold text-xl text-center ">LeaderBoard</p>
+            <p className="text-white font-bold text-xl text-center ">Total Users: {userCount}</p>
+            </div>
             <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
               {leaderBoardData.map((data, index) => {
                 return (

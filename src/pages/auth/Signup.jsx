@@ -4,8 +4,7 @@ import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { postSetReferrer, postSignup, postVerifyReferral } from "../../utils/axios";
-import { useSelector } from "react-redux";
+import { postSignup } from "../../utils/axios";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,6 +12,7 @@ const Signup = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [referredBy, setReferredBy] = useState("");
   const [isConnected, setIsConnected] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
   const referralAddress = location.state?.referralAddress;
 
@@ -41,42 +41,37 @@ const Signup = () => {
       return;
     } 
 
-    const apiData = await postSignup(walletAddress, email, referredBy)
+    // Disable the button once clicked
+    setIsSubmitting(true);
+    try {
+      const apiData = await postSignup(walletAddress, email, referredBy)
 
-    if(apiData?.data === "Invalid Referral Code"){
-      toast.error("Invalid Referral Code");
-      return;
-    }
-    
-    if(apiData?.data === "WalletAddress Already Exist"){
-      toast.error("WalletAddress Already Exist");
-      return;
-    }
-
-    // toast message >> OTP sent successfully
-    if(apiData?.data?.email){
-
-      if(referredBy){
-        const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
-        console.log(setReferrerdata)
-  
-        const signedTransaction = await window.pox.signdata(
-          setReferrerdata?.data?.transaction
-        );
-    
-        console.log("signedTranaction3",signedTransaction);
-        const broadcast = JSON.stringify(
-          await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-        );
-    
-        console.log("boradcast3",broadcast)
+      if(apiData?.data === "Invalid Referral Code"){
+        toast.error("Invalid Referral Code");
+        setIsSubmitting(false); // Re-enable the button
+        return;
       }
-     
-      toast.success("OTP sent successfully");
-      // navigate
-      navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});
+      
+      if(apiData?.data === "WalletAddress Already Exist"){
+        toast.error("WalletAddress Already Exist");
+        setIsSubmitting(false); // Re-enable the button
+        return;
+      }
+  
+      // toast message >> OTP sent successfully
+      if(apiData?.data?.email){
+        // toast.success("OTP sent successfully");
+        // navigate
+        // navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});
+
+        
+      }  
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
+      setIsSubmitting(false);
     }
-  };
+     };
 
   const connectWallet = ()=>{
     var obj = setInterval(async () => {
@@ -152,7 +147,8 @@ const Signup = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="text-white bg-transparent cursor-pointer"
+                className={`text-white bg-transparent ${isSubmitting?"cursor-not-allowed":"cursor-pointer"}`}
+                disabled={isSubmitting}
               >
                 <FaArrowAltCircleRight size={36} />
               </button>

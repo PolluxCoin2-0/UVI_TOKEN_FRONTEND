@@ -26,6 +26,11 @@ const ConnectWallet = () => {
         clearInterval(obj);
         const detailsData = JSON.stringify(await window.pox.getDetails());
         const parsedDetailsObject = JSON.parse(detailsData);
+
+        if(parsedDetailsObject[1].data?.Network==="Yuvi Testnet"){
+          toast.error("Switch to Mainnet Network")
+          return;
+        }
         const apiData = await postLogin(
           parsedDetailsObject[1].data?.wallet_address
         );
@@ -38,6 +43,9 @@ const ConnectWallet = () => {
           toast.success("User logged in Success");
           dispatch(setDataObject(apiData?.data));
           navigate("/");
+        }
+        else{
+          toast.error("Wallet Address does not exist!")
         }
       }
     }, 1000);

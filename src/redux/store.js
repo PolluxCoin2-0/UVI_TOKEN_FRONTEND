@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import walletReducer from "./slice/walletslice";
 import slotsReducer from "./slice/SlotsSlice";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import storageSession from "redux-persist/lib/storage/session";
 
 // Configuration for persisting walletReducer in session storage
@@ -14,7 +13,7 @@ const persistConfigSession = {
 // Configuration for persisting slotsReducer in local storage
 const persistConfigLocal = {
   key: "slots",
-  storage: storage,
+  storage: storageSession,
 };
 
 // Persist reducers with their respective configurations
