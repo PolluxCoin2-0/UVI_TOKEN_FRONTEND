@@ -38,7 +38,7 @@ const TransactionPage = () => {
     <div>
       {/* Transaction content */}
       <div
-        className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20 overflow-x-scroll md:overflow-x-hidden min-w-[400px]"
+        className="bg-[#0E0E0E] w-full min-h-screen pt-10 relative px-2 xl:px-12 pb-20 overflow-x-scroll md:overflow-x-hidden  min-w-[280px] md:min-w-[400px] lg:min-w-[600px] xl:min-w-[1000px]"
         style={{
           boxShadow:
             "0 2px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)",
@@ -63,13 +63,29 @@ const TransactionPage = () => {
                 `}
               >
                 <div>
-                  <p className="text-xs md:text-lg font-semibold text-white">
-                    {data?.walletAddress}{" "}
+                  {/* for mobile device- wallet address */}
+                  <p className="block md:hidden text-xs md:text-lg font-semibold text-white">
+                    {data?.walletAddress && shortenString(data?.walletAddress, 10)}{" "}
                   </p>
+                   
+                   {/* for devices above mobile-wallet address  */}
+                  <p className="hidden md:block text-xs md:text-lg font-semibold text-white">
+                    {data?.walletAddress }{" "}
+                  </p>
+                  
 
-                  <p className="text-[#8C8B8B] text-xs md:text-lg font-normal ">
-                    {data?.trxId && shortenString(data?.trxId, 18)}{" "}
-                  </p>
+                 {/* For mobile and tablet devices - shortened transaction ID */}
+<p className="block  xl:hidden text-[#8C8B8B] text-xs md:text-lg font-normal">
+  {data?.trxId && shortenString(data?.trxId, 12)}
+</p>
+
+{/* For devices larger than tablet - full transaction ID */}
+<p className="hidden xl:block text-[#8C8B8B] text-xs md:text-lg font-normal">
+  {data?.trxId}
+</p>
+
+                  
+
                   </div>
 
                 <div className="flex flex-col items-end">

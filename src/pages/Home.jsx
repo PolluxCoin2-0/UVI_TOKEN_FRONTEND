@@ -41,8 +41,6 @@ import CurveImg from "../assets/Curve.png";
 import { shortenString } from "../utils/shortenString";
 
 const Home = () => {
-
-  
   const CustomNextArrow = ({ onClick }) => (
     <div
       className="slider-arrow slider-arrow--next font-bold"
@@ -61,7 +59,7 @@ const Home = () => {
   var settings = {
     infinite: true,
     dots: false,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 1500,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
@@ -140,7 +138,7 @@ const Home = () => {
       return;
     }
 
-    if(isLoading){
+    if (isLoading) {
       return;
     }
 
@@ -175,7 +173,10 @@ const Home = () => {
     console.log("savedData", savedData);
 
     // Distribute referral rewards
-    if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
+    if (
+      transactionResult?.data?.receipt?.result === "SUCCESS" &&
+      referralAddress
+    ) {
       const referralData = await postDistributeReferralRewards(walletAddress);
       console.log("referralData", referralData);
 
@@ -283,13 +284,22 @@ const Home = () => {
                       <p className="text-sm md:text-xl font-semibold pt-10 xl:pt-0 xl:mb-5 2xl:pt-0 text-white lg:text-black ">
                         Click Here
                       </p>
+
                       <a href="https://play.google.com/store/apps/details?id=com.app.PoLink">
                         <button
                           type="button"
-                          className="bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-1 md:mb-0 lg:mb-0 xl:mb-4 2xl:mb-2
-                           px-4 py-0  xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-2 xl:mt-0 border-[1px] border-black"
+                          className="relative inline-flex items-center justify-center bg-gradient-to-r to-[#FFF7A7] from-[#F6B63E] bg-opacity-5 mb-1 md:mb-0 lg:mb-0 xl:mb-4 2xl:mb-2
+                                     px-4 py-0 xl:px-14 md:py-2 rounded-full text-[10px] md:text-xl font-semibold mt-0 md:mt-4 lg:mt-2 xl:mt-0 border-[1px] border-black overflow-hidden group"
                         >
-                          Download the App today
+                          <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 border-2 border-[#ADAAA3] rounded-full">
+                            <span className="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 bg-gradient-to-r to-[#EA4234] via-[#8CCBF9] from-purple-950 rounded-full blur-md transition-all duration-700 ease group-hover:scale-125 opacity-0 group-hover:opacity-100"></span>
+                            <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#EA4234] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                            <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#8CCBF9] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                            <span className="absolute bottom-0 right-0 w-40 h-40 -mr-10 bg-gradient-to-r to-[#EA4234] via-[#8CCBF9] from-purple-950 rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                          </span>
+                          <span className="relative text-black">
+                            Download the App today
+                          </span>
                         </button>
                       </a>
                     </div>
@@ -330,7 +340,8 @@ const Home = () => {
 
               <div className="text-center ">
                 <p className="text-[10px] md:text-[16px] lg:text-lg xl:text-xl font-semibold text-white pt-2">
-                Manage your Tokens effortlessly with the Polink browser extension. 
+                  Manage your Tokens effortlessly with the Polink browser
+                  extension.
                   <br />
                   Fast, secure, and built for Web3 transactions.
                 </p>
@@ -346,13 +357,21 @@ const Home = () => {
                   <p className="text-sm md:text-xl font-semibold text-white pt-3 md:pt-8 2xl:pt-4">
                     Click Here
                   </p>
-              <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
+                  <a href=" https://chromewebstore.google.com/detail/polink/afeibjjgfjfphjedhdjgbgbhpomolbjm">
                     <button
-                      type="button"
-                      className="bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55]  leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white"
-                    >
-                      Add Polink Extension Now
-                    </button>
+
+                  type="button"
+                  className="relative inline-flex items-center justify-center bg-gradient-to-r to-[#272317] via-[#6D684C] from-[#847E55] leading-4 md:leading-0 bg-opacity-5 px-6 py-0 md:px-14 md:py-2 rounded-full text-xs md:text-xl font-semibold mt-2 md:mt-4 border-[1px] border-gray-500 text-white overflow-hidden group"
+                >
+                  <span className="absolute inset-0 w-full h-full transition duration-700 ease group-hover:rotate-180 border-[1px] border-gray-500">
+                    <span className="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 bg-gradient-to-r to-[#694F8E] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md transition-all duration-700 ease group-hover:scale-125 opacity-0 group-hover:opacity-100"></span>
+                    <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFFED3] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                    <span className="absolute bottom-0 left-0 w-40 h-40 -ml-10 bg-[#FFDFD6] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                    <span className="absolute bottom-0 right-0 w-40 h-40 -mr-10 bg-gradient-to-r to-[#694F8E] via-[#B692C2] from-[#E3A5C7] rounded-full blur-md opacity-0 group-hover:opacity-100 transition duration-700"></span>
+                  </span>
+                  <span className="relative">Add Polink Extension Now</span>
+                </button>
+                
                   </a>
                 </div>
 
@@ -388,23 +407,25 @@ const Home = () => {
 
           {/* Start Mining */}
           <div
-    ref={buttonRef}
-    className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
+            ref={buttonRef}
+            className={`flex flex-row items-center justify-center w-full my-8 md:my-12 lg:my-12 xl:my-16
     ${buttonInView ? "animate-pop-in" : ""}
     `}
-  >
-    <button
-      onClick={handleTapMining}
-      className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
-    >
-      <div className=""></div>
-      {isLoading?<span className="relative z-10 pulse-animation">Loading...</span>:
-      <span className="relative z-10">Tap to Mine</span>
-      }
-    </button>
-
-    
-  </div>
+          >
+            <button
+              onClick={handleTapMining}
+              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#FBCB3E] to-[#F87504]"
+            >
+              <div className=""></div>
+              {isLoading ? (
+                <span className="relative z-10 pulse-animation">
+                  Loading...
+                </span>
+              ) : (
+                <span className="relative z-10">Tap to Mine</span>
+              )}
+            </button>
+          </div>
 
           {/* Blocks */}
           <div
@@ -422,11 +443,11 @@ const Home = () => {
                 0 2px 20px rgba(0, 0, 0, 0.4), 
                 inset 0 0 10px rgba(255, 255, 255, 0.1)
                  `, // White shadow with moderate opacity
-                 }}
-                >
+              }}
+            >
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
-                  {balance ? parseFloat((balance).toFixed(6))+'' : 0}
+                  {balance ? parseFloat(balance.toFixed(6)) + "" : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Total Minted Balance
@@ -476,13 +497,15 @@ const Home = () => {
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
                   ${" "}
                   {referralAmount
-                  ? parseFloat(
-                  ((referralAmount.leve1Reward +
-                   referralAmount.leve2Reward +
-                   balance) *
-                   0.05).toFixed(6)
-                   ) + ''
-                   : 0}
+                    ? parseFloat(
+                        (
+                          (referralAmount.leve1Reward +
+                            referralAmount.leve2Reward +
+                            balance) *
+                          0.05
+                        ).toFixed(6)
+                      ) + ""
+                    : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
                   Coin Worth at Launch
@@ -516,7 +539,7 @@ const Home = () => {
             >
               LeaderBoard
             </p>
-            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
+            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[270px] md:min-w-full">
               {leaderBoardData.map((data, index) => {
                 return (
                   <>
@@ -528,17 +551,22 @@ const Home = () => {
                       } `}
                     >
                       {/* wallet address */}
-                      <div className="flex flex-row space-x-8 text-white">
+                      <div className="flex flex-row space-x-4 md:space-x-8 text-white">
                         {/* Index */}
                         <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
                           {index + 1}
                         </div>
                         <div>
                           {/* for mobile screen */}
-                          <p className="block md:hidden text-xs md:text-lg font-semibold">{data?.walletAddress && shortenString(data?.walletAddress, 8)}</p>
+                          <p className="block md:hidden text-xs md:text-lg font-semibold">
+                            {data?.walletAddress &&
+                              shortenString(data?.walletAddress, 5)}
+                          </p>
 
                           {/* for tablet and above devices */}
-                          <p  className="hidden md:block text-xs md:text-lg font-semibold">{data?.walletAddress}</p>
+                          <p className="hidden md:block text-xs md:text-lg font-semibold">
+                            {data?.walletAddress}
+                          </p>
                           <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
                             Total UVI Balance{" "}
                           </p>
@@ -550,7 +578,7 @@ const Home = () => {
                           Total Holding
                         </p>
                         <p className="text-white text-xs md:text-lg font-medium">
-                           {data?.tokenBalance}{" "}UVI
+                          {data?.tokenBalance} UVI
                         </p>
                       </div>
                     </div>
@@ -588,30 +616,33 @@ const Home = () => {
                     {userleaderBoardData?.[0]?.position}
                   </div>
                   <div>
-
                     {/* for mobile screen */}
                     <p className="block md:hidden font-semibold">
                       {" "}
-                      {userleaderBoardData?.[0]?.walletAddress && shortenString(userleaderBoardData?.[0]?.walletAddress, 8)}
+                      {userleaderBoardData?.[0]?.walletAddress &&
+                        shortenString(
+                          userleaderBoardData?.[0]?.walletAddress,
+                          8
+                        )}
                     </p>
 
                     {/* for mobile and above devices */}
-                    <p className="hidden md:block  font-semibold">
+                    <p className="hidden md:block  font-semibold text-xs md:text-lg">
                       {" "}
-                      {userleaderBoardData?.[0]?.walletAddress }
+                      {userleaderBoardData?.[0]?.walletAddress}
                     </p>
-                    <p className="text-[#8C8B8B] text-sm md:text-lg font-medium">
+                    <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
                       Total UVI Balance{" "}
                     </p>
                   </div>
                 </div>
                 {/* total transactions */}
                 <div>
-                  <p className="font-semibold text-sm md:text-lg text-[#FFC121]">
+                  <p className="font-semibold text-xs md:text-lg text-[#FFC121]">
                     Total Holding
                   </p>
-                  <p className="text-white text-sm md:text-lg font-medium">
-                     {userleaderBoardData?.[0]?.tokenBalance}{" "}UVI
+                  <p className="text-white text-xs md:text-lg font-medium">
+                    {userleaderBoardData?.[0]?.tokenBalance} UVI
                   </p>
                 </div>
               </div>

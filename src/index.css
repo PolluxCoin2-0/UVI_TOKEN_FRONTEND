@@ -273,13 +273,13 @@ button .wave {
 .slider-arrow {
   position: absolute;
 
-  top: 40%;
+  top: 50%;
   transform: translateY(-50%);
   z-index: 10;
   cursor: pointer;
   width: 40px;
   height: 40px;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  font-weight: bolder;
   border-radius: 50%;
   display: flex;
   align-items: center;
