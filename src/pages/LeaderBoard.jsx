@@ -1,13 +1,14 @@
-  import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WinnerImg from "../assets/winner.png";
 import { getLeaderboardStats } from "../utils/axios";
-import BackgroundImg from "../assets/BGImage.png";
 import { useSelector } from "react-redux";
 import { shortenString } from "../utils/shortenString";
+import Pagination from "../components/Pagination";
 
 const LeaderBoard = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const userWalletAddress = useSelector((state)=>state?.wallet?.dataObject?.walletAddress)
 
   const topPositionRef = useRef(null);
@@ -38,6 +39,17 @@ const LeaderBoard = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+   // Get the paginated data for the current page
+   const paginatedData = leaderboardData.slice(
+    (currentPage - 1) * 20,
+    currentPage * 20
+  );
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="min-h-screen relative bg-black px-4 lg:px-8 py-10 overflow-x-scroll">
       <div className="relative overflow-x-auto xl:overflow-x-clip 2xl:overflow-x-clip z-20">
@@ -46,7 +58,7 @@ const LeaderBoard = () => {
         </p>
 
         <div className="mt-10  border border-white border-opacity-15 min-w-[280px] md:min-w-[300px] lg:min-w-[600px] xl:min-w-[1000px] rounded-3xl">
-          {leaderboardData && leaderboardData.map((data, index) => (
+          {leaderboardData && paginatedData.map((data, index) => (
             <div
               key={data?.walletAddress}
               ref={data?.walletAddress === userWalletAddress ? topPositionRef : null}
@@ -67,7 +79,7 @@ const LeaderBoard = () => {
                     ? "bg-gradient-to-r from-[#FBCF41] to-[#000000] p-3 rounded-tl-3xl rounded-tr-3xl"
                     : "bg-[#1B1B1B] p-4 lg:p-10"
                 } 
-                ${index === leaderboardData.length - 1 ? "rounded-bl-3xl rounded-br-3xl" : ""}
+                ${index === paginatedData.length - 1 ? "rounded-bl-3xl rounded-br-3xl" : ""}
               `}
             >
               <div className="flex items-center space-x-2 lg:space-x-10">
@@ -114,6 +126,8 @@ const LeaderBoard = () => {
           ))}
 
         </div>
+
+        <Pagination totalRecords={leaderboardData.length} setPageNo={handlePageChange}/>
       </div>
     </div>
   );

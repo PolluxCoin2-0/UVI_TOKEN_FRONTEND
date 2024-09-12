@@ -4,6 +4,7 @@ import { getAllTransactions, getUserTransactions } from "../utils/axios";
 import { useSelector } from "react-redux";
 import { TimeFormat } from "../utils/TimeFormat";
 import { shortenString } from "../utils/shortenString";
+import Pagination from "../components/Pagination";
 
 const TransactionPage = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const TransactionPage = () => {
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [text, setText] = useState("");
   const [transactionArray, setTransactionsArray] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,12 +23,10 @@ const TransactionPage = () => {
         ) {
           setText("Live");
           const allTransactions = await getAllTransactions();
-          console.log("all", allTransactions?.data?.transactions);
           setTransactionsArray(allTransactions?.data?.transactions);
         } else {
           setText("My");
           const userTransactions = await getUserTransactions(token);
-          console.log("user", userTransactions?.data?.transactions);
           setTransactionsArray(userTransactions?.data?.transactions);
         }
       } catch (error) {
@@ -36,6 +36,19 @@ const TransactionPage = () => {
 
     fetchData();
   }, [pathname, token]);
+
+    // Get the paginated data for the current page
+    const paginatedData = transactionArray.slice(
+      (currentPage - 1) * 20,
+      currentPage * 20
+    );
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+
   return (
     <div>
       {/* Transaction content */}
@@ -53,9 +66,9 @@ const TransactionPage = () => {
 
           {/* Transaction table */}
           {transactionArray &&
-            transactionArray.map((data, index) => {
+            paginatedData.map((data, index) => {
               const isFirst = index === 0;
-              const isLast = index === transactionArray.length - 1;
+              const isLast = index === paginatedData.length - 1;
 
               return (
                 <div
@@ -78,14 +91,18 @@ const TransactionPage = () => {
                     </p>
 
                     {/* For mobile and tablet devices - shortened transaction ID */}
+                    <a href={`https://poxscan.io/transactions-detail/${data?.trxId}`}>
                     <p className="block  xl:hidden text-[#8C8B8B] text-xs md:text-lg font-normal">
                       {data?.trxId && shortenString(data?.trxId, 12)}
                     </p>
-
+                    </a>
+                    
                     {/* For devices larger than tablet - full transaction ID */}
+                    <a href={`https://poxscan.io/transactions-detail/${data?.trxId}`}>
                     <p className="hidden xl:block text-[#8C8B8B] text-xs md:text-lg font-normal">
                       {data?.trxId}
                     </p>
+                    </a>
                   </div>
 
                   <div className="flex flex-col items-end">
@@ -100,6 +117,8 @@ const TransactionPage = () => {
               );
             })}
         </div>
+        <Pagination totalRecords={transactionArray.length} setPageNo={handlePageChange}/>
+
       </div>
     </div>
   );

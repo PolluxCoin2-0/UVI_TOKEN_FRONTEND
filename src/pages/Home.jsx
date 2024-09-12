@@ -151,24 +151,24 @@ const Home = () => {
     try {
       const apiData = await postMintUser(walletAddress, token);
       console.log(apiData);
-  
+
       const signedTransaction = await window.pox.signdata(
         apiData?.data?.transaction
       );
-  
+
       console.log("signedTransaction: ", signedTransaction);
-  
+
       const broadcast = JSON.stringify(
         await window.pox.broadcast(JSON.parse(signedTransaction[1]))
       );
-  
+
       console.log("broadcast", broadcast);
-  
+
       // check transaction result >> SUCCESS : REVERT
       const transactionResult = await getTransactionResult(
         apiData?.data?.transaction?.txID
       );
-      console.log("result",transactionResult);
+      console.log("result", transactionResult);
       // Call the api of update Token balance
       const savedData = await saveUserMinigData(
         token,
@@ -177,38 +177,41 @@ const Home = () => {
         transactionResult?.data?.receipt?.result
       );
       console.log("savedData", savedData);
-  
+
       // Distribute referral rewards
-      if (transactionResult?.data?.receipt?.result==="SUCCESS" && referralAddress) {
+      if (
+        transactionResult?.data?.receipt?.result === "SUCCESS" &&
+        referralAddress
+      ) {
         const referralData = await postDistributeReferralRewards(walletAddress);
         console.log("referralData", referralData);
-  
+
         const signedTransaction2 = await window.pox.signdata(
           referralData?.data?.transaction
         );
-  
+
         console.log("signedTranaction2", signedTransaction2);
         const broadcast2 = JSON.stringify(
           await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
         );
-  
+
         console.log("boradcast2", broadcast2);
       }
-  
+
       // update token balance
       const updateTokenBalance = await updateBalance(token);
       console.log("updateTokenBalance", updateTokenBalance);
-  
+
       toast.success("Your mining has started.");
-  
+
       // save the mining data in database
       const usersavedData = await saveDataOfMiningInDatabase(
         token,
-        slotsNumber?.currentSlotNumber, 
+        slotsNumber?.currentSlotNumber,
         walletAddress
-      )
-  
-      console.log("saveDataOfMiningInDatabase", usersavedData)
+      );
+
+      console.log("saveDataOfMiningInDatabase", usersavedData);
     } catch (error) {
       toast.error("Mining was canceled or failed. Please try again.");
     } finally {
@@ -425,7 +428,12 @@ const Home = () => {
           >
             <button
               onClick={handleTapMining}
-              className="relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323] text-black text-2xl font-bold bg-gradient-to-b from-[#FBCB3E] via-[#F99004] to-[#F87504]"
+              className={`relative overflow-hidden w-72 h-20 rounded-full border-2 border-[#232323]  text-2xl font-bold 
+                ${
+                  isLoading
+                    ? "bg-gradient-to-b from-slate-700 to-gray-900 text-white"
+                    : "bg-gradient-to-b from-[#FBCB3E] via-[#F99004] to-[#F87504] text-black"
+                }`}
             >
               {isAnimating && (
                 <svg
@@ -499,7 +507,8 @@ const Home = () => {
               <div>
                 <p className="text-md md:text-2xl lg:text-xl xl:text-4xl text-white font-bold pb-2 md:pb-0">
                   {referralAmount
-                    ? referralAmount.leve1Reward + referralAmount.leve2Reward
+                    ? Number(referralAmount.leve1Reward || 0) +
+                      Number(referralAmount.leve2Reward || 0)
                     : 0}
                 </p>
                 <p className="text-[#8C8B8B] text-xs md:text-lg font-semibold mt-0 md:mt-3 text-nowrap">
@@ -527,9 +536,9 @@ const Home = () => {
                   {referralAmount
                     ? parseFloat(
                         (
-                          (referralAmount.leve1Reward +
-                            referralAmount.leve2Reward +
-                            balance) *
+                          ((referralAmount.leve1Reward || 0) +
+                            (referralAmount.leve2Reward || 0) +
+                            (balance || 0)) *
                           0.05
                         ).toFixed(6)
                       ) + ""
@@ -555,125 +564,164 @@ const Home = () => {
             `, // White shadow with moderate opacity
             }}
           >
-            <div className="flex flex-row justify-between items-center bg-[#141414] rounded-t-3xl py-4 px-8"
-            style={{
-              boxShadow: `
+            <div
+              className="flex flex-row justify-between items-center bg-[#141414] rounded-t-3xl py-4 px-8"
+              style={{
+                boxShadow: `
                 0 2px 20px rgba(0, 0, 0, 0.4), 
                 inset 0 2px 5px rgba(255, 255, 255, 0.1),
                 inset 0 0px 2px rgba(255, 255, 255, 0.1)
               `, // Outer shadow and inner shadow without affecting the bottom
-            }}>
-            <p className="text-white font-bold text-xl text-center ">LeaderBoard</p>
-            <p className="text-white font-bold text-xl text-center ">Total Users: {userCount}</p>
+              }}
+            >
+              <p className="text-white font-bold text-xl text-center ">
+                LeaderBoard
+              </p>
+              <p className="text-white font-bold text-xl text-center ">
+                Total Users: {userCount ? userCount : 0}
+              </p>
             </div>
-            <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
-              {leaderBoardData &&   leaderBoardData.map((data, index) => {
-                return (
-                  <>
-                    <div
-                      className={`flex flex-row justify-between py-4 ${
-                        index === leaderBoardData.length - 1
-                          ? ""
-                          : "border-b-[1px] border-[#171717]"
-                      } `}
-                    >
-                      {/* wallet address */}
-                      <div className="flex flex-row space-x-4 md:space-x-8 text-white">
-                        {/* Index */}
-                        <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
-                          {index + 1}
-                        </div>
-                        <div>
-                          {/* for mobile screen */}
-                          <p className="block md:hidden text-xs md:text-lg font-semibold">
-                            {data?.walletAddress &&
-                              shortenString(data?.walletAddress, 5)}
-                          </p>
 
-                          {/* for tablet and above devices */}
-                          <p className="hidden md:block text-xs md:text-lg font-semibold">
-                            {data?.walletAddress}
-                          </p>
-                          <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
-                            Total UVI Balance{" "}
-                          </p>
-                        </div>
+            {leaderBoardData && leaderBoardData.length > 0 ? (
+              <>
+                <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
+                  {leaderBoardData &&
+                    leaderBoardData.map((data, index) => {
+                      return (
+                        <>
+                          <div
+                            className={`flex flex-row justify-between py-4 ${
+                              index === leaderBoardData.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#171717]"
+                            } `}
+                          >
+                            {/* wallet address */}
+                            <div className="flex flex-row space-x-4 md:space-x-8 text-white">
+                              {/* Index */}
+                              <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
+                                {index + 1}
+                              </div>
+                              <div>
+                                {/* for mobile screen */}
+                                <p className="block md:hidden text-xs md:text-lg font-semibold">
+                                  {data?.walletAddress &&
+                                    shortenString(data?.walletAddress, 5)}
+                                </p>
+
+                                {/* for tablet and above devices */}
+                                <p className="hidden md:block text-xs md:text-lg font-semibold">
+                                  {data?.walletAddress}
+                                </p>
+                                <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
+                                  Total UVI Balance{" "}
+                                </p>
+                              </div>
+                            </div>
+                            {/* total transactions */}
+                            <div>
+                              <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
+                                Total Holding
+                              </p>
+                              <p className="text-white text-xs md:text-lg font-medium">
+                                {data?.tokenBalance} UVI
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+
+                  <div className="flex items-center justify-center w-full space-x-2 ">
+                    {/* Link for the text */}
+                    <Link
+                      to="/leaderboard"
+                      className="text-lg text-[#FCC121] font-semibold cursor-pointer"
+                    >
+                      More
+                    </Link>
+
+                    {/* Link for the icon */}
+                    <Link to="/leaderboard">
+                      <MdArrowForward
+                        className="text-[#FCC121] cursor-pointer"
+                        size={24}
+                      />
+                    </Link>
+                  </div>
+
+                  <div className="h-[2px] bg-[#171717] my-8"></div>
+
+                  <p className=" text-lg text-[#FCC121] font-semibold">
+                    My Place
+                  </p>
+                  {/* My Place */}
+                  <div className="flex flex-row justify-between py-4 ">
+                    {/* wallet address */}
+                    <div className="flex flex-row space-x-8 text-white">
+                      {/* Index */}
+                      <div
+                        className="flex items-center justify-center bg-[#171717] text-white font-semibold rounded-full"
+                        style={{
+                          width: userleaderBoardData?.[0]?.position
+                            ? `${Math.max(
+                                2.5,
+                                userleaderBoardData[0].position.toString()
+                                  .length + 1
+                              )}rem`
+                            : "2.5rem",
+                          height: userleaderBoardData?.[0]?.position
+                            ? `${Math.max(
+                                2.5,
+                                userleaderBoardData[0].position.toString()
+                                  .length + 1
+                              )}rem`
+                            : "2.5rem",
+                          minWidth: "2.5rem", // Ensures a minimum size for smaller numbers
+                          minHeight: "2.5rem", // Ensures a minimum size for smaller numbers
+                        }}
+                      >
+                        {userleaderBoardData?.[0]?.position}
                       </div>
-                      {/* total transactions */}
+
                       <div>
-                        <p className="text-xs md:text-lg font-semibold text-[#FFC121]">
-                          Total Holding
+                        {/* for mobile screen */}
+                        <p className="block md:hidden font-semibold">
+                          {" "}
+                          {userleaderBoardData?.[0]?.walletAddress &&
+                            shortenString(
+                              userleaderBoardData?.[0]?.walletAddress,
+                              8
+                            )}
                         </p>
-                        <p className="text-white text-xs md:text-lg font-medium">
-                          {data?.tokenBalance} UVI
+
+                        {/* for mobile and above devices */}
+                        <p className="hidden md:block  font-semibold text-xs md:text-lg">
+                          {" "}
+                          {userleaderBoardData?.[0]?.walletAddress}
+                        </p>
+                        <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
+                          Total UVI Balance{" "}
                         </p>
                       </div>
                     </div>
-                  </>
-                );
-              })}
-
-              <div className="flex items-center justify-center w-full space-x-2 ">
-                {/* Link for the text */}
-                <Link
-                  to="/leaderboard"
-                  className="text-lg text-[#FCC121] font-semibold cursor-pointer"
-                >
-                  More
-                </Link>
-
-                {/* Link for the icon */}
-                <Link to="/leaderboard">
-                  <MdArrowForward
-                    className="text-[#FCC121] cursor-pointer"
-                    size={24}
-                  />
-                </Link>
-              </div>
-
-              <div className="h-[2px] bg-[#171717] my-8"></div>
-
-              <p className=" text-lg text-[#FCC121] font-semibold">My Place</p>
-              {/* My Place */}
-              <div className="flex flex-row justify-between py-4 ">
-                {/* wallet address */}
-                <div className="flex flex-row space-x-8 text-white">
-                  {/* Index */}
-                  <div className="rounded-full bg-[#171717] text-white font-semibold text-lg flex items-center justify-center w-8 h-8 md:h-10 md:w-10">
-                    {userleaderBoardData?.[0]?.position}
-                  </div>
-                  <div>
-                    {/* for mobile screen */}
-                    <p className="block md:hidden font-semibold">
-                      {" "}
-                      {userleaderBoardData?.[0]?.walletAddress &&
-                        shortenString(
-                          userleaderBoardData?.[0]?.walletAddress,
-                          8
-                        )}
-                    </p>
-
-                    {/* for mobile and above devices */}
-                    <p className="hidden md:block  font-semibold text-xs md:text-lg">
-                      {" "}
-                      {userleaderBoardData?.[0]?.walletAddress}
-                    </p>
-                    <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
-                      Total UVI Balance{" "}
-                    </p>
+                    {/* total transactions */}
+                    <div>
+                      <p className="font-semibold text-xs md:text-lg text-[#FFC121]">
+                        Total Holding
+                      </p>
+                      <p className="text-white text-xs md:text-lg font-medium">
+                        {userleaderBoardData?.[0]?.tokenBalance} UVI
+                      </p>
+                    </div>
                   </div>
                 </div>
-                {/* total transactions */}
-                <div>
-                  <p className="font-semibold text-xs md:text-lg text-[#FFC121]">
-                    Total Holding
-                  </p>
-                  <p className="text-white text-xs md:text-lg font-medium">
-                    {userleaderBoardData?.[0]?.tokenBalance} UVI
-                  </p>
-                </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <p className="text-center font-bold text-white text-xl py-6">
+                No data found . . .
+              </p>
+            )}
           </div>
         </div>
 
