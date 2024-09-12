@@ -16,7 +16,7 @@ import BlogsPage from "./pages/BlogsPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import Sidebar from "./layout/Sidebar";
@@ -78,6 +78,7 @@ function App() {
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
+  const userWalletAddress = useSelector((state)=>state?.wallet?.address);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hideNavbarRoutes = [
     "/signup",
@@ -105,6 +106,24 @@ function AppContent() {
       navigate("/signup", { state: { referralAddress } });
     }
   }, [location, navigate]);
+
+  useEffect(() => {
+    const handleWalletChange = async () => {
+      const data = await window.pox.getwalletadress();
+      console.log("Wallet address changed:", data);
+      console.log(userWalletAddress && userWalletAddress!= data?.[1]?.data)
+      if(userWalletAddress && userWalletAddress!= data?.[1]?.data){
+        navigate("/connectwallet");
+      }
+    };
+
+    // Add a global event listener for wallet address changes
+    document.addEventListener('Change', handleWalletChange);
+
+    return () => {
+      document.removeEventListener('Change', handleWalletChange);
+    };
+  }, []);
 
   return (
     <>

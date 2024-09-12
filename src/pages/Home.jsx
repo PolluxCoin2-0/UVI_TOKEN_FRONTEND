@@ -2,7 +2,7 @@ import { useInView } from "react-intersection-observer";
 import CountdownTimer from "../components/CountdownTimer";
 import Timeline from "../components/Timeline";
 import { MdArrowForward, MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   getCountOfUsers,
@@ -110,22 +110,6 @@ const Home = () => {
     fetchData();
   }, [walletAddress]);
 
-  useEffect(() => {
-    const handleChange = (event) => {
-        alert(event.detail.Network);
-      if (event.detail.Network !== "Mainnet") {
-        toast.error("Attention: Your wallet address has changed. Please proceed to log in and register the new wallet address.");
-        localStorage.clear();
-        // navigate("/");
-      }
-    };
-    document.addEventListener('Change', handleChange);
-
-    return () => {
-      document.removeEventListener('Change', handleChange);
-    };
-  }, []);
-
   const handleTapMining = async () => {
     setIsAnimating(true);
     // Optionally, reset the animation after some time if needed
@@ -150,14 +134,14 @@ const Home = () => {
 
     const userData = await getDataOfMiningFromDatabase(walletAddress);
 
-    // if (
-    //   userData?.data?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-    //   userData?.data?.userSlotDate.split("T")[0] === currentDate &&
-    //   walletAddress === userData?.data?.walletAddress
-    // ) {
-    //   toast.error("You have already minted in this slot.");
-    //   return;
-    // }
+    if (
+      userData?.data?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+      userData?.data?.userSlotDate.split("T")[0] === currentDate &&
+      walletAddress === userData?.data?.walletAddress
+    ) {
+      toast.error("You have already minted in this slot.");
+      return;
+    }
 
     if (isLoading) {
       return;
@@ -583,7 +567,7 @@ const Home = () => {
             <p className="text-white font-bold text-xl text-center ">Total Users: {userCount}</p>
             </div>
             <div className="px-4 py-4 bg-[#0E0E0E] rounded-b-3xl  overflow-x-scroll md:overflow-hidden min-w-[350px] md:min-w-full">
-              {leaderBoardData.map((data, index) => {
+              {leaderBoardData &&   leaderBoardData.map((data, index) => {
                 return (
                   <>
                     <div
