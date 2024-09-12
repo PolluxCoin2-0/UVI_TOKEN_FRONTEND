@@ -87,7 +87,7 @@ const ProfilePage = () => {
 
               <div className="flex flex-col items-start md:items-end pl-5 md:pl-0 pr-5 mt-8 md:mt-0">
                 <p className="text-[#FFC121]">Total Amount</p>
-                <p className="text-white text-lg font-bold">$ {totalAmount}</p>
+                <p className="text-white text-lg font-bold">$ {totalAmount? totalAmount:0}</p>
               </div>
             </div>
 
