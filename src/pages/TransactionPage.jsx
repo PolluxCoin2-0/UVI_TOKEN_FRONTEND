@@ -23,7 +23,6 @@ const TransactionPage = () => {
         ) {
           setText("Live");
           const allTransactions = await getAllTransactions();
-          console.log(allTransactions?.data?.transactions)
           setTransactionsArray(allTransactions?.data?.transactions);
         } else {
           setText("My");
