@@ -23,6 +23,7 @@ const TransactionPage = () => {
         ) {
           setText("Live");
           const allTransactions = await getAllTransactions();
+          console.log(allTransactions?.data?.transactions)
           setTransactionsArray(allTransactions?.data?.transactions);
         } else {
           setText("My");
@@ -38,10 +39,11 @@ const TransactionPage = () => {
   }, [pathname, token]);
 
     // Get the paginated data for the current page
-    const paginatedData = transactionArray.slice(
-      (currentPage - 1) * 20,
-      currentPage * 20
-    );
+   // Ensure transactionArray exists and has a length before slicing
+const paginatedData = transactionArray && transactionArray.length
+? transactionArray.slice((currentPage - 1) * 20, currentPage * 20)
+: [];
+
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
@@ -65,7 +67,7 @@ const TransactionPage = () => {
           </p>
 
           {/* Transaction table */}
-          {transactionArray &&
+          {transactionArray ?
             paginatedData.map((data, index) => {
               const isFirst = index === 0;
               const isLast = index === paginatedData.length - 1;
@@ -115,10 +117,16 @@ const TransactionPage = () => {
                   </div>
                 </div>
               );
-            })}
+            }):
+            <p className="text-center font-bold text-white text-xl py-6">
+                No data found . . .
+              </p>
+            }
         </div>
-        <Pagination totalRecords={transactionArray.length} setPageNo={handlePageChange}/>
-
+        {
+          transactionArray?.length >0 && 
+          <Pagination totalRecords={transactionArray?.length || 0} setPageNo={handlePageChange} />
+        }
       </div>
     </div>
   );
