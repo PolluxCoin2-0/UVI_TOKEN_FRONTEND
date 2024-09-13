@@ -40,15 +40,11 @@ export default function Sidebar() {
   };
 
   const handleLogout = async () => {
-    if (isLogin) {
       await postLogout(token);
       dispatch(setLogin(false));
       dispatch(setWalletAddress(""));
       dispatch(setDataObject({}));
       navigate("/connectwallet");
-    } else {
-      navigate("/signup");
-    }
   };
 
   return (
@@ -313,17 +309,17 @@ export default function Sidebar() {
               <li className="px-6" onClick={handleLogout}>
                 <Link
                   className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-8 ${
-                    selectedItem === "/logout"
+                    selectedItem === "/connectwallet"
                       ? "bg-[#F3BB1C] text-black font-semibold"
                       : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
                   } mb-0`}
-                  onClick={() => handleItemClick("/logout")}
+                  onClick={() => handleItemClick("/connectwallet")}
                 >
                   <div className="flex items-center self-center ">
                     <img src={LogoutImg} alt="logout-image" className="" />
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold ">
-                    {isLogin ? "Signout" : "Signup"}
+                    {isLogin ? "Sign out" : "Sign In"}
                   </div>
                 </Link>
               </li>

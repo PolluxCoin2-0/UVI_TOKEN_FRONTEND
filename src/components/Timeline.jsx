@@ -109,7 +109,7 @@ const TimelineProgressBar = () => {
                   className="inline-block w-2 md:w-3 h-2 md:h-3 rounded-full"
                   style={{ backgroundColor: completedColor }}
                 ></span>
-                <span className="text-white text-[11px] md:text-sm font-medium ml-2">
+                <span className="text-[#f7f4f4] text-[11px] md:text-sm font-medium ml-2">
                   {interval.label}
                 </span>
               </div>

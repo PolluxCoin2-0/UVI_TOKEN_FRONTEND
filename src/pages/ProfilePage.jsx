@@ -17,9 +17,6 @@ const ProfilePage = () => {
   const isReferralVerified = useSelector(
     (state) => state?.wallet?.dataObject?.isReferralVerify
   );
-  const referralAddress = useSelector(
-    (state) => state?.wallet?.dataObject?.referredBy
-  );
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const [userAmount, setUserAmount] = useState(0);
   const [referralData, setReferralData] = useState({});
@@ -87,7 +84,7 @@ const ProfilePage = () => {
 
               <div className="flex flex-col items-start md:items-end pl-5 md:pl-0 pr-5 mt-8 md:mt-0">
                 <p className="text-[#FFC121]">Total Amount</p>
-                <p className="text-white text-lg font-bold">$ {totalAmount}</p>
+                <p className="text-white text-lg font-bold">{totalAmount? totalAmount:0} UVI</p>
               </div>
             </div>
 

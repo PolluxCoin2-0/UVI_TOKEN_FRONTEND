@@ -9,14 +9,14 @@ import Signup from "./pages/auth/Signup";
 import ConnectWallet from "./pages/auth/ConnectWallet";
 import Otp from "./pages/auth/Otp";
 import Navbar from "./layout/Navbar";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import BuyCoinPage from "./pages/BuyCoinPage";
 import PaymentPage from "./pages/PaymentPage";
 import BlogsPage from "./pages/BlogsPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import Sidebar from "./layout/Sidebar";
@@ -78,6 +78,7 @@ function App() {
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
+  const userWalletAddress = useSelector((state)=>state?.wallet?.address);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hideNavbarRoutes = [
     "/signup",
@@ -106,6 +107,24 @@ function AppContent() {
     }
   }, [location, navigate]);
 
+  useEffect(() => {
+    const handleWalletChange = async () => {
+      const data = await window.pox.getwalletadress();
+      console.log("Wallet address changed:", data);
+      console.log(userWalletAddress && userWalletAddress!= data?.[1]?.data)
+      if(userWalletAddress && userWalletAddress!= data?.[1]?.data){
+        navigate("/connectwallet");
+      }
+    };
+
+    // Add a global event listener for wallet address changes
+    document.addEventListener('Change', handleWalletChange);
+
+    return () => {
+      document.removeEventListener('Change', handleWalletChange);
+    };
+  }, []);
+
   return (
     <>
     {/* <ComingSoon/> */}
@@ -126,7 +145,7 @@ function AppContent() {
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/connectwallet" element={<ConnectWallet />} />
-          <Route path="/otp" element={<Otp />} />
+          {/* <Route path="/otp" element={<Otp />} /> */}
           <Route path="/navbar" element={<Navbar />} />
           <Route path="/buycoin" element={<BuyCoinPage />} />
           <Route path="/payment" element={<PaymentPage />} />

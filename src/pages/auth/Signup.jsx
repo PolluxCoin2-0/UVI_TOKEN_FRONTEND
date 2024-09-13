@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { postSetReferrer, postSignup, postVerifyReferral } from "../../utils/axios";
-import { useSelector } from "react-redux";
+import { postOTPVerify, postSetReferrer, postSignup } from "../../utils/axios";
+import { useDispatch } from "react-redux";
+import { setDataObject, setLogin } from "../../redux/slice/walletslice";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,7 +14,9 @@ const Signup = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [referredBy, setReferredBy] = useState("");
   const [isConnected, setIsConnected] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch();
   const referralAddress = location.state?.referralAddress;
 
   useEffect(()=>{
@@ -31,7 +34,7 @@ const Signup = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-    if(!email && !walletAddress){
+    if(!email || walletAddress.length===0){
       toast.error("Please enter your email and wallet address!");
       return;
     }
@@ -41,42 +44,62 @@ const Signup = () => {
       return;
     } 
 
-    const apiData = await postSignup(walletAddress, email, referredBy)
+    // Disable the button once clicked
+    setIsSubmitting(true);
+    try {
+      const apiData = await postSignup(walletAddress, email, referredBy)
 
-    if(apiData?.data === "Invalid Referral Code"){
-      toast.error("Invalid Referral Code");
-      return;
-    }
-    
-    if(apiData?.data === "WalletAddress Already Exist"){
-      toast.error("WalletAddress Already Exist");
-      return;
-    }
+      console.log(apiData)
 
-    // toast message >> OTP sent successfully
-    if(apiData?.data?.email){
-
-      if(referredBy){
-        const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
-        console.log(setReferrerdata)
-  
-        const signedTransaction = await window.pox.signdata(
-          setReferrerdata?.data?.transaction
-        );
-    
-        console.log("signedTranaction3",signedTransaction);
-        const broadcast = JSON.stringify(
-          await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-        );
-    
-        console.log("boradcast3",broadcast)
+      if(apiData?.data === "Invalid Referral Code"){
+        toast.error("Invalid Referral Code");
+        setIsSubmitting(false); // Re-enable the button
+        return;
       }
-     
-      toast.success("OTP sent successfully");
-      // navigate
-      navigate("/otp", {state:{email:email, walletAddress:walletAddress, referredBy:referredBy}});
+      
+      if(apiData?.data === "WalletAddress Already Exist"){
+        toast.error("WalletAddress Already Exist");
+        setIsSubmitting(false); // Re-enable the button
+        return;
+      }
+  
+      if(apiData?.data?.d?.email){
+
+        const apiDataOfOTP = await postOTPVerify(email, apiData?.data?.d?.otp);
+
+        if (apiDataOfOTP?.data?._id) {
+          if(referredBy){
+            const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
+            console.log(setReferrerdata)
+      
+            const signedTransaction = await window.pox.signdata(
+              setReferrerdata?.data?.transaction
+            );
+        
+            console.log("signedTranaction3",signedTransaction);
+            const broadcast = JSON.stringify(
+              await window.pox.broadcast(JSON.parse(signedTransaction[1]))
+            );
+        
+            console.log("boradcast3",broadcast)
+          }
+         
+          dispatch(setDataObject(apiDataOfOTP?.data));
+          dispatch(setWalletAddress(walletAddress));
+          dispatch(setLogin(true));
+          if (referredBy) {
+            navigate("/verifyreferral");
+          } else {
+            navigate("/");
+          }
+        } 
+      }  
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
+      setIsSubmitting(false);
     }
-  };
+     };
 
   const connectWallet = ()=>{
     var obj = setInterval(async () => {
@@ -117,7 +140,7 @@ const Signup = () => {
             Your gateway to the most advanced layer 1 Blockchain
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form className="space-y-6">
             <div className="flex justify-center">
               <input
                 type="email"
@@ -150,12 +173,14 @@ const Signup = () => {
             </div>
 
             <div className="flex justify-center">
-              <button
+              <p
                 type="submit"
-                className="text-white bg-transparent cursor-pointer"
+                className={`text-white bg-transparent ${isSubmitting?"cursor-not-allowed":"cursor-pointer"}`}
+                disabled={isSubmitting}
+                onClick={handleSubmit}
               >
                 <FaArrowAltCircleRight size={36} />
-              </button>
+              </p>
             </div>
           </form>
 
