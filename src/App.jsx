@@ -107,24 +107,6 @@ function AppContent() {
     }
   }, [location, navigate]);
 
-  useEffect(() => {
-    const handleWalletChange = async () => {
-      const data = await window.pox.getwalletadress();
-      console.log("Wallet address changed:", data);
-      console.log(userWalletAddress && userWalletAddress!= data?.[1]?.data)
-      if(userWalletAddress && userWalletAddress!= data?.[1]?.data){
-        navigate("/connectwallet");
-      }
-    };
-
-    // Add a global event listener for wallet address changes
-    document.addEventListener('Change', handleWalletChange);
-
-    return () => {
-      document.removeEventListener('Change', handleWalletChange);
-    };
-  }, []);
-
   return (
     <>
     {/* <ComingSoon/> */}
