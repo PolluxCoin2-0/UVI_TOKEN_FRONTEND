@@ -97,7 +97,7 @@ const HomeLeaderBoard = () => {
                             Total Holding
                           </p>
                           <p className="text-white text-xs md:text-lg font-medium">
-                            {data?.tokenBalance} UVI
+                            {data?.totalBalance} UVI
                           </p>
                         </div>
                       </div>
@@ -180,7 +180,7 @@ const HomeLeaderBoard = () => {
                     Total Holding
                   </p>
                   <p className="text-white text-xs md:text-lg font-medium">
-                    {userleaderBoardData?.[0]?.tokenBalance} UVI
+                    {userleaderBoardData?.[0]?.totalBalance} UVI
                   </p>
                 </div>
               </div>

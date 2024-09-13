@@ -118,7 +118,7 @@ const LeaderBoard = () => {
               <div className={`${index === 0 ? "mt-4 lg:mt-0" : "mt-2 lg:mt-0"}`}>
                 <div className={`whitespace-nowrap flex ${index === 0 ? "flex-row space-x-4 lg:space-x-8" : "flex-row items-end space-x-4 lg:space-x-8"}`}>
                   <p className="text-[#FFC121] text-sm lg:text-lg xl:text-xlfont-semibold">Total Token</p>
-                  <p className="text-white text-sm lg:text-lg xl:text-xl font-semibold">{data?.tokenBalance}</p>
+                  <p className="text-white text-sm lg:text-lg xl:text-xl font-semibold">{data?.totalBalance}</p>
                 </div>
                 
               </div>
