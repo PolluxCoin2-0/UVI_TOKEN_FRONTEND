@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Github Checkout') {
             steps { 
-                git branch: 'main', credentialsId: '172.232.113.118', url: 'https://github.com/PolluxCoin2-0/UVI_TOKEN_FRONTEND.git'
+                git branch: 'main', credentialsId: 'root(private key)', url: 'https://github.com/PolluxCoin2-0/UVI_TOKEN_FRONTEND.git'
             }
         }
         
