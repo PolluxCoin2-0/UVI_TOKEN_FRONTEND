@@ -55,7 +55,7 @@ const ComingSoon = () => {
             <div className="flex-col justify-center items-center gap-10 flex">
               <div className="flex-col justify-start items-center gap-2.5 flex">
                 <h2 className="text-center text-yellow-500 md:text-7xl text-5xl font-bold font-manrope leading-normal">Coming Soon</h2>
-                <p className="text-center text-[#8C8B8B] text-lg font-bold leading-relaxed pt-6">Live in Few hours...</p>
+                <p className="text-center text-[#8C8B8B] text-lg font-bold leading-relaxed pt-6">Site is under maintenance.</p>
               </div>
              
             </div>

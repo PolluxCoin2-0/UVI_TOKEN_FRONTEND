@@ -109,9 +109,9 @@ function AppContent() {
 
   return (
     <>
-    {/* <ComingSoon/> */}
-      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
-      <div className="main-content">
+    <ComingSoon/>
+      {/* {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />} */}
+      {/* <div className="main-content">
         <Navbar />
         <ToastContainer
           position="top-right"
@@ -126,9 +126,9 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/connectwallet" element={<ConnectWallet />} />
+          <Route path="/connectwallet" element={<ConnectWallet />} /> */}
           {/* <Route path="/otp" element={<Otp />} /> */}
-          <Route path="/navbar" element={<Navbar />} />
+          {/* <Route path="/navbar" element={<Navbar />} />
           <Route path="/buycoin" element={<BuyCoinPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
@@ -143,8 +143,8 @@ function AppContent() {
           <Route path="/footer" element={<Footer/>} />
           
         </Routes>
-      </div>
-      {isModalOpen && <EligibilityModal onClose={handleCloseModal} />}
+      </div> */}
+      {/* {isModalOpen && <EligibilityModal onClose={handleCloseModal} />} */}
     </>
   );
 }
