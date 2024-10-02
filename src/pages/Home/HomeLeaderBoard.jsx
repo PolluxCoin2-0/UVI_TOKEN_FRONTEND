@@ -14,7 +14,6 @@ const HomeLeaderBoard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const leaderboard = await getLeaderboardStats(walletAddress);
-      console.log(leaderboard)
       setLeaderBoardData(leaderboard?.data.slice(0, 5));
       const filteredResult = leaderboard?.data.filter(
         (item) => item.walletAddress === walletAddress
@@ -97,7 +96,7 @@ const HomeLeaderBoard = () => {
                             Total Holding
                           </p>
                           <p className="text-white text-xs md:text-lg font-medium">
-                            {data?.totalBalance} UVI
+                            {data?.tokenBalance} UVI
                           </p>
                         </div>
                       </div>
@@ -180,7 +179,7 @@ const HomeLeaderBoard = () => {
                     Total Holding
                   </p>
                   <p className="text-white text-xs md:text-lg font-medium">
-                    {userleaderBoardData?.[0]?.totalBalance} UVI
+                    {userleaderBoardData?.[0]?.tokenBalance} UVI
                   </p>
                 </div>
               </div>
