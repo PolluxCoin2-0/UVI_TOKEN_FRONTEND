@@ -26,14 +26,14 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Calculate hours passed since the base time of 15:45
+  // Calculate hours passed since the base time of 19:45
   const getHoursPassedSinceBaseTime = () => {
     const now = currentTime;
     const baseTime = new Date(
       now.getFullYear(),
       now.getMonth(),
       now.getDate(),
-      15, // Base hour (3 PM)
+      19, // Base hour (7 PM)
       45, // Base minutes (45)
       0   // Base seconds
     );
