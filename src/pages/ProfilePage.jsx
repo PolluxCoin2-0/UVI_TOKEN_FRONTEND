@@ -32,9 +32,8 @@ const ProfilePage = () => {
       const apiData = await postUserAmount(userData?.address);
       setUserAmount(apiData?.data);
       const referralData = await getAllReferrals(userData?.address);
-      console.log(referralData);
       setReferralData(referralData?.data);
-      const signupBonusData = await getSignupBonus(token);
+      const signupBonusData = await getSignupBonus(userData?.address);
       setSignupBonus(signupBonusData?.data?.referralAmount);
       const referralAddresses = await getAllReferralAddresses(
         userData?.address

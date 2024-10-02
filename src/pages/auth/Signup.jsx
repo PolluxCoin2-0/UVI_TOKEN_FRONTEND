@@ -6,7 +6,7 @@ import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { postOTPVerify, postSetReferrer, postSignup } from "../../utils/axios";
 import { useDispatch } from "react-redux";
-import { setDataObject, setLogin } from "../../redux/slice/walletslice";
+import { setDataObject, setLogin, setWalletAddress as setWalletAddressFunc } from "../../redux/slice/walletslice";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const Signup = () => {
           }
          
           dispatch(setDataObject(apiDataOfOTP?.data));
-          dispatch(setWalletAddress(walletAddress));
+          dispatch(setWalletAddressFunc(walletAddress));
           dispatch(setLogin(true));
           if (referredBy) {
             navigate("/verifyreferral");
