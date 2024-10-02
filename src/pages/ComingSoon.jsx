@@ -51,7 +51,7 @@ const ComingSoon = () => {
       <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
         <div className="w-full md:px-16 px-10 md:pt-16 pt-10 pb-10 bg-gradient-to-b from-gray-800 to-black rounded-2xl flex-col justify-center items-center lg:gap-28 md:gap-16 gap-10 inline-flex shadow-2xl">
           <div className="flex-col justify-center items-center lg:gap-8 gap-10 flex">
-            <img src="https://uvitokendev.netlify.app/assets/UvitokenLogo-BTi4rCsB.png" alt="uvitoken logo" className="w-40 lg:w-48" />
+            <img src="https://uvitokendevbranch.netlify.app/assets/UvitokenLogo-BTi4rCsB.png" alt="uvitoken logo" className="w-40 lg:w-48" />
             <div className="flex-col justify-center items-center gap-10 flex">
               <div className="flex-col justify-start items-center gap-2.5 flex">
                 <h2 className="text-center text-yellow-500 md:text-7xl text-5xl font-bold font-manrope leading-normal">Coming Soon</h2>
