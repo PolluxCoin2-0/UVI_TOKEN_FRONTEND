@@ -15,7 +15,6 @@ const Blocks = () => {
     triggerOnce: true,
   });
   const walletAddress = useSelector((state) => state.wallet.address);
-  const token = useSelector((state) => state?.wallet?.dataObject?.token);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +22,7 @@ const Blocks = () => {
       setBalance(apiData?.data);
       const amount = await getReferralBalance(walletAddress);
       setReferralAmount(amount?.data);
-      const signupBonusData = await getSignupBonus(token);
+      const signupBonusData = await getSignupBonus(walletAddress);
       setSignupBonus(signupBonusData?.data?.referralAmount);
     };
     fetchData();
