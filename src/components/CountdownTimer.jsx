@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 const CountdownTimer = () => {
   // Determine the start time of the current 24-hour period at 15:45
-  const startOfDay = new Date().setHours(19, 45, 0, 0); // 15:45:00
+  const startOfDay = new Date().setHours(20, 0, 0, 0); // 15:45:00
 
   // Calculate the slot duration and number based on the current time
   const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
