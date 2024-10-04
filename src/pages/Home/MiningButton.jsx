@@ -85,14 +85,17 @@ const MiningButton = () => {
         apiData?.data?.transaction?.txID
       );
       console.log("result", transactionResult);
-      // Call the api of update Token balance
-      const savedData = await saveUserMinigData(
-        token,
-        apiData?.data?.transaction?.txID,
-        walletAddress,
-        transactionResult?.data?.receipt?.result
-      );
-      console.log("savedData", savedData);
+     
+      if (transactionResult?.data?.receipt?.result === "SUCCESS"){
+          const savedData = await saveUserMinigData(
+            token,
+            apiData?.data?.transaction?.txID,
+            walletAddress,
+            transactionResult?.data?.receipt?.result
+          );
+          console.log("savedData", savedData);
+        }
+
 
       // Distribute referral rewards
       if (
