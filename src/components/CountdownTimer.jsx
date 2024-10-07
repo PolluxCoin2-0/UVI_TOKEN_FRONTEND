@@ -1,8 +1,46 @@
 import { useState, useEffect, useRef } from "react";
+import { getLastMintedTime } from "../utils/axios";
 
 const CountdownTimer = () => {
+  const [dynamicTime, setDynamicTime] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+useEffect(() => {
+  const fetchData = async () => {
+    const timeData = await getLastMintedTime();
+    console.log(timeData);
+    const fetchedTime = timeData?.data?.nextExpectedInterval; // Extract the last mined time from the API response
+    console.log(fetchedTime);
+    if (fetchedTime) {
+      const dateParts = fetchedTime.split(", ");
+      const timeString = dateParts[1]; // Time part (HH:MM:SS)
+    
+      console.log(timeString); // This logs the time string
+    
+       // Split the time string by colon
+        const timeComponents = timeString.split(":");
+        const hours = parseInt(timeComponents[0], 10); // Get hours and convert to integer
+        const minutes = parseInt(timeComponents[1], 10); // Get minutes and convert to integer
+        const seconds = parseInt(timeComponents[2], 10); // Get seconds and convert to integer
+
+        console.log(`${hours}, ${minutes}, ${seconds}`);
+
+        // Set the extracted time in the state
+        setDynamicTime({ hours, minutes, seconds });
+    }
+    
+    
+  };
+  fetchData();
+}, []);
+
+
+
   // Determine the start time of the current 24-hour period at 15:45
-  const startOfDay = new Date().setHours(20, 0, 0, 0); // 15:45:00
+  const startOfDay = new Date().setHours(dynamicTime?.hours, dynamicTime?.minutes, dynamicTime?.seconds, 0);
 
   // Calculate the slot duration and number based on the current time
   const slotDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds

@@ -137,6 +137,7 @@ export const getVotePower = async (walletAddress) => {
   } catch (error) {
     console.log(error);
   }
+
 };
 
 // GET COUNT OF ALL REGISTERED USERS
@@ -325,6 +326,16 @@ export const getDataOfMiningFromDatabase = async(walletAddress)=>{
     const res = await axios.post(BASE_URL + "/getSlotByWalletAddress", {
       "walletAddress": walletAddress,
     });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// make base time dynamic with api
+export const getLastMintedTime = async() =>{
+  try {
+    const res= await axios.get(BASE_URL + "/getLastMintTime");
     return res?.data;
   } catch (error) {
     console.log(error);
