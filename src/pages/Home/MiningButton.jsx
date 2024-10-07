@@ -85,17 +85,6 @@ const MiningButton = () => {
         apiData?.data?.transaction?.txID
       );
       console.log("result", transactionResult);
-     
-      if (transactionResult?.data?.receipt?.result === "SUCCESS"){
-          const savedData = await saveUserMinigData(
-            token,
-            apiData?.data?.transaction?.txID,
-            walletAddress,
-            transactionResult?.data?.receipt?.result
-          );
-          console.log("savedData", savedData);
-        }
-
 
       // Distribute referral rewards
       if (
@@ -117,20 +106,31 @@ const MiningButton = () => {
         console.log("boradcast2", broadcast2);
       }
 
-      // update token balance
-      const updateTokenBalance = await updateBalance(token);
-      console.log("updateTokenBalance", updateTokenBalance);
+      if (transactionResult?.data?.receipt?.result === "SUCCESS") {
+        const savedData = await saveUserMinigData(
+          token,
+          apiData?.data?.transaction?.txID,
+          walletAddress,
+          transactionResult?.data?.receipt?.result
+        );
+        console.log("savedData", savedData);
 
-      toast.success("Your mining has started.");
+        // update token balance
+        const updateTokenBalance = await updateBalance(token);
+        console.log("updateTokenBalance", updateTokenBalance);
 
-      // save the mining data in database
-      const usersavedData = await saveDataOfMiningInDatabase(
-        token,
-        slotsNumber?.currentSlotNumber,
-        walletAddress
-      );
+        // save the mining data in database
+        const usersavedData = await saveDataOfMiningInDatabase(
+          token,
+          slotsNumber?.currentSlotNumber,
+          walletAddress
+        );
 
-      console.log("saveDataOfMiningInDatabase", usersavedData);
+        console.log("saveDataOfMiningInDatabase", usersavedData);
+        toast.success("Your mining has started.");
+      } else {
+        toast.error("Failed to start mining. Please try again.");
+      }
     } catch (error) {
       toast.error("Mining was canceled or failed. Please try again.");
     } finally {
