@@ -332,13 +332,3 @@ export const getDataOfMiningFromDatabase = async(walletAddress)=>{
   }
 }
 
-// make base time dynamic with api
-export const getLastMintedTime = async() =>{
-  try {
-    const res= await axios.get(BASE_URL + "/getLastMintTime");
-    return res?.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
