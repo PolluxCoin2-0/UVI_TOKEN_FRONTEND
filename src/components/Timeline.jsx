@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentSlotNumber } from "../redux/slice/SlotsSlice";
+import { getLastMintedTime } from "../utils/axios";
 
-// Define the time slots with labels, values, and colors
-const intervals = [
-  { label: "Slot No: 1/4 (20:00 - 02:00)", value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
-  { label: "Slot No: 2/4 (02:00 - 08:00)", value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
-  { label: "Slot No: 3/4 (08:00 - 14:00)", value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
-  { label: "Slot No: 4/4 (14:00 - 20:00)", value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
-];
+// Define a function to create intervals based on a base time
+const createIntervals = (baseTime) => {
+  const baseHours = baseTime.getHours();
+  const baseMinutes = baseTime.getMinutes();
+  
+  return [
+    { label: `Slot No: 1/4 (${baseHours}:${String(baseMinutes).padStart(2, '0')} - ${(baseHours + 6) % 24}:${String(baseMinutes).padStart(2, '0')})`, value: 6, color: "#FFA21B", bgColor: "rgba(255, 162, 27, 0.3)" },
+    { label: `Slot No: 2/4 (${(baseHours + 6) % 24}:${String(baseMinutes).padStart(2, '0')} - ${(baseHours + 12) % 24}:${String(baseMinutes).padStart(2, '0')})`, value: 12, color: "#6B8BFC", bgColor: "rgba(107, 139, 252, 0.3)" },
+    { label: `Slot No: 3/4 (${(baseHours + 12) % 24}:${String(baseMinutes).padStart(2, '0')} - ${(baseHours + 18) % 24}:${String(baseMinutes).padStart(2, '0')})`, value: 18, color: "#FFCC07", bgColor: "rgba(255, 204, 7, 0.3)" },
+    { label: `Slot No: 4/4 (${(baseHours + 18) % 24}:${String(baseMinutes).padStart(2, '0')} - ${baseHours}:${String(baseMinutes).padStart(2, '0')})`, value: 24, color: "#0098FE", bgColor: "rgba(0, 152, 254, 0.3)" },
+  ];
+};
 
 // Helper function to calculate percentage progress
 const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
@@ -16,6 +22,34 @@ const calculatePercentage = (hours, end) => Math.min((hours / end) * 100, 100);
 const TimelineProgressBar = () => {
   const dispatch = useDispatch();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [baseTime, setBaseTime] = useState(new Date()); // State to hold the dynamic base time
+  const [intervals, setIntervals] = useState([]); // State to hold the intervals
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const timeData = await getLastMintedTime();
+      const fetchedTime = timeData?.data?.nextExpectedInterval; // Extract the last mined time from the API response
+      
+      if (fetchedTime) {
+        const dateParts = fetchedTime.split(", ");
+        const timeString = dateParts[1]; // Time part (HH:MM:SS)
+
+        // Split the time string by colon
+        const timeComponents = timeString.split(":");
+        const hours = parseInt(timeComponents[0], 10); // Get hours and convert to integer
+        const minutes = parseInt(timeComponents[1], 10); // Get minutes and convert to integer
+        
+        // Set the base time based on the API response
+        const newBaseTime = new Date();
+        newBaseTime.setHours(hours, minutes, 0, 0); // Set the base time to the API fetched time
+        setBaseTime(newBaseTime);
+        
+        // Create intervals based on the fetched base time
+        setIntervals(createIntervals(newBaseTime));
+      }
+    };
+    fetchData();
+  }, []);
 
   // Update current time every minute
   useEffect(() => {
@@ -26,17 +60,9 @@ const TimelineProgressBar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Calculate hours passed since the base time of 20:00 (8 PM)
+  // Calculate hours passed since the dynamic base time
   const getHoursPassedSinceBaseTime = () => {
     const now = currentTime;
-    const baseTime = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      20, // Base hour (8 PM)
-      0,  // Base minutes (00)
-      0   // Base seconds
-    );
 
     // If the current time is before the base time, subtract a day
     if (now < baseTime) {
@@ -65,7 +91,7 @@ const TimelineProgressBar = () => {
   // Calculate the current slot number whenever the time updates
   useEffect(() => {
     determineCurrentSlotNumber();
-  }, [hoursPassed]);
+  }, [hoursPassed, intervals]); // Add intervals as a dependency to re-run when they are set
 
   return (
     <>
