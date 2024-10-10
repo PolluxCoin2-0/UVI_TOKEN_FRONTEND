@@ -18,7 +18,7 @@ const LeaderBoard = () => {
   useEffect(()=>{
     const fetchData = async()=>{
       const apiData = await getLeaderboardStats();
-      setLeaderboardData(apiData?.data)
+      setLeaderboardData(apiData?.data?.leaderboardWithPosition)
     }
     fetchData();
   },[])
@@ -41,8 +41,8 @@ const LeaderBoard = () => {
 
    // Get the paginated data for the current page
    const paginatedData = leaderboardData.slice(
-    (currentPage - 1) * 20,
-    currentPage * 20
+    (currentPage - 1) * 10,
+    currentPage * 10
   );
 
   // Handle page change

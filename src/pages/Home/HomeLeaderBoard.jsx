@@ -14,8 +14,8 @@ const HomeLeaderBoard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const leaderboard = await getLeaderboardStats(walletAddress);
-      setLeaderBoardData(leaderboard?.data.slice(0, 5));
-      const filteredResult = leaderboard?.data.filter(
+      setLeaderBoardData(leaderboard?.data?.leaderboardWithPosition?.slice(0, 5));
+      const filteredResult = leaderboard?.data?.leaderboardWithPosition?.filter(
         (item) => item.walletAddress === walletAddress
       );
       setUserLeaderBoardData(filteredResult);
