@@ -19,7 +19,6 @@ const HomeLeaderBoard = () => {
       const userCountData = await getCountOfUsers();
       setUserCount(userCountData?.data);
       const userFilteredData = await getUserPosition(token);
-      console.log(userFilteredData?.data)
       setUserLeaderBoardData(userFilteredData?.data);
     };
     if(walletAddress && token){

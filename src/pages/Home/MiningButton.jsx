@@ -83,11 +83,13 @@ const MiningButton = () => {
       );
       console.log("result", transactionResult);
 
+      if( transactionResult?.data?.receipt?.result === "REVERT"){
+        toast.error("Your Transaction was REVERTED");
+        return;
+      }
+
       // Distribute referral rewards
-      if (
-        transactionResult?.data?.receipt?.result === "SUCCESS" &&
-        referralAddress
-      ) {
+      if (referralAddress) {
         const referralData = await postDistributeReferralRewards(walletAddress);
         console.log("referralData", referralData);
 
