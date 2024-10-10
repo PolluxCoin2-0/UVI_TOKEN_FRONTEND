@@ -332,3 +332,19 @@ export const getDataOfMiningFromDatabase = async(walletAddress)=>{
   }
 }
 
+// GET USER POSITION
+
+export const getUserPosition = async (token) => {
+  console.log(`getUserPosition`, token);
+  try {
+    const res = await axios.get(BASE_URL + "/getRankUser",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
