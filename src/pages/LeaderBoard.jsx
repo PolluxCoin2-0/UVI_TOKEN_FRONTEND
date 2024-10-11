@@ -9,19 +9,22 @@ const LeaderBoard = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const userWalletAddress = useSelector((state)=>state?.wallet?.dataObject?.walletAddress)
+  const userWalletAddress = useSelector(
+    (state) => state?.wallet?.dataObject?.walletAddress
+  );
 
   const topPositionRef = useRef(null);
   const windowHeight = window.innerHeight;
   const threshold = windowHeight * 0.2; // 20% from the bottom
+  const itemsPerPage = 10;
 
-  useEffect(()=>{
-    const fetchData = async()=>{
+  useEffect(() => {
+    const fetchData = async () => {
       const apiData = await getLeaderboardStats();
-      setLeaderboardData(apiData?.data?.leaderboardWithPosition)
-    }
+      setLeaderboardData(apiData?.data?.leaderboardWithPosition);
+    };
     fetchData();
-  },[])
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,8 +42,8 @@ const LeaderBoard = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-   // Get the paginated data for the current page
-   const paginatedData = leaderboardData.slice(
+  // Get the paginated data for the current page
+  const paginatedData = leaderboardData.slice(
     (currentPage - 1) * 10,
     currentPage * 10
   );
@@ -57,77 +60,109 @@ const LeaderBoard = () => {
           Leaderboard
         </p>
 
-        <div className="mt-10  border border-white border-opacity-15 min-w-[280px] md:min-w-[300px] lg:min-w-[600px] xl:min-w-[1000px] rounded-3xl">
-          {leaderboardData && paginatedData.map((data, index) => (
-            <div
-              key={data?.walletAddress}
-              ref={data?.walletAddress === userWalletAddress ? topPositionRef : null}
-              style={{
-                transform:
-                  isFixed && data?.walletAddress === userWalletAddress
-                    ? "translateX(20px) translateX(-20px)"
-                    : "",
-              }}
-              className={`flex flex-row justify-between p-4 lg:p-10 border-b border-white border-opacity-15 
+        <div className="mt-10 border border-white border-opacity-15 min-w-[280px] md:min-w-[300px] lg:min-w-[600px] xl:min-w-[1000px] rounded-3xl ">
+          {leaderboardData &&
+            paginatedData.map((data, index) => {
+              const globalIndex = (currentPage - 1) * itemsPerPage + index + 1;
+              const isSpecialIndex = globalIndex % 10 === 1;
+              return (
+                <div
+                  key={data?.walletAddress}
+                  ref={
+                    data?.walletAddress === userWalletAddress
+                      ? topPositionRef
+                      : null
+                  }
+                  style={{
+                    transform:
+                      isFixed && data?.walletAddress === userWalletAddress
+                        ? "translateX(20px) translateX(-20px)"
+                        : "",
+                  }}
+                  className={`flex flex-row justify-between p-4 lg:p-10 border-b border-white border-opacity-15 
                 ${
                   isFixed &&
                   data?.walletAddress === userWalletAddress &&
                   "sticky top-0 bottom-0 left-0 right-0 shadow-outline"
                 } 
                 ${
-                  index === 0
+                  globalIndex === 1
                     ? "bg-gradient-to-r from-[#FBCF41] to-[#000000] p-3 rounded-tl-3xl rounded-tr-3xl"
-                    : "bg-[#1B1B1B] p-4 lg:p-10"
+                    : "bg-[#1B1B1B] p-4 lg:p-10 "
                 } 
-                ${index === paginatedData.length - 1 ? "rounded-bl-3xl rounded-br-3xl" : ""}
+                ${isSpecialIndex ? "rounded-tl-3xl rounded-tr-3xl" : ""}
+                ${
+                  index === paginatedData.length - 1
+                    ? "rounded-bl-3xl rounded-br-3xl"
+                    : ""
+                }
               `}
-            >
-              <div className="flex items-center space-x-2 lg:space-x-10">
-                {index === 0 ? (
-                  <img
-                    src={WinnerImg}
-                    alt="Top player"
-                    className=" w-12 h-12 md:w-16 md:h-16 lg:w-full lg:h-12 xl:h-20"
-                  />
-                ) : (
-                  <p className="text-white text-sm md:text-xl lg:text-xl font-semibold bg-[#070707] rounded-full px-4 py-4 flex items-center justify-center w-6 h-6 md:w-10 md:h-10">
-                  {index + 1}
-                </p>
-                
-                )}
-                <div>
-                  {/* <p
+                >
+                  <div className="flex items-center space-x-2 lg:space-x-10">
+                    {globalIndex === 1 ? (
+                      <img
+                        src={WinnerImg}
+                        alt="Top player"
+                        className=" w-12 h-12 md:w-16 md:h-16 lg:w-full lg:h-12 xl:h-20"
+                      />
+                    ) : (
+                      <p className="text-white text-sm md:text-xl lg:text-xl font-semibold bg-[#070707] rounded-full px-4 py-4 flex items-center justify-center w-6 h-6 md:w-10 md:h-10">
+                        {globalIndex}
+                      </p>
+                    )}
+                    <div>
+                      {/* for mobile screen */}
+                      <p
+                        className={`block md:hidden pt-1 ${
+                          globalIndex === 1
+                            ? "text-black text-sm lg:text-lg xl:text-xl font-bold"
+                            : "text-white text-sm lg:text-lg xl:text-xl font-semibold"
+                        }`}
+                      >
+                        {data?.walletAddress &&
+                          shortenString(data?.walletAddress, 5)}
+                      </p>
+
+                      <p
+                        className={`hidden md:block pt-1 ${
+                          globalIndex === 1
+                            ? "text-black text-lg md:text-2xl lg:text-xl xl:text-3xl font-bold"
+                            : "text-white text-lg lg:text-lg xl:text-xl font-semibold"
+                        }`}
+                      >
+                        {data?.walletAddress}
+                      </p>
+                    </div>
+                  </div>
+                  <div
                     className={`${
-                      index === 0
-                        ? "text-black text-2xl lg:text-xl xl:text-4xl font-bold"
-                        : "text-white text-xl lg:text-xl xl:text-2xl font-semibold"
+                      globalIndex === 1 ? "mt-4 lg:mt-0" : "mt-2 lg:mt-0"
                     }`}
                   >
-                    {data?.email}
-                  </p> */}
-                  {/* for mobile screen */}
-                  <p className={`block md:hidden pt-1 ${index === 0 ? "text-black text-sm lg:text-lg xl:text-xl font-bold" : "text-white text-sm lg:text-lg xl:text-xl font-semibold"}`}>
-                    {data?.walletAddress && shortenString(data?.walletAddress, 5)}
-                  </p>
-
-                  <p className={`hidden md:block pt-1 ${index === 0 ? "text-black text-lg md:text-2xl lg:text-xl xl:text-3xl font-bold" : "text-white text-lg lg:text-lg xl:text-xl font-semibold"}`}>
-                    {data?.walletAddress }
-                  </p>
+                    <div
+                      className={`whitespace-nowrap flex ${
+                        globalIndex === 1
+                          ? "flex-row space-x-4 lg:space-x-8"
+                          : "flex-row items-end space-x-4 lg:space-x-8"
+                      }`}
+                    >
+                      <p className="text-[#FFC121] text-sm lg:text-lg xl:text-xlfont-semibold">
+                        Total Token
+                      </p>
+                      <p className="text-white text-sm lg:text-lg xl:text-xl font-semibold">
+                        {data?.tokenBalance}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className={`${index === 0 ? "mt-4 lg:mt-0" : "mt-2 lg:mt-0"}`}>
-                <div className={`whitespace-nowrap flex ${index === 0 ? "flex-row space-x-4 lg:space-x-8" : "flex-row items-end space-x-4 lg:space-x-8"}`}>
-                  <p className="text-[#FFC121] text-sm lg:text-lg xl:text-xlfont-semibold">Total Token</p>
-                  <p className="text-white text-sm lg:text-lg xl:text-xl font-semibold">{data?.tokenBalance}</p>
-                </div>
-                
-              </div>
-            </div>
-          ))}
-
+              );
+            })}
         </div>
 
-        <Pagination totalRecords={leaderboardData.length} setPageNo={handlePageChange}/>
+        <Pagination
+          totalRecords={leaderboardData.length}
+          setPageNo={handlePageChange}
+        />
       </div>
     </div>
   );
