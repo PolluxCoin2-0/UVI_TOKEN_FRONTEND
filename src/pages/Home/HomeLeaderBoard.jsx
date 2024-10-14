@@ -9,22 +9,25 @@ const HomeLeaderBoard = () => {
   const [leaderBoardData, setLeaderBoardData] = useState([]);
   const [userleaderBoardData, setUserLeaderBoardData] = useState({});
   const [userCount, setUserCount] = useState(0);
-  const walletAddress = useSelector((state) => state.wallet.address);
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const leaderboard = await getLeaderboardStats(walletAddress);
+    const fetchDataLeaderBoardStats = async () => {
+      const leaderboard = await getLeaderboardStats();
       setLeaderBoardData(leaderboard?.data?.leaderboardWithPosition?.slice(0, 5));
       const userCountData = await getCountOfUsers();
       setUserCount(userCountData?.data);
+    };
+
+    fetchDataLeaderBoardStats();
+    const fetchData = async()=>{
       const userFilteredData = await getUserPosition(token);
       setUserLeaderBoardData(userFilteredData?.data);
-    };
-    if(walletAddress && token){
+    }
+    if(token){
       fetchData();
     }
-  }, [walletAddress]);
+  }, [token]);
 
 
   return (
