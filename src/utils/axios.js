@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+const FULL_NODE_TRANSACTION_URL = import.meta.env.VITE_FULL_NODE_TRANSACTION_URL || "";
 
 // SIGNUP
 export const postSignup = async (walletAddress, email, referredBy) => {
@@ -185,17 +186,6 @@ export const getReferralBalance = async(walletAddress)=>{
   }
 }
 
-export const getTransactionResult = async (transactionId) => {
-  try {
-    const res = await axios.post(BASE_URL + `/chaintransactionById`, {
-      value: transactionId,
-    });
-    return res?.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // Save create mining data to database
 export const saveUserMinigData = async(token, trxId, walletAddress, status)=>{
   try {
@@ -333,7 +323,6 @@ export const getDataOfMiningFromDatabase = async(walletAddress)=>{
 }
 
 // GET USER POSITION
-
 export const getUserPosition = async (token) => {
   try {
     const res = await axios.get(BASE_URL + "/getRankUser",{
@@ -346,4 +335,31 @@ export const getUserPosition = async (token) => {
     console.log(error);
   }
 };
+
+// Broadcast API
+export const broadcastApi = async (transaction) => {
+  try {
+    const broadcastResponse = await axios.post(
+      `${FULL_NODE_TRANSACTION_URL}/wallet/broadcasttransaction`,
+      transaction
+    );
+
+    return broadcastResponse?.data
+  } catch (error) {
+    console.error("Error broadcasting transaction:", error);
+    throw new Error("Failed to broadcast transaction.");
+  }
+};
+
+// GET USER IS SR OR NOT
+export const getUserIsSR = async (walletAddress) => {
+  try {
+    const userSRResponse = await axios.get(`https://node.poxscan.io/wallet/getUnderControl?userAddress=${walletAddress}`);
+    return userSRResponse?.data;
+  } catch (error) {
+    console.error("Error in user SR API:", error);
+    throw new Error("Failed to get SR details.");
+  }
+};
+
 

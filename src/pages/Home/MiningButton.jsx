@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   getDataOfMiningFromDatabase,
-  getTransactionResult,
   getVotePower,
   postDistributeReferralRewards,
   postMintUser,
@@ -12,6 +11,7 @@ import {
   saveUserMinigData,
   updateBalance,
 } from "../../utils/axios";
+import { SignBroadcastTransactionStatus } from "../../utils/signBroadcastTransaction";
 
 const MiningButton = () => {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -22,6 +22,7 @@ const MiningButton = () => {
     (state) => state?.wallet?.dataObject?.referredBy
   );
   const walletAddress = useSelector((state) => state.wallet.address);
+  const isUserSRBoolean = useSelector((state)=>state.wallet.isUserSR);
   const { ref: buttonRef, inView: buttonInView } = useInView({
     triggerOnce: true,
   });
@@ -31,61 +32,47 @@ const MiningButton = () => {
     // Optionally, reset the animation after some time if needed
     setTimeout(() => setIsAnimating(false), 4000);
     const currentDate = new Date().toISOString().split("T")[0];
+
+    if (isLoading) {
+      toast.error("Mining is already in progress.");
+      return;
+    }
+
     if (!walletAddress) {
       toast.error("Connect your wallet.");
       return;
     }
 
-    const votePower = await getVotePower(walletAddress);
-    const totalAmount = (votePower.data.frozenV2 && Array.isArray(votePower.data.frozenV2)) ? 
-    votePower.data.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10 ** 6 
-    : 0;
-    if (totalAmount < 25) {
-      toast.error("Insufficient stake amount !");
-      return;
-    }
-
-    const userData = await getDataOfMiningFromDatabase(walletAddress);
-
-    if (
-      userData?.data?.userSlotNumber === slotsNumber?.currentSlotNumber &&
-      userData?.data?.userSlotDate.split("T")[0] === currentDate &&
-      walletAddress === userData?.data?.walletAddress
-    ) {
-      toast.error("You have already minted in this slot.");
-      return;
-    }
-
-    if (isLoading) {
-      return;
-    }
-
-    setIsLoading(true);
     try {
+      setIsLoading(true);
+      const votePower = await getVotePower(walletAddress);
+      const totalAmount = (votePower.data.frozenV2 && Array.isArray(votePower.data.frozenV2)) ? 
+      votePower.data.frozenV2.reduce((sum, item) => sum + (item.amount || 0), 0) / 10 ** 6 
+      : 0;
+      if (totalAmount < 25) {
+        toast.error("Insufficient stake amount !");
+        return;
+      }
+  
+      const userData = await getDataOfMiningFromDatabase(walletAddress);
+  
+      if (
+        userData?.data?.userSlotNumber === slotsNumber?.currentSlotNumber &&
+        userData?.data?.userSlotDate.split("T")[0] === currentDate &&
+        walletAddress === userData?.data?.walletAddress
+      ) {
+        toast.error("You have already minted in this slot.");
+        return;
+      }
+
       const apiData = await postMintUser(walletAddress, token);
       console.log(apiData);
 
-      const signedTransaction = await window.pox.signdata(
-        apiData?.data?.transaction
-      );
-
-      console.log("signedTransaction: ", signedTransaction);
-
-      const broadcast = JSON.stringify(
-        await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-      );
-
-      console.log("broadcast", broadcast);
-
-      // check transaction result >> SUCCESS : REVERT
-      const transactionResult = await getTransactionResult(
-        apiData?.data?.transaction?.txID
-      );
-      console.log("result", transactionResult);
-
-      if( transactionResult?.data?.receipt?.result === "REVERT"){
-        toast.error("Your Transaction was REVERTED");
-        return;
+      // SIGN, BROADCAST and TRANSACTION STATUS FOR TRX1
+      const signBroadcastTransactionStatusFuncRes = await SignBroadcastTransactionStatus( apiData?.data?.transaction, isUserSRBoolean)
+  
+      if (signBroadcastTransactionStatusFuncRes.transactionStatus !== "SUCCESS") {
+        throw new Error("Transaction 1 failed! Please try again.");
       }
 
       // Distribute referral rewards
@@ -93,24 +80,18 @@ const MiningButton = () => {
         const referralData = await postDistributeReferralRewards(walletAddress);
         console.log("referralData", referralData);
 
-        const signedTransaction2 = await window.pox.signdata(
-          referralData?.data?.transaction
-        );
-
-        console.log("signedTranaction2", signedTransaction2);
-        const broadcast2 = JSON.stringify(
-          await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
-        );
-
-        console.log("boradcast2", broadcast2);
+      // SIGN, BROADCAST and TRANSACTION STATUS FOR TRX1
+      const signBroadcastTransactionStatusFuncRes = await SignBroadcastTransactionStatus( referralData?.data?.transaction, isUserSRBoolean)
+  
+      if (signBroadcastTransactionStatusFuncRes.transactionStatus !== "SUCCESS") {
+      throw new Error("Transaction 1 failed! Please try again.");
+     }
       }
-
-      if (transactionResult?.data?.receipt?.result === "SUCCESS") {
         const savedData = await saveUserMinigData(
           token,
           apiData?.data?.transaction?.txID,
           walletAddress,
-          transactionResult?.data?.receipt?.result
+          signBroadcastTransactionStatusFuncRes.transactionStatus
         );
         console.log("savedData", savedData);
 
@@ -127,9 +108,6 @@ const MiningButton = () => {
 
         console.log("saveDataOfMiningInDatabase", usersavedData);
         toast.success("Your mining has started.");
-      } else {
-        toast.error("Failed to start mining. Please try again.");
-      }
     } catch (error) {
       toast.error("Mining was canceled or failed. Please try again.");
     } finally {
