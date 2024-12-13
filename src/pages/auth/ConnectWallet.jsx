@@ -173,7 +173,7 @@ const ConnectWallet = () => {
             <button
               disabled={isLoading}
               onClick={handleModalProceed}
-              className="mt-4 w-full py-2 px-4 bg-black text-white rounded-lg font-semibold hover:bg-purple-700 transition"
+              className="mt-4 w-full py-2 px-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition"
             >
               Proceed
             </button>
