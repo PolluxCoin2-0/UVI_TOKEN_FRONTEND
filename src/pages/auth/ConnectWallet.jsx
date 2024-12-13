@@ -78,8 +78,10 @@ const ConnectWallet = () => {
           toast.success("User logged in Success");
           navigate("/");
         }
+        else {
+          toast.error("Wallet Address does not exist!")
+        }
     } catch (error) {
-      toast.error("Wallet Address does not exist!")
       console.log("Login API Error:", error);
     }
   };
