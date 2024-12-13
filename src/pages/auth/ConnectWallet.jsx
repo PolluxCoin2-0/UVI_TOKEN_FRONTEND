@@ -17,10 +17,15 @@ const ConnectWallet = () => {
   const navigate = useNavigate();
   const walletAddress = useSelector((state) => state.wallet.address);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [srWalletAddress, setSrWalletAddress] = useState(null);
+  const [normalWalletAddress, setNormalWalletAddress] = useState(null);
 
   const handleLogin = async()=>{
     if (walletAddress) {
-      return toast.error("Wallet is already connected");
+      toast.error("Wallet is already connected");
+      return 
     }
 
     if (isLoading) {
@@ -37,32 +42,47 @@ const ConnectWallet = () => {
         return;
       }
 
+      setNormalWalletAddress(userWalletAddress);
        // CHECK USER IS SR OR NOT
        const userSRApiData = await getUserIsSR(userWalletAddress);
        console.log( userSRApiData)
 
        if(userSRApiData?.message==="adderss undercontrol found"){
-       userWalletAddress = userSRApiData?.data;
-       dispatch(setIsUserSR(true));
+        setSrWalletAddress(userSRApiData?.data);
+        setShowModal(true); // Show modal for SR wallet
+        setIsLoading(false);
+        return;
        }
-        const apiData = await postLogin(userWalletAddress);
-        if (apiData?.data?._id) {
-          dispatch(setWalletAddress(userWalletAddress));
-          dispatch(setLogin(true));
-          dispatch(setDataObject(apiData?.data));
-          toast.success("User logged in Success");
-          navigate("/");
-        }
-        else{
-          toast.error("Wallet Address does not exist!")
-        }
+
+      // Proceed with Login API if no SR wallet
+      await proceedWithLogin(userWalletAddress);
     } catch (error) {
-      console.error("Error in wallet connection process:", error);
-      toast.error("An error occurred. Please try again.");
+      toast.error("Invalid wallet address or login failed.");
+      console.log("error", error);
     } finally{
       setIsLoading(false);
     }
   }
+
+  const proceedWithLogin = async (walletAddress) => {
+    try {
+      const loginApiData = await postLogin(walletAddress);
+     if (loginApiData?.data?._id) {
+      const updatedLoginData = {
+        ...loginApiData?.data,
+        walletAddress,
+      };
+          dispatch(setWalletAddress(walletAddress));
+          dispatch(setLogin(true));
+          dispatch(setDataObject(updatedLoginData));
+          toast.success("User logged in Success");
+          navigate("/");
+        }
+    } catch (error) {
+      toast.error("Wallet Address does not exist!")
+      console.log("Login API Error:", error);
+    }
+  };
 
   // connect wallet function
   async function getPolinkweb() {
@@ -90,8 +110,77 @@ const ConnectWallet = () => {
     });
   }
 
+  const handleModalProceed = async () => {
+    if (!selectedOption) {
+      toast.warning("Please select an option to proceed.");
+      return;
+    }
+  
+    // Determine the wallet address based on the selected option
+    const selectedWallet =
+      selectedOption === "option1" ? srWalletAddress : normalWalletAddress;
+      if(selectedOption === "option1"){
+        dispatch(setIsUserSR(true));
+      }
+      await proceedWithLogin(selectedWallet);
+      setShowModal(false);
+  };
+
   return (
     <div className="bg-black min-h-screen w-full flex justify-center items-center relative overflow-hidden py-4">
+
+     {/* Modal */}
+     {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md">
+            <h3 className="text-lg font-bold mb-4">Confirm SR Wallet</h3>
+            <p className="mb-4">
+              We detected an SR wallet. Please select an option to proceed:
+            </p>
+            <div className="flex flex-col space-y-3">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="srWalletOption"
+                  value="option1"
+                  className="mr-2"
+                  onChange={() => setSelectedOption("option1")}
+                />
+                <span className="block sm:hidden"><span className="font-semibold">Under Control Wallet:</span>
+                  {`${srWalletAddress && srWalletAddress.slice(0, 6)}...${
+                    srWalletAddress && srWalletAddress.slice(-6)
+                  }`}
+                </span>
+                <span className="hidden sm:block"><span className="font-semibold">Under Control Wallet:</span> {srWalletAddress}</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="srWalletOption"
+                  value="option2"
+                  className="mr-2"
+                  onChange={() => setSelectedOption("option2")}
+                />
+                <span className="block sm:hidden"><span className="font-semibold">Active Wallet:</span>
+                  {`${
+                    normalWalletAddress && normalWalletAddress.slice(0, 6)
+                  }...${normalWalletAddress && normalWalletAddress.slice(-6)}`}
+                </span>
+                <span className="hidden sm:block"><span className="font-semibold">Active Wallet:</span> {normalWalletAddress}</span>
+              </label>
+            </div>
+
+            <button
+              disabled={isLoading}
+              onClick={handleModalProceed}
+              className="mt-4 w-full py-2 px-4 bg-black text-white rounded-lg font-semibold hover:bg-purple-700 transition"
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      )}
+      
       <img
         src={BgRotateImg}
         alt="background"
