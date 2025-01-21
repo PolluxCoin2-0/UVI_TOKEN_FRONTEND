@@ -5,8 +5,9 @@ import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { postOTPVerify, postSetReferrer, postSignup } from "../../utils/axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDataObject, setLogin, setWalletAddress as setWalletAddressFunc } from "../../redux/slice/walletslice";
+import { SignBroadcastTransactionStatus } from "../../utils/signBroadcastTransaction";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Signup = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const referralAddress = location.state?.referralAddress;
+  const isUserSRBoolean = useSelector((state)=>state.wallet.isUserSR);
 
   useEffect(()=>{
     if(referralAddress){
@@ -34,13 +36,21 @@ const Signup = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
+    if(isSubmitting){
+      toast.error("Please wait for a moment while we process your request...");
+      setIsSubmitting(false);
+      return;
+    }
+
     if(!email || walletAddress.length===0){
       toast.error("Please enter your email and wallet address!");
+      setIsSubmitting(false);
       return;
     }
 
     if (!validateEmail(email)) {
       toast.error("Please enter a valid email address!");
+      setIsSubmitting(false);
       return;
     } 
 
@@ -71,19 +81,16 @@ const Signup = () => {
           if(referredBy){
             const setReferrerdata = await postSetReferrer(walletAddress, referredBy)
             console.log(setReferrerdata)
-      
-            const signedTransaction = await window.pox.signdata(
-              setReferrerdata?.data?.transaction
-            );
-        
-            console.log("signedTranaction3",signedTransaction);
-            const broadcast = JSON.stringify(
-              await window.pox.broadcast(JSON.parse(signedTransaction[1]))
-            );
-        
-            console.log("boradcast3",broadcast)
+
+       // SIGN, BROADCAST and TRANSACTION STATUS
+         const signBroadcastTransactionStatusFuncRes = await SignBroadcastTransactionStatus(setReferrerdata?.data?.transaction, isUserSRBoolean)
+
+         if (signBroadcastTransactionStatusFuncRes.transactionStatus !== "SUCCESS") {
+         toast.error("Transaction failed!");
+         setIsSubmitting(false);
+         return;
+                }
           }
-         
           dispatch(setDataObject(apiDataOfOTP?.data));
           dispatch(setWalletAddressFunc(walletAddress));
           dispatch(setLogin(true));
@@ -116,7 +123,7 @@ const Signup = () => {
 
   const handleFocus = () => {
     if (!isConnected) {
-      connectWallet(); // Call function only if it hasn't been called yet
+      connectWallet();
     }
   };
 

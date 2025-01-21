@@ -2,7 +2,7 @@ import ReactPaginate from 'react-paginate';
 import { useMemo } from 'react';
 
 const Pagination = ({ totalRecords, setPageNo }) => {
-  const totalPages = useMemo(() => Math.ceil(totalRecords / 20), [totalRecords, 20]);
+  const totalPages = useMemo(() => Math.ceil(totalRecords / 10), [totalRecords, 10]);
 
   const handlePageClick = (data) => {
     const selectedPage = data.selected + 1;

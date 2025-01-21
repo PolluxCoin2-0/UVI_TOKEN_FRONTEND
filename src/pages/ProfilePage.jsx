@@ -166,7 +166,7 @@ const ProfilePage = () => {
                 {allReferralAddresses.map((item, index) => (
                   <p
                     key={index}
-                    className="w-full bg-[#151515] rounded-xl py-3 px-4 text-[#6A6A6A] text-md font-semibold shadow-2xl my-1"
+                    className="w-full bg-[#151515] rounded-xl py-3 px-4 text-[#6A6A6A] text-md font-semibold shadow-2xl my-1 truncate"
                   >
                     {item?.walletAddress
                       ? item?.walletAddress

@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getCountOfUsers, getLeaderboardStats } from "../../utils/axios";
+import { getCountOfUsers, getLeaderboardStats, getUserPosition } from "../../utils/axios";
 import { shortenString } from "../../utils/shortenString";
 import { Link } from "react-router-dom";
 import { MdArrowForward } from "react-icons/md";
 
 const HomeLeaderBoard = () => {
   const [leaderBoardData, setLeaderBoardData] = useState([]);
-  const [userleaderBoardData, setUserLeaderBoardData] = useState([]);
+  const [userleaderBoardData, setUserLeaderBoardData] = useState({});
   const [userCount, setUserCount] = useState(0);
-  const walletAddress = useSelector((state) => state.wallet.address);
+  const token = useSelector((state) => state?.wallet?.dataObject?.token);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const leaderboard = await getLeaderboardStats(walletAddress);
-      setLeaderBoardData(leaderboard?.data.slice(0, 5));
-      const filteredResult = leaderboard?.data.filter(
-        (item) => item.walletAddress === walletAddress
-      );
-      setUserLeaderBoardData(filteredResult);
+    const fetchDataLeaderBoardStats = async () => {
+      const leaderboard = await getLeaderboardStats();
+      setLeaderBoardData(leaderboard?.data?.leaderboardWithPosition?.slice(0, 5));
       const userCountData = await getCountOfUsers();
       setUserCount(userCountData?.data);
     };
-    fetchData();
-  }, [walletAddress]);
+
+    fetchDataLeaderBoardStats();
+    const fetchData = async()=>{
+      const userFilteredData = await getUserPosition(token);
+      setUserLeaderBoardData(userFilteredData?.data);
+    }
+    if(token){
+      fetchData();
+    }
+  }, [token]);
+
 
   return (
     <>
@@ -133,32 +138,32 @@ const HomeLeaderBoard = () => {
                   <div
                     className="flex items-center justify-center bg-[#171717] text-white font-semibold rounded-full"
                     style={{
-                      width: userleaderBoardData?.[0]?.position
+                      width: userleaderBoardData?.position
                         ? `${Math.max(
                             2.5,
-                            userleaderBoardData[0].position.toString().length
+                            userleaderBoardData?.position.toString().length
                           )}rem`
                         : "2.5rem",
-                      height: userleaderBoardData?.[0]?.position
+                      height: userleaderBoardData?.position
                         ? `${Math.max(
                             2.5,
-                            userleaderBoardData[0].position.toString().length
+                            userleaderBoardData?.position.toString().length
                           )}rem`
                         : "2.5rem",
                       minWidth: "2.5rem", // Ensures a minimum size for smaller numbers
                       minHeight: "2.5rem", // Ensures a minimum size for smaller numbers
                     }}
                   >
-                    {userleaderBoardData?.[0]?.position}
+                    {userleaderBoardData?.position}
                   </div>
 
                   <div>
                     {/* for mobile screen */}
                     <p className="block md:hidden font-semibold">
                       {" "}
-                      {userleaderBoardData?.[0]?.walletAddress &&
+                      {userleaderBoardData?.user?.walletAddress &&
                         shortenString(
-                          userleaderBoardData?.[0]?.walletAddress,
+                          userleaderBoardData?.user?.walletAddress,
                           8
                         )}
                     </p>
@@ -166,7 +171,7 @@ const HomeLeaderBoard = () => {
                     {/* for mobile and above devices */}
                     <p className="hidden md:block  font-semibold text-xs md:text-lg">
                       {" "}
-                      {userleaderBoardData?.[0]?.walletAddress}
+                      {userleaderBoardData?.user?.walletAddress}
                     </p>
                     <p className="text-[#8C8B8B] text-xs md:text-lg font-medium">
                       Total UVI Balance{" "}
@@ -179,7 +184,7 @@ const HomeLeaderBoard = () => {
                     Total Holding
                   </p>
                   <p className="text-white text-xs md:text-lg font-medium">
-                    {userleaderBoardData?.[0]?.tokenBalance} UVI
+                    {userleaderBoardData?.user?.totalBalance} UVI
                   </p>
                 </div>
               </div>

@@ -25,7 +25,9 @@ const Blocks = () => {
       const signupBonusData = await getSignupBonus(walletAddress);
       setSignupBonus(signupBonusData?.data?.referralAmount);
     };
-    fetchData();
+    if(walletAddress){
+      fetchData();
+    }
   }, [walletAddress]);
 
   return (

@@ -5,6 +5,8 @@ import LogoImg from "../../assets/UvitokenLogo.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { setDataObject, setLogin } from "../../redux/slice/walletslice";
+import { SignBroadcastTransactionStatus } from "../../utils/signBroadcastTransaction";
+import { useState } from "react";
 
 const VerifyReferral = () => {
   const dispatch = useDispatch();
@@ -13,48 +15,53 @@ const VerifyReferral = () => {
   );
   const token = useSelector((state) => state?.wallet?.dataObject?.token);
   const referredBy = useSelector((state) => state?.wallet?.dataObject?.referredBy);
+  const isUserSRBoolean = useSelector((state)=>state.wallet.isUserSR);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const verifyReferralfunc = async () => {
-    const referralApi = await postVerifyReferral(
-      token,
-      walletAddressBySignup,
-      referredBy
-    );
-    
-    if (referralApi?.data?.trx1) {
-      // Sign tranaction and broadcast transaction for trx1
-      const signedTransaction1 = await window.pox.signdata(
-        referralApi?.data?.trx1?.transaction
+
+    if(isLoading){
+      toast.error("Please wait, Verification is in progress.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const referralApi = await postVerifyReferral(
+        token,
+        walletAddressBySignup,
+        referredBy
       );
 
-      console.log("signTranaction1",signedTransaction1)
-
-       const broadcast1 = JSON.stringify(
-        await window.pox.broadcast(JSON.parse(signedTransaction1[1]))
-      );
-
-      console.log("broadcast1",broadcast1)
-
-      // Sign tranaction and broadcast transaction for trx2
-      const signedTransaction2 = await window.pox.signdata(
-        referralApi?.data?.trx2?.transaction
-      );
-
-      console.log("signTranaction2",signedTransaction2)
-      
-       const broadcast2 = JSON.stringify(
-        await window.pox.broadcast(JSON.parse(signedTransaction2[1]))
-      );
-
-      console.log("broadacst2", broadcast2);
-
-      toast.success("Wallet address verified!");
-      dispatch(setDataObject(referralApi?.data?.user));
-      dispatch(setLogin(true));
-      navigate("/");
-    } else {
-      toast.error("Something went wrong!");
+      if (referralApi?.data?.trx1) {
+        // SIGN, BROADCAST and TRANSACTION STATUS FOR TRX1
+        const signBroadcastTransactionStatusFuncRes = await SignBroadcastTransactionStatus(referralApi?.data?.trx1?.transaction, isUserSRBoolean)
+  
+        if (signBroadcastTransactionStatusFuncRes.transactionStatus !== "SUCCESS") {
+          throw new Error("Transaction 1 failed! Please try again.");
+        }
+  
+         // SIGN, BROADCAST and TRANSACTION STATUS FOR TRX2
+         const signBroadcastTransactionStatusFuncRes2 = await SignBroadcastTransactionStatus(referralApi?.data?.trx2?.transaction, isUserSRBoolean)
+  
+         if (signBroadcastTransactionStatusFuncRes2.transactionStatus !== "SUCCESS") {
+          throw new Error("Transaction 1 failed! Please try again.");
+         }
+  
+        toast.success("Wallet address verified!");
+        dispatch(setDataObject(referralApi?.data?.user));
+        dispatch(setLogin(true));
+        navigate("/");
+      } else {
+        toast.error("Invalid response from the server.");
+        throw new Error("Invalid response from the server.");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+     console.error("Error in verifyReferralfunc:", error);
+    } finally{
+      setIsLoading(false);
     }
   };
 
