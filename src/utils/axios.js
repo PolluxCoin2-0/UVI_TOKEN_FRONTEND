@@ -362,4 +362,14 @@ export const getUserIsSR = async (walletAddress) => {
   }
 };
 
+export const supportDataApi = async(payload)=>{
+  try {
+    const res = await axios.post("https://governance.poxscan.io/support/create",payload);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+   }
+
+
 
