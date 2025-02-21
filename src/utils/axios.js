@@ -362,4 +362,30 @@ export const getUserIsSR = async (walletAddress) => {
   }
 };
 
+export const supportDataApi = async(payload)=>{
+  try {
+    const res = await axios.post("https://governance.poxscan.io/support/create",payload);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+   }
+
+     // GET RESOURCES FROM API MAINNET
+export const mainnetUserMainnetResourceApi = async (walletAddress) => {
+  try {
+    const apiResponse = await axios.post(
+      `${FULL_NODE_TRANSACTION_URL}/wallet/getaccountresource`,
+      {
+        "address": walletAddress,
+        "visible": true
+    }
+    );
+    return apiResponse?.data
+  } catch (error) {
+    console.error("Error broadcasting transaction:", error);
+    throw new Error("Failed to broadcast transaction.");
+  }
+};
+
 

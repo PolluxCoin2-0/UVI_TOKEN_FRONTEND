@@ -16,6 +16,7 @@ import LeaderboardImg from "../assets/Leaderboard.png";
 import TransactionImg from "../assets/Transaction2.png";
 import ProfileImg from "../assets/Profile.png";
 import LogoutImg from "../assets/Logout2.png";
+import Help from "../assets/Help.svg";
 
 export default function Sidebar() {
   // for active transaction modal
@@ -302,6 +303,26 @@ export default function Sidebar() {
                   </div>
                   <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold">
                     Profile
+                  </div>
+                </Link>
+              </li>
+
+              <li className="px-6">
+                <Link
+                  to="/help"
+                  className={`flex items-center gap-3 rounded-xl p-3 transition-colors animate-slide-in-stair sidebar-item-4 ${
+                    selectedItem === "/help" ||
+                    selectedItem.startsWith("/help")
+                      ? "bg-[#F3BB1C] text-black font-semibold"
+                      : "text-slate-100 hover:bg-yellow-50 hover:text-yellow-500"
+                  }`}
+                  onClick={() => handleItemClick("/help")}
+                >
+                  <div className="flex items-center self-center">
+                    <img src={Help} alt="blogs-image" className="" />
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-md font-semibold pl-1">
+                    Help
                   </div>
                 </Link>
               </li>
