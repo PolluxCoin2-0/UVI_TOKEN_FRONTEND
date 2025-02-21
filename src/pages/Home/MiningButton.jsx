@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import {
   getDataOfMiningFromDatabase,
   getVotePower,
+  mainnetUserMainnetResourceApi,
   postDistributeReferralRewards,
   postMintUser,
   saveDataOfMiningInDatabase,
@@ -62,6 +63,23 @@ const MiningButton = () => {
         walletAddress === userData?.data?.walletAddress
       ) {
         toast.error("You have already minted in this slot.");
+        return;
+      }
+
+      const userResourceDetails = await mainnetUserMainnetResourceApi(walletAddress);
+      const availableBandwidth =
+        ((userResourceDetails?.freeNetLimit ?? 0) + (userResourceDetails?.NetLimit ?? 0)) -
+        ((userResourceDetails?.freeNetUsed ?? 0) + (userResourceDetails?.NetUsed ?? 0));
+      const availableEnergy =
+        (userResourceDetails?.EnergyLimit ?? 0) - (userResourceDetails?.EnergyUsed ?? 0);
+  
+      if (availableEnergy < 150000) {
+        toast.error("Insufficient energy for this transaction. Minimum 150,000 required.");
+        return;
+      }
+  
+      if (availableBandwidth < 5000) {
+        toast.error("Insufficient bandwidth for this transaction. Minimum 5,000 required.");
         return;
       }
 

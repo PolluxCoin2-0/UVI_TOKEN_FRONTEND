@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import BgRotateImg from "../../assets/rotatebg.png";
-import { postVerifyReferral } from "../../utils/axios";
+import { mainnetUserMainnetResourceApi, postVerifyReferral } from "../../utils/axios";
 import LogoImg from "../../assets/UvitokenLogo.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,22 @@ const VerifyReferral = () => {
 
     try {
       setIsLoading(true);
+      const userResourceDetails = await mainnetUserMainnetResourceApi(walletAddressBySignup);
+      const availableBandwidth =
+        ((userResourceDetails?.freeNetLimit ?? 0) + (userResourceDetails?.NetLimit ?? 0)) -
+        ((userResourceDetails?.freeNetUsed ?? 0) + (userResourceDetails?.NetUsed ?? 0));
+      const availableEnergy =
+        (userResourceDetails?.EnergyLimit ?? 0) - (userResourceDetails?.EnergyUsed ?? 0);
+  
+      if (availableEnergy < 150000) {
+        toast.error("Insufficient energy for this transaction. Minimum 150,000 required.");
+        return;
+      }
+  
+      if (availableBandwidth < 5000) {
+        toast.error("Insufficient bandwidth for this transaction. Minimum 5,000 required.");
+        return;
+      }
       const referralApi = await postVerifyReferral(
         token,
         walletAddressBySignup,

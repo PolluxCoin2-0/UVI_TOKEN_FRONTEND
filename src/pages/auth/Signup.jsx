@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import logo from "../../assets/UvitokenLogo.png";
 import BgRotateImg from "../../assets/rotatebg.png";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { postOTPVerify, postSetReferrer, postSignup } from "../../utils/axios";
+import { mainnetUserMainnetResourceApi, postOTPVerify, postSetReferrer, postSignup } from "../../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataObject, setLogin, setWalletAddress as setWalletAddressFunc } from "../../redux/slice/walletslice";
 import { SignBroadcastTransactionStatus } from "../../utils/signBroadcastTransaction";
@@ -56,7 +56,24 @@ const Signup = () => {
 
     // Disable the button once clicked
     setIsSubmitting(true);
+
     try {
+      const userResourceDetails = await mainnetUserMainnetResourceApi(walletAddress);
+      const availableBandwidth =
+        ((userResourceDetails?.freeNetLimit ?? 0) + (userResourceDetails?.NetLimit ?? 0)) -
+        ((userResourceDetails?.freeNetUsed ?? 0) + (userResourceDetails?.NetUsed ?? 0));
+      const availableEnergy =
+        (userResourceDetails?.EnergyLimit ?? 0) - (userResourceDetails?.EnergyUsed ?? 0);
+  
+      if (availableEnergy < 150000) {
+        toast.error("Insufficient energy for this transaction. Minimum 150,000 required.");
+        return;
+      }
+  
+      if (availableBandwidth < 5000) {
+        toast.error("Insufficient bandwidth for this transaction. Minimum 5,000 required.");
+        return;
+      }
       const apiData = await postSignup(walletAddress, email, referredBy)
 
       console.log(apiData)
