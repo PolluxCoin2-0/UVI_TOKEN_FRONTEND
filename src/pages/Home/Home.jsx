@@ -20,7 +20,7 @@ const Home = () => {
       <div className=" relative z-10 pt-6 md:pt-8">
         <div className="px-5 md:px-8 lg:px-6">
           <SliderBanner />
-
+          <p className="flex flex-col items-center text-white font-semibold text-2xl mt-4 md:mt-6">UVI NETWORK : Unlock Web3, Blockchain Innovation & Earnings</p>
           {/* CountDown Timer */}
           <div
             ref={timerRef}

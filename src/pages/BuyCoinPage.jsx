@@ -63,14 +63,14 @@ const BuyCoin = () => {
 
             <div className="bg-[#181717] border-[1px] border-white border-opacity-15 w-[100%] md:w-[32%] rounded-2xl flex flex-row justify-center items-center space-x-6 h-[130px]">
               <div>
-                <img src={UsdtImg} alt="ethereum-image" className="" />
+                <img src={UsdtImg} alt="usdt-image" className="" />
               </div>
               <p className="text-white text-2xl font-bold">USDT</p>
             </div>
 
             <div className="bg-[#181717] border-[1px] border-white border-opacity-15 w-[100%] md:w-[32%] rounded-2xl flex flex-row justify-center items-center space-x-6 h-[130px]">
               <div>
-                <img src={BnbImg} alt="ethereum-image" className="" />
+                <img src={BnbImg} alt="bnb-image" className="" />
               </div>
               <p className="text-white text-2xl font-bold">BNB</p>
             </div>

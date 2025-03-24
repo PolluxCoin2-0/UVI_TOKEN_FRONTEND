@@ -192,7 +192,7 @@ const ConnectWallet = () => {
        flex flex-col items-center ">
         {/* connect wallet image */}
         <div>
-          <img src={WalletImg} className="" />
+          <img src={WalletImg} className="Wallet logo" />
         </div>
 
         <p className="text-xl md:text-3xl font-bold text-[#FFBE2E] mt-5">

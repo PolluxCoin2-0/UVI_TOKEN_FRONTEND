@@ -16,7 +16,7 @@ const BlogDetailPage = () => {
           <div className="w-full border border-white border-opacity-15 text-center mt-5 rounded-2xl overflow-hidden">
             <img
               src={Blog1Img}
-              alt=""
+              alt="blogs feature image"
               className="w-full h-[200px] md:h-[250px] lg:h-[250px] xl:h-[330px] 2xl:h-[450px] object-cover"
             />
           </div>

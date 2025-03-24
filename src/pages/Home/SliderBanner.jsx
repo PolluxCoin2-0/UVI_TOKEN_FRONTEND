@@ -100,7 +100,7 @@ const SliderBanner = () => {
             <div className="relative">
               <img
                 src={CurveImg}
-                alt=""
+                alt="curve element image"
                 className="w-full h-auto mt-11 md:mt-[90px] lg:mt-20 xl:mt-2  object-contain"
               />
 
@@ -137,7 +137,7 @@ const SliderBanner = () => {
 
                 <img
                   src={PlayStoreImg}
-                  alt=" playstore-image"
+                  alt="playstore-image"
                   className="w-8 md:w-14 lg:w-16 xl:w-32 2xl:w-32 object-contain  mb-1 xl:mb-6"
                 />
               </div>

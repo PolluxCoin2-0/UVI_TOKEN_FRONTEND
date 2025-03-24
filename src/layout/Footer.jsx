@@ -11,16 +11,16 @@ const Footer = () => {
       <div>
         <Link to="/">
           {" "}
-          <img src={UviLogo} alt="" className="w-48 cursor-pointer" />
+          <img src={UviLogo} alt="Uvi token logo" className="w-48 cursor-pointer" />
         </Link>
 
         <a
           href="https://play.google.com/store/apps/details?id=com.app.PoLink"
           className="pl-0"
         >
-          <p className="text-white text-lg font-semibold">
+          <h3 className="text-white text-lg font-semibold">
             Download the POLINK{" "}
-          </p>
+          </h3>
           <button
             type="button"
             className="flex items-center justify-center w-48  text-black bg-white rounded-lg h-12 border-[1px] border-yellow-500"

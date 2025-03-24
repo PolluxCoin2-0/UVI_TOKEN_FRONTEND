@@ -170,7 +170,7 @@ const MiningButton = () => {
           {isLoading ? (
             <span className="relative z-10 pulse-animation">Loading...</span>
           ) : (
-            <span className="relative z-10">Tap to Mine</span>
+            <h2 className="relative z-10">Tap to Mine</h2>
           )}
         </button>
       </div>

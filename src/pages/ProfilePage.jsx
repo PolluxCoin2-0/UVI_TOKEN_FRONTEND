@@ -100,7 +100,7 @@ const ProfilePage = () => {
 
                 <Link to={isReferralVerified ? "" : "/verifyreferral"}>
                   <button
-                    type=""
+                    type="button"
                     className=" bg-gradient-to-b from-[#FFBE2E]  to-[#5E440C]  text-white cursor-pointer px-5 py-1 rounded-md text-md font-semibold "
                   >
                     {isReferralVerified ? "Verified" : "Verify"}

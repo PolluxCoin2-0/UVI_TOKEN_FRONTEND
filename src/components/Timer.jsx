@@ -39,19 +39,19 @@ const Timer = () => {
     <div className="flex items-start justify-center w-full gap-3 count-down-main">
       <div className="timer w-5 mr-4">
         <div className="flex flex-row justify-center">
-          <h3 className="countdown-element minutes">
+          <p className="countdown-element minutes">
             {String(timeLeft.minutes).padStart(2, "0")} 
-          </h3>
-          <h3>m</h3>
+          </p>
+          <p>m</p>
         </div>
       </div>
 
       <div className="timer w-5">
         <div className="flex flex-row justify-center">
-          <h3 className="countdown-element seconds">
+          <p className="countdown-element seconds">
             {String(timeLeft.seconds).padStart(2, "0")}
-          </h3>
-          <h3>sec</h3>
+          </p>
+          <p>sec</p>
         </div>
       </div>
     </div>

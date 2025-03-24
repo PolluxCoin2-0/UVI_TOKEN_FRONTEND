@@ -47,7 +47,7 @@ const PaymentPage = ({ isShowModal, handleShowModal }) => {
                 <p className="text-white text-center ">Plz Send </p>
                 <p className="text-white font-bold ">200.020002102 USDRTRC20</p>
                 <p>
-                  <img src={UsdtImg} alt="image" className="h-[20px] " />
+                  <img src={UsdtImg} alt="usdt-image" className="h-[20px] " />
                 </p>
               </div>
 
