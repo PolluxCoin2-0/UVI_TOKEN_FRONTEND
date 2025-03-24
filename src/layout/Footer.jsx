@@ -9,7 +9,10 @@ const Footer = () => {
     <div className=" bg-black z-50 flex flex-wrap flex-row justify-between items-center mt-10 px-12 py-10 lg:px-24 mb-0 ">
       {/* for left section */}
       <div>
-        <Link to="/">
+        <Link to="/"
+         aria-label="uvi token logo" 
+         title="uvi token logo"
+        >
           {" "}
           <img src={UviLogo} alt="Uvi token logo" className="w-48 cursor-pointer" />
         </Link>
@@ -60,7 +63,10 @@ const Footer = () => {
       {/* Blogs */}
       <div className="pt-8 pb-5 md:pb-0">
         <ul>
-         <Link to="/blogs"><li className="text-white cursor-pointer">Blogs</li></Link>
+         <Link to="/blogs"
+        aria-label="visit to blog" 
+         title="visit to blog"
+         ><li className="text-white cursor-pointer">Blogs</li></Link>
           <li className="text-white pt-4 cursor-pointer">LightPaper</li>
           <li className="text-white pt-4 cursor-pointer">WhitePaper</li>
           <li className="text-white pt-4 cursor-pointer">Tokenomics</li>
@@ -85,7 +91,11 @@ const Footer = () => {
         <p className="text-white text-2xl font-semibold pt-8 ">Socials</p>
         <div>
           <ul>
-            <Link to="https://www.instagram.com/uvi_swap/">
+            <Link to="https://www.instagram.com/uvi_swap/"
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="Visit our Instagram page" 
+            title="Visit our Instagram page">
             <div className="flex flex-row space-x-2 items-center cursor-pointer">
               <p className="text-white pt-8">
                 <FaInstagram />
@@ -94,7 +104,11 @@ const Footer = () => {
             </div>
             </Link>
 
-            <Link to="https://discord.gg/BMA9sKma">
+            <Link to="https://discord.gg/BMA9sKma"
+             target="_blank" 
+             rel="noopener noreferrer"
+             aria-label="Visit our discord page" 
+             title="Visit our discord page">
             <div className="flex flex-row space-x-2 items-center cursor-pointer">
               <p className="text-white pt-4">
                 <FaDiscord />
@@ -103,7 +117,11 @@ const Footer = () => {
             </div>
             </Link>
 
-            <Link to="https://x.com/uvi_swap">
+            <Link to="https://x.com/uvi_swap"
+             target="_blank" 
+             rel="noopener noreferrer"
+             aria-label="Visit our twitter page" 
+             title="Visit our twitter page">
             <div className="flex flex-row space-x-2 items-center cursor-pointer">
               <p className="text-white pt-4">
               <FaTwitter />
@@ -112,7 +130,11 @@ const Footer = () => {
             </div>
             </Link>
 
-            <Link to="https://t.me/uviswap">
+            <Link to="https://t.me/uviswap"
+             target="_blank" 
+             rel="noopener noreferrer"
+             aria-label="Visit our telegram page" 
+             title="Visit our telegram page">
             <div className="flex flex-row space-x-2 items-center cursor-pointer">
               <p className="text-white pt-4">
                 <FaTelegramPlane />
